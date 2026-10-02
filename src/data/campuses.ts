@@ -1,4 +1,4 @@
-// From docs/places.md. Coordinates are placeholders until checked in Google Maps.
+// From docs/places.md (checked against OpenStreetMap).
 // Distances on listing cards are measured to these points.
 export type Campus = {
   id: string;
@@ -10,9 +10,9 @@ export type Campus = {
 };
 
 export const CAMPUSES: Campus[] = [
-  { id: 'unza', name: 'UNZA (Great East Road)', short: 'UNZA', lat: -15.392, lng: 28.329 },
-  { id: 'unilus', name: 'UNILUS', short: 'UNILUS', lat: -15.406, lng: 28.319 },
-  { id: 'evelyn-hone', name: 'Evelyn Hone College', short: 'Evelyn Hone', lat: -15.4225, lng: 28.289 },
+  { id: 'unza', name: 'UNZA (Great East Road)', short: 'UNZA', lat: -15.3949, lng: 28.3315 },
+  { id: 'unilus', name: 'UNILUS (Leopards Hill)', short: 'UNILUS', lat: -15.4536, lng: 28.3795 },
+  { id: 'evelyn-hone', name: 'Evelyn Hone College', short: 'Evelyn Hone', lat: -15.4171, lng: 28.2892 },
   { id: 'city-centre', name: 'City centre (for workers)', short: 'City centre', lat: -15.4167, lng: 28.282 },
 ];
 

@@ -3,7 +3,7 @@ import { FileText, Search } from 'lucide-react';
 import { Link } from 'react-router';
 import { Dialog } from '../../components/Dialog';
 import { useToast } from '../../components/Toast';
-import { useAdminListings, useAdminVerifications, useListingPhotos, useReviewListing, useReviewVerification, type AdminVerification } from '../../lib/admin';
+import { purgeExpiredDocs, useAdminListings, useAdminVerifications, useListingPhotos, useReviewListing, useReviewVerification, type AdminVerification } from '../../lib/admin';
 import type { ListingCard } from '../../lib/database.types';
 import { listingPhotoUrl } from '../../lib/images';
 import { signedDocUrl } from '../../lib/landlord';
@@ -24,8 +24,18 @@ const DOCS: { key: 'nrc_front_path' | 'nrc_back_path' | 'selfie_path' | 'ownersh
 export function VerificationsTab() {
   const list = useAdminVerifications();
   const [open, setOpen] = useState<AdminVerification | null>(null);
+  const [purged, setPurged] = useState(0);
+  // Delete ID documents reviewed more than 30 days ago (privacy policy).
+  useEffect(() => {
+    purgeExpiredDocs().then(setPurged);
+  }, []);
   return (
     <>
+      {purged > 0 && (
+        <p className="muted small admin-note">
+          Deleted the ID documents of {purged} landlord{purged === 1 ? "" : "s"} reviewed more than 30 days ago.
+        </p>
+      )}
       <TableState query={list} empty="No verifications waiting. Nice.">
         <table className="table table-stack">
           <thead>

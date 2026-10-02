@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react';
-import { Outlet, useLocation } from 'react-router';
+import { Link, Outlet, useLocation } from 'react-router';
 import { useMe } from '../lib/auth';
 import { useSavedIds, useSettings } from '../lib/queries';
 import { Header } from './Header';
@@ -40,7 +40,12 @@ export function Layout() {
       <footer className="app-footer">
         <span>BoardZM · Direct from landlords, no agents</span>
         <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
-        <InstallApp variant="link" />
+        <nav className="footer-links" aria-label="Policies">
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms</Link>
+          <Link to="/refunds">Deposits &amp; refunds</Link>
+          <InstallApp variant="link" />
+        </nav>
       </footer>
       <TabBar isLandlord={isLandlord} />
     </div>

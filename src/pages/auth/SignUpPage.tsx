@@ -114,6 +114,9 @@ export default function SignUpPage() {
           error={errors.password}
           hint="At least 8 characters."
         />
+        <p className="form-foot agree">
+          By creating an account you agree to the <Link to="/terms">Terms</Link> and <Link to="/privacy">Privacy policy</Link>.
+        </p>
         <Button variant="primary" type="submit" block disabled={busy}>
           {busy ? 'Creating your account…' : 'Create account'}
         </Button>

@@ -1,24 +1,22 @@
-# Places: fill in before day 1
+# Places
 
-Write coordinates in decimal degrees (Lusaka is about -15.42, 28.28). In Google Maps, right-click the spot and click the numbers at the top of the menu to copy them. Add rows for any other campuses or areas you want.
-
-> **Check me:** these are approximate placeholder coordinates. Correct them in Google Maps before running Block 2's `seed.sql`, then ask Claude to update `src/data/`.
+Coordinates in decimal degrees. Checked against OpenStreetMap on 2 Oct 2026 (suburb centres for areas). To adjust one, right-click the spot in Google Maps, copy the numbers, and ask Claude to update `src/data/`.
 
 ## Campuses (distances are measured to these)
 | Name | Lat | Lng |
 |---|---|---|
-| UNZA (Great East Road) | -15.3920 | 28.3290 |
-| UNILUS | -15.4060 | 28.3190 |
-| Evelyn Hone College | -15.4225 | 28.2890 |
-| City centre (for workers) | -15.4167 | 28.2820 |
+| UNZA (Great East Road) | -15.3949 | 28.3315 |
+| UNILUS (Leopards Hill campus) | -15.4536 | 28.3795 |
+| Evelyn Hone College | -15.4171 | 28.2892 |
+| City centre (Cairo Road, for workers) | -15.4167 | 28.2820 |
 
 ## Areas (the area filter; new listing pins start here)
 | Name | Lat | Lng |
 |---|---|---|
-| Kalingalinga | -15.4040 | 28.3330 |
-| Chudleigh | -15.3990 | 28.3190 |
-| Mass Media | -15.4040 | 28.3130 |
-| Rhodes Park | -15.4120 | 28.3010 |
-| Chelston | -15.3700 | 28.3800 |
-| Longacres | -15.4180 | 28.3080 |
-| Bauleni | -15.4320 | 28.3420 |
+| Kalingalinga | -15.4046 | 28.3358 |
+| Chudleigh | -15.3724 | 28.3357 |
+| Mass Media | -15.4067 | 28.3189 |
+| Rhodes Park | -15.4068 | 28.3051 |
+| Chelston | -15.3696 | 28.3910 |
+| Longacres | -15.4170 | 28.3141 |
+| Bauleni | -15.4424 | 28.3828 |

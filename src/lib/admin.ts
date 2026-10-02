@@ -264,3 +264,22 @@ export function useSaveSettings() {
     onSuccess: refresh,
   });
 }
+
+// ─── document retention ────────────────────────────────────────────────────
+
+/**
+ * Privacy policy: ID documents are deleted 30 days after review. Runs quietly whenever
+ * an admin opens the Verifications tab. Returns how many submissions were cleared.
+ */
+export async function purgeExpiredDocs(): Promise<number> {
+  const { data, error } = await supabase!.rpc('expired_verification_docs');
+  if (error || !data?.length) return 0;
+  let cleared = 0;
+  for (const row of data) {
+    const removed = row.paths.length ? await supabase!.storage.from('verification-docs').remove(row.paths) : { error: null };
+    if (removed.error) continue;
+    const { error: e } = await supabase!.rpc('clear_verification_docs', { p_verification_id: row.verification_id });
+    if (!e) cleared++;
+  }
+  return cleared;
+}
