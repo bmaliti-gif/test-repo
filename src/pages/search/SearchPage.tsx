@@ -1,52 +1,173 @@
-import { Link } from 'react-router';
+import { lazy, Suspense, useCallback, useMemo, useState, type ReactNode } from 'react';
+import { List, Map as MapIcon, SlidersHorizontal } from 'lucide-react';
+import { useSearchParams } from 'react-router';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
-import { PlaceholderPage } from '../../components/PlaceholderPage';
+import { ListingCard, ListingCardSkeleton } from '../../components/ListingCard';
+import { NotConnected } from '../../components/RequireAuth';
+import { Sheet } from '../../components/Sheet';
+import { SponsoredCard } from '../../components/SponsoredCard';
+import { Notice } from '../../components/Status';
+import { CAMPUSES } from '../../data/campuses';
+import { useMe } from '../../lib/auth';
+import { useAds, useSearchCards } from '../../lib/queries';
+import { supabase } from '../../lib/supabase';
+import { PHONE_QUERY, useMediaQuery } from '../../lib/useMediaQuery';
+import { FilterBar } from './FilterBar';
+import { activeFilterCount, applyFilters, filtersToParams, parseFilters, pickAd, type Filters } from './filters';
 
-// Temporary list so every route can be checked in Block 1. Replaced by search in Block 4.
-const ROUTES = [
-  ['/listing/example', 'Listing'],
-  ['/saved', 'Saved'],
-  ['/reservations', 'Reservations'],
-  ['/roommates', 'Roommates'],
-  ['/landlord', 'Landlord dashboard'],
-  ['/landlord/listings/new', 'New listing'],
-  ['/landlord/listings/example', 'Edit listing'],
-  ['/landlord/verification', 'Verification'],
-  ['/account', 'Account'],
-  ['/welcome', 'Welcome'],
-  ['/signin', 'Sign in'],
-  ['/signup', 'Sign up'],
-  ['/reset-password', 'Reset password'],
-  ['/auth/callback', 'Auth callback'],
-  ['/admin', 'Admin'],
-  ['/this-page-does-not-exist', 'A broken link'],
-] as const;
+// Leaflet is only downloaded when the map is shown (on phones: after tapping "Map").
+const SearchMap = lazy(() => import('../../components/SearchMap'));
 
 export default function SearchPage() {
+  if (!supabase) return <NotConnected />;
+  return <Search />;
+}
+
+function Search() {
+  const { me } = useMe();
+  const defaultNear = me?.profile.campus ?? 'unza';
+  const [params, setParams] = useSearchParams();
+  const filters = useMemo(() => parseFilters(params, defaultNear), [params, defaultNear]);
+
+  const update = useCallback(
+    (patch: Partial<Filters>) => setParams(filtersToParams({ ...filters, ...patch }, defaultNear), { replace: true }),
+    [filters, defaultNear, setParams],
+  );
+  const reset = () => setParams(new URLSearchParams(), { replace: true });
+
+  const cards = useSearchCards();
+  const ads = useAds();
+  const campus = CAMPUSES.find((c) => c.id === filters.near) ?? CAMPUSES[0];
+  const results = useMemo(() => applyFilters(cards.data ?? [], filters, campus), [cards.data, filters, campus]);
+  const ad = useMemo(() => pickAd(ads.data ?? [], filters.area), [ads.data, filters.area]);
+
+  const [hoverId, setHoverId] = useState<string | null>(null);
+  const isPhone = useMediaQuery(PHONE_QUERY);
+  const [phoneView, setPhoneView] = useState<'list' | 'map'>('list');
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const showMap = !isPhone || phoneView === 'map';
+  const showList = !isPhone || phoneView === 'list';
+
+  const count = results.length;
+  const resultLabel = cards.isPending
+    ? 'Loading rooms…'
+    : `${count} room${count === 1 ? '' : 's'} · rent shown in Kwacha per month`;
+  const activeCount = activeFilterCount(filters);
+
+  let list: ReactNode;
+  if (cards.isPending) {
+    list = [0, 1, 2, 3].map((i) => <ListingCardSkeleton key={i} />);
+  } else if (cards.isError) {
+    list = (
+      <Notice tone="error">
+        We couldn't load rooms. Check your internet connection.{' '}
+        <button type="button" className="link-button" onClick={() => cards.refetch()}>
+          Retry
+        </button>
+      </Notice>
+    );
+  } else if (count === 0) {
+    list = (
+      <Blueprint className="card empty-card">
+        <h2 className="card-title">No rooms match</h2>
+        <p className="card-body">Try a higher rent limit or a different area.</p>
+        <div>
+          <Button variant="secondary" onClick={reset}>
+            Reset filters
+          </Button>
+        </div>
+      </Blueprint>
+    );
+  } else {
+    list = results.map((r, i) => (
+      <ListItem key={r.id} after={ad && (i === 3 || (count < 4 && i === count - 1)) ? <SponsoredCard ad={ad} /> : null}>
+        <ListingCard listing={r} campusLabel={campus.short} highlighted={hoverId === r.id} onHover={setHoverId} />
+      </ListItem>
+    ));
+  }
+
   return (
-    <PlaceholderPage kicker="Off-campus rooms · verified landlords" title="Find a room near campus" block={4}>
-      <Blueprint className="card">
-        <div className="card-kicker">Check every page</div>
-        <div className="placeholder-links">
-          {ROUTES.map(([to, label]) => (
-            <Link key={to} to={to} className="btn btn-secondary">
-              {label}
-            </Link>
-          ))}
+    <div className="search-page">
+      <section className="search-intro" aria-labelledby="search-title">
+        <div className="search-intro-row">
+          <div>
+            <div className="kicker">Off-campus rooms · verified landlords</div>
+            <h1 id="search-title">Find a room near campus</h1>
+          </div>
+          <div className="search-count" role="status" aria-live="polite">
+            {resultLabel}
+          </div>
         </div>
-      </Blueprint>
-      <Blueprint className="card">
-        <div className="card-kicker">Design check</div>
-        <div className="placeholder-links" style={{ alignItems: 'center' }}>
-          <Button variant="primary">Primary button</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="ghost">Ghost</Button>
-          <span className="tag tag-accent">Featured</span>
-          <span className="tag tag-neutral">Wi-Fi</span>
-          <span className="tag tag-outline">Verified landlord</span>
-        </div>
-      </Blueprint>
-    </PlaceholderPage>
+        {isPhone ? (
+          <Button variant="secondary" className="filters-button" onClick={() => setFiltersOpen(true)}>
+            <SlidersHorizontal size={15} strokeWidth={1.5} aria-hidden="true" />
+            Filters{activeCount > 0 && ` · ${activeCount}`}
+          </Button>
+        ) : (
+          <FilterBar filters={filters} onChange={update} />
+        )}
+      </section>
+
+      <section className="search-grid">
+        {showList && (
+          <div className="search-list" aria-label="Rooms">
+            {list}
+          </div>
+        )}
+        {showMap && (
+          <div className="search-map-col">
+            <Suspense fallback={<Blueprint className="search-map map-loading">Loading map…</Blueprint>}>
+              <SearchMap results={results} highlightedId={hoverId} onHover={setHoverId} nearId={campus.id} />
+            </Suspense>
+          </div>
+        )}
+      </section>
+
+      {isPhone && (
+        <Button
+          variant="primary"
+          className="view-toggle"
+          onClick={() => setPhoneView((v) => (v === 'list' ? 'map' : 'list'))}
+        >
+          {phoneView === 'list' ? (
+            <>
+              <MapIcon size={16} strokeWidth={1.5} aria-hidden="true" /> Map
+            </>
+          ) : (
+            <>
+              <List size={16} strokeWidth={1.5} aria-hidden="true" /> List
+            </>
+          )}
+        </Button>
+      )}
+
+      <Sheet
+        open={filtersOpen}
+        title="Filters"
+        onClose={() => setFiltersOpen(false)}
+        footer={
+          <div className="sheet-actions">
+            <Button variant="secondary" onClick={reset}>
+              Reset
+            </Button>
+            <Button variant="primary" onClick={() => setFiltersOpen(false)}>
+              Show {count} room{count === 1 ? '' : 's'}
+            </Button>
+          </div>
+        }
+      >
+        <FilterBar filters={filters} onChange={update} />
+      </Sheet>
+    </div>
+  );
+}
+
+function ListItem({ children, after }: { children: ReactNode; after: ReactNode }) {
+  return (
+    <>
+      {children}
+      {after}
+    </>
   );
 }
