@@ -169,3 +169,64 @@ export function useCancelReservation() {
     onSuccess: () => Promise.all([invalidate(), queryClient.invalidateQueries({ queryKey: ['reservations'] })]),
   });
 }
+
+// ─── verification ──────────────────────────────────────────────────────────
+
+export type DocSlot = 'nrc_front_path' | 'nrc_back_path' | 'selfie_path' | 'ownership_path';
+export type Verification = Tables<'verifications'>;
+
+/** The landlord's latest verification (['landlord', 'verification']). */
+export function useVerification() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['landlord', 'verification', user?.id],
+    enabled: Boolean(supabase && user),
+    queryFn: async (): Promise<Verification | null> => {
+      const { data, error } = await supabase!
+        .from('verifications')
+        .select('*')
+        .eq('landlord_id', user!.id)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+/** Start a new verification (first time, or after a rejection). */
+export async function startVerification(): Promise<Verification> {
+  const { data, error } = await supabase!.from('verifications').insert({}).select('*').single();
+  if (error) throw new Error("We couldn't start your verification. Try again.");
+  return data;
+}
+
+const MAX_DOC_BYTES = 5 * 1024 * 1024;
+
+/** Upload one document to the private bucket and record it. Photos are shrunk first; PDFs go as they are. */
+export async function uploadVerificationDoc(userId: string, verificationId: string, slot: DocSlot, file: File): Promise<string> {
+  let body: Blob = file;
+  let ext = 'pdf';
+  if (file.type === 'application/pdf') {
+    if (file.size > MAX_DOC_BYTES) throw new Error('That PDF is over 5 MB. Try a photo of the document instead.');
+  } else if (file.type.startsWith('image/')) {
+    body = await compressImage(file);
+    ext = body.type === 'image/webp' ? 'webp' : 'jpg';
+  } else {
+    throw new Error('Use a photo (JPG, PNG) or a PDF.');
+  }
+  const path = `${userId}/${verificationId}/${slot.replace('_path', '')}-${Date.now()}.${ext}`;
+  const up = await supabase!.storage.from('verification-docs').upload(path, body, { contentType: body.type || 'application/pdf' });
+  if (up.error) throw new Error("That document didn't upload. Check your connection and try again.");
+  const patch: Partial<Record<DocSlot, string>> = { [slot]: path };
+  const { error } = await supabase!.from('verifications').update(patch).eq('id', verificationId);
+  if (error) throw new Error("That document didn't save. Try again.");
+  return path;
+}
+
+/** A short-lived private link to view an uploaded document (owner or admin only). */
+export async function signedDocUrl(path: string): Promise<string | null> {
+  const { data } = await supabase!.storage.from('verification-docs').createSignedUrl(path, 300);
+  return data?.signedUrl ?? null;
+}
