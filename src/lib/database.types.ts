@@ -430,6 +430,8 @@ export type Database = {
       };
       resolve_report: { Args: { p_id: string; p_action: ReportAction }; Returns: ReportAction };
       track_ad_click: { Args: { p_ad_id: string }; Returns: undefined };
+      archive_listing: { Args: { p_listing_id: string }; Returns: 'archived' };
+      relist_listing: { Args: { p_listing_id: string }; Returns: Extract<ListingStatus, 'draft' | 'in_review' | 'live'> };
       my_reservations: {
         Args: Record<string, never>;
         Returns: {
