@@ -849,3 +849,10 @@ button.photo-cell { cursor: zoom-in; }
   .admin-tabs { align-self: stretch; }
   .doc-review { grid-template-columns: 1fr; }
 }
+
+/* ═══ Install ═══════════════════════════════════════════════════════════════ */
+.install-button { align-self: flex-start; min-height: 44px; }
+.install-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; }
+.install-hint { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+/* Inline links under forms: tall enough to tap comfortably. */
+.form-foot a { display: inline-block; padding: 12px 2px; }

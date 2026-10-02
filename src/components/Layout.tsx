@@ -1,8 +1,10 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { useMe } from '../lib/auth';
 import { useSavedIds, useSettings } from '../lib/queries';
 import { Header } from './Header';
+import { InstallApp } from './InstallApp';
+import { Loading } from './Status';
 import { TabBar } from './TabBar';
 
 export function Layout() {
@@ -31,11 +33,14 @@ export function Layout() {
         </div>
       )}
       <main className="app-main" id="main" tabIndex={-1}>
-        <Outlet />
+        <Suspense fallback={<Loading />}>
+          <Outlet />
+        </Suspense>
       </main>
       <footer className="app-footer">
         <span>BoardZM · Direct from landlords, no agents</span>
         <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
+        <InstallApp variant="link" />
       </footer>
       <TabBar isLandlord={isLandlord} />
     </div>

@@ -3,6 +3,7 @@ import { LogOut } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
+import { InstallApp } from '../../components/InstallApp';
 import { ProfileForm } from '../../components/ProfileForm';
 import { Loading, Notice } from '../../components/Status';
 import { ThemeSelect } from '../../components/ThemeSelect';
@@ -44,6 +45,7 @@ export default function AccountPage() {
               <label htmlFor="account-theme">Theme</label>
               <ThemeSelect id="account-theme" className="input" />
             </div>
+            <InstallApp />
           </Blueprint>
 
           <Blueprint as="section" className="card" aria-labelledby="security-heading">

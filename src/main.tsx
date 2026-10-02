@@ -16,6 +16,7 @@ import './styles/app.css';
 
 import App from './App';
 import { AuthProvider } from './lib/auth';
+import './lib/install';
 import { ToastProvider } from './components/Toast';
 
 const queryClient = new QueryClient({

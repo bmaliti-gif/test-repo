@@ -1,24 +1,28 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
 import { RequireAuth } from './components/RequireAuth';
 import SearchPage from './pages/search/SearchPage';
-import ListingPage from './pages/listing/ListingPage';
-import SavedPage from './pages/account/SavedPage';
-import ReservationsPage from './pages/account/ReservationsPage';
-import AccountPage from './pages/account/AccountPage';
-import WelcomePage from './pages/account/WelcomePage';
-import RoommatesPage from './pages/roommates/RoommatesPage';
-import LandlordDashboard from './pages/landlord/LandlordDashboard';
-import ListingFormPage from './pages/landlord/ListingFormPage';
-import VerificationPage from './pages/landlord/VerificationPage';
-import SignInPage from './pages/auth/SignInPage';
-import SignUpPage from './pages/auth/SignUpPage';
-import ResetPasswordPage from './pages/auth/ResetPasswordPage';
-import AuthCallbackPage from './pages/auth/AuthCallbackPage';
-import AdminPage from './pages/admin/AdminPage';
-import NotFoundPage from './pages/NotFoundPage';
 
-// Routes from docs/PLAN.md §6. Lazy-loading of pages arrives in Block 12.
+// Find a room loads with the app; every other screen downloads only when opened,
+// which keeps the first visit small on mobile data.
+const ListingPage = lazy(() => import('./pages/listing/ListingPage'));
+const SavedPage = lazy(() => import('./pages/account/SavedPage'));
+const ReservationsPage = lazy(() => import('./pages/account/ReservationsPage'));
+const AccountPage = lazy(() => import('./pages/account/AccountPage'));
+const WelcomePage = lazy(() => import('./pages/account/WelcomePage'));
+const RoommatesPage = lazy(() => import('./pages/roommates/RoommatesPage'));
+const LandlordDashboard = lazy(() => import('./pages/landlord/LandlordDashboard'));
+const ListingFormPage = lazy(() => import('./pages/landlord/ListingFormPage'));
+const VerificationPage = lazy(() => import('./pages/landlord/VerificationPage'));
+const SignInPage = lazy(() => import('./pages/auth/SignInPage'));
+const SignUpPage = lazy(() => import('./pages/auth/SignUpPage'));
+const ResetPasswordPage = lazy(() => import('./pages/auth/ResetPasswordPage'));
+const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
+const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+// Routes from docs/PLAN.md §6.
 export default function App() {
   return (
     <Routes>
