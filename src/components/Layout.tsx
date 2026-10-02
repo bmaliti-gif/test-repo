@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { useMe } from '../lib/auth';
+import { useSavedIds } from '../lib/queries';
 import { Header } from './Header';
 import { TabBar } from './TabBar';
 
@@ -13,8 +14,8 @@ export function Layout() {
   }, [pathname]);
 
   const { me } = useMe();
-  // Saved count comes from saved_listings in Block 5.
-  const savedCount = 0;
+  const saved = useSavedIds();
+  const savedCount = saved.data?.length ?? 0;
   const isLandlord = me?.profile.role === 'landlord';
 
   return (
