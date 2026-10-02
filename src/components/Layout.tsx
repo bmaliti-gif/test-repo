@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import { useMe } from '../lib/auth';
-import { useSavedIds } from '../lib/queries';
+import { useSavedIds, useSettings } from '../lib/queries';
 import { Header } from './Header';
 import { TabBar } from './TabBar';
 
@@ -15,6 +15,7 @@ export function Layout() {
 
   const { me } = useMe();
   const saved = useSavedIds();
+  const settings = useSettings();
   const savedCount = saved.data?.length ?? 0;
   const isLandlord = me?.profile.role === 'landlord';
 
@@ -24,10 +25,11 @@ export function Layout() {
         Skip to main content
       </a>
       <Header savedCount={savedCount} />
-      {/* Shown while payments_mode is "simulated" (read from app_settings from Block 6). */}
-      <div className="test-banner" role="note">
-        Test mode — payments are simulated, no real money moves.
-      </div>
+      {settings.data?.payments_mode !== 'live' && (
+        <div className="test-banner" role="note">
+          Test mode — payments are simulated, no real money moves.
+        </div>
+      )}
       <main className="app-main" id="main" tabIndex={-1}>
         <Outlet />
       </main>

@@ -531,6 +531,64 @@ button.photo-cell { cursor: zoom-in; }
   .saved-page h1 { font-size: 34px; }
 }
 
+/* ═══ Payments ══════════════════════════════════════════════════════════════ */
+.accent-icon { color: var(--color-accent); flex: none; }
+.payment-dialog .app-dialog-title { font-size: 26px; }
+.pay-providers { width: 100%; }
+.pay-providers .seg-opt { flex: 1 1 0; min-height: 40px; padding-inline: 6px; }
+.pay-phone { min-height: 44px; font-size: 16px; letter-spacing: .04em; }
+.pay-lines { margin: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+.pay-lines > div { display: flex; justify-content: space-between; gap: 8px; }
+.pay-lines dd { margin: 0; }
+.pay-total { border-top: 1px solid var(--color-divider); padding-top: 6px; font-weight: 600; }
+.pay-waiting, .pay-done { display: flex; flex-direction: column; gap: var(--space-3); }
+.pay-pulse { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 13px; color: var(--color-accent-700); }
+.pay-pulse span { width: 10px; height: 10px; background: var(--color-accent); animation: pay-pulse 1s ease-in-out infinite alternate; }
+@keyframes pay-pulse { from { opacity: 1; } to { opacity: .35; } }
+.sim-prompt {
+  border: 1px dashed var(--color-accent); padding: var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-2); font-size: 14px;
+}
+.sim-label { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent-700); }
+.sim-actions { display: flex; gap: var(--space-2); justify-content: flex-end; }
+.sim-actions .btn { min-height: 40px; min-width: 96px; }
+.pay-ref { border: 1px solid var(--color-divider); padding: 10px 12px; font-size: 14px; }
+
+/* — reserved states on the listing — */
+.reserved-box {
+  border: 1px solid var(--color-accent); background: var(--color-accent-100); color: var(--color-accent-800);
+  padding: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 13px;
+}
+.reserved-box strong { display: flex; align-items: center; gap: 6px; font-size: 14px; }
+.moved-box { border: 1px solid var(--color-divider); padding: 12px; font-size: 13px; }
+.reserve-panel .btn-block, .reserve-inline .btn-block { min-height: 44px; margin-top: 0; }
+.reserve-inline { display: none; }
+
+/* ═══ My reservations ═══════════════════════════════════════════════════════ */
+.reservations-page { display: flex; flex-direction: column; gap: var(--space-6); max-width: 760px; }
+.reservations-page h1 { font-size: 40px; line-height: 1; margin: 6px 0 0; }
+.reservation-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-6); }
+.reservation-card { padding: var(--space-4); gap: var(--space-2); }
+.reservation-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.reservation-top .tag { gap: 4px; }
+.reservation-ref { font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+.reservation-title { font-size: 22px; margin: 0; }
+.reservation-title a { color: var(--color-text); }
+.reservation-meta { margin: 0; font-size: 13px; color: var(--color-text-muted); }
+.reservation-money {
+  margin: var(--space-1) 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6);
+}
+.reservation-money dt { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-accent-700); }
+.reservation-money dd { margin: 0; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 20px; }
+.reservation-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-1); }
+.reservation-actions .btn { min-height: 44px; }
+
+@media (max-width: 767px) {
+  .reserve-inline { display: flex; flex-direction: column; gap: var(--space-2); }
+  .reservations-page h1 { font-size: 34px; }
+  .reservation-actions .btn { flex: 1 1 100%; }
+}
+
 /* — placeholder pages (Block 1) — */
 .placeholder { display: flex; flex-direction: column; gap: var(--space-4); max-width: 720px; }
 .placeholder h1 { font-size: 40px; line-height: 1; margin: 6px 0 0; }

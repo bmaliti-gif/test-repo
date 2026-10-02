@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SearchCard } from '../pages/search/filters';
 import { CARD_COLUMNS } from '../pages/search/filters';
 import { useAuth } from './auth';
-import type { AppSettings, ListingCard, ReportTarget, Tables } from './database.types';
+import type { AppSettings, Database, ListingCard, ReportTarget, Tables } from './database.types';
 import { supabase } from './supabase';
 
 /** Fees, deposit and payments mode from app_settings (['settings']). */
@@ -177,5 +177,61 @@ export function useReport() {
       if (error?.code === '23505') throw new Error("You've already reported this. Our team will look at it.");
       if (error) throw new Error("We couldn't send your report. Check your connection and try again.");
     },
+  });
+}
+
+// ─── reservations ──────────────────────────────────────────────────────────
+
+export type MyReservation = Database['public']['Functions']['my_reservations']['Returns'][number];
+
+/** The signed-in tenant's held, released and refunded reservations (['reservations']). */
+export function useMyReservations() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['reservations', user?.id],
+    enabled: Boolean(supabase && user),
+    queryFn: async (): Promise<MyReservation[]> => {
+      const { data, error } = await supabase!.rpc('my_reservations');
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+}
+
+/** The landlord's WhatsApp, only once this tenant has a held or released reservation. */
+export function useLandlordContact(listingId: string, enabled: boolean) {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['landlord-contact', listingId, user?.id],
+    enabled: Boolean(supabase && user && enabled),
+    staleTime: 10 * 60_000,
+    queryFn: async (): Promise<string | null> => {
+      const { data, error } = await supabase!.rpc('get_landlord_contact', { p_listing_id: listingId });
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
+/** Refresh everything a reservation change affects. */
+export function useInvalidateReservation() {
+  const queryClient = useQueryClient();
+  return (listingId?: string) =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['reservations'] }),
+      queryClient.invalidateQueries({ queryKey: ['listings'] }),
+      queryClient.invalidateQueries({ queryKey: ['landlord-contact'] }),
+      listingId ? queryClient.invalidateQueries({ queryKey: ['listing', listingId] }) : null,
+    ]);
+}
+
+export function useConfirmMoveIn() {
+  const invalidate = useInvalidateReservation();
+  return useMutation({
+    mutationFn: async ({ reservationId }: { reservationId: string; listingId: string }) => {
+      const { error } = await supabase!.rpc('confirm_move_in', { p_reservation_id: reservationId });
+      if (error) throw new Error(error.message || "We couldn't confirm your move-in. Try again.");
+    },
+    onSuccess: (_d, v) => invalidate(v.listingId),
   });
 }

@@ -430,6 +430,27 @@ export type Database = {
       };
       resolve_report: { Args: { p_id: string; p_action: ReportAction }; Returns: ReportAction };
       track_ad_click: { Args: { p_ad_id: string }; Returns: undefined };
+      my_reservations: {
+        Args: Record<string, never>;
+        Returns: {
+          id: string;
+          reference: string;
+          status: Extract<ReservationStatus, 'held' | 'released' | 'refunded'>;
+          deposit_ngwee: number;
+          booking_fee_ngwee: number;
+          note: string | null;
+          created_at: string;
+          held_at: string | null;
+          released_at: string | null;
+          refunded_at: string | null;
+          listing_id: string;
+          listing_title: string;
+          listing_area: string;
+          listing_status: ListingStatus;
+          landlord_name: string;
+          has_review: boolean;
+        }[];
+      };
     };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;

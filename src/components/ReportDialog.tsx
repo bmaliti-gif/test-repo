@@ -6,7 +6,7 @@ import { Dialog } from './Dialog';
 import { Notice } from './Status';
 import { useToast } from './Toast';
 
-const REASONS: Record<'listing' | 'review', string[]> = {
+const REASONS: Record<'listing' | 'review' | 'reservation', string[]> = {
   listing: [
     'Not as described',
     'Looks like a scam',
@@ -17,12 +17,21 @@ const REASONS: Record<'listing' | 'review', string[]> = {
     'Something else',
   ],
   review: ['Not a real tenant', 'Offensive or abusive', 'Personal information', 'Something else'],
+  reservation: [
+    'Room not as listed',
+    'Landlord not responding',
+    'Asked to pay more or outside BoardZM',
+    "Can't move in on the agreed date",
+    'Something else',
+  ],
 };
+
+const TITLES = { listing: 'Report this listing', review: 'Report this review', reservation: 'Report a problem' };
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  targetType: Extract<ReportTarget, 'listing' | 'review'>;
+  targetType: Extract<ReportTarget, 'listing' | 'review' | 'reservation'>;
   targetId: string;
 };
 
@@ -57,11 +66,12 @@ export function ReportDialog({ open, onClose, targetType, targetId }: Props) {
   }
 
   return (
-    <Dialog open={open} onClose={onClose} title={targetType === 'listing' ? 'Report this listing' : 'Report this review'}>
+    <Dialog open={open} onClose={onClose} title={TITLES[targetType]}>
       <form className="form" onSubmit={submit} noValidate>
         <p className="dialog-body">
-          Reports are private. The BoardZM team checks every one, and an item with several reports is hidden until we
-          decide.
+          {targetType === 'reservation'
+            ? "Tell us what's wrong. The BoardZM team will contact you, and your deposit stays held until it's sorted."
+            : 'Reports are private. The BoardZM team checks every one, and an item with several reports is hidden until we decide.'}
         </p>
         {error && <Notice tone="error">{error}</Notice>}
         <div className="field">
