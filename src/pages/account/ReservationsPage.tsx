@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { CalendarCheck, Flag, Search } from 'lucide-react';
+import { CalendarCheck, Flag, Search, Star } from 'lucide-react';
 import { Link } from 'react-router';
 import { Blueprint } from '../../components/Blueprint';
+import { Button } from '../../components/Button';
 import { ReportDialog } from '../../components/ReportDialog';
+import { ReviewDialog } from '../../components/ReviewDialog';
 import { ConfirmMoveInButton, WhatsAppButton } from '../../components/ReservationActions';
 import { Loading, Notice } from '../../components/Status';
 import { formatKwacha } from '../../lib/money';
@@ -24,6 +26,7 @@ const date = (iso: string | null) =>
 export default function ReservationsPage() {
   const reservations = useMyReservations();
   const [reporting, setReporting] = useState<string | null>(null);
+  const [reviewing, setReviewing] = useState<MyReservation | null>(null);
 
   if (reservations.isPending) return <Loading label="Loading your reservations…" />;
 
@@ -106,6 +109,17 @@ export default function ReservationsPage() {
                 {s.note}
                 {r.status === 'refunded' && r.note && ` Reason: ${r.note}`}
               </p>
+              {r.status === 'released' &&
+                (r.has_review ? (
+                  <p className="reservation-reviewed">
+                    <Star size={14} strokeWidth={1.5} aria-hidden="true" /> Thanks for reviewing this stay.
+                  </p>
+                ) : (
+                  <Button variant="primary" className="review-button" onClick={() => setReviewing(r)}>
+                    <Star size={16} strokeWidth={1.5} aria-hidden="true" />
+                    Write a review
+                  </Button>
+                ))}
               {r.status !== 'refunded' && (
                 <div className="reservation-actions">
                   <WhatsAppButton listingId={r.listing_id} title={r.listing_title} reference={r.reference} />
@@ -130,6 +144,15 @@ export default function ReservationsPage() {
         })}
       </ul>
 
+      {reviewing && (
+        <ReviewDialog
+          open
+          onClose={() => setReviewing(null)}
+          reservationId={reviewing.id}
+          listingId={reviewing.listing_id}
+          roomTitle={reviewing.listing_title}
+        />
+      )}
       {reporting && (
         <ReportDialog open onClose={() => setReporting(null)} targetType="reservation" targetId={reporting} />
       )}
