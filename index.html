@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Find a room near campus in Lusaka from verified landlords. Reserve with mobile money." />
+    <title>BoardZM · Rooms in Lusaka</title>
+    <script>
+      // Apply the saved theme before the page paints, so there is no flash.
+      try {
+        var t = localStorage.getItem('boardzm-theme');
+        if (t === 'night' || t === 'copper' || t === 'emerald') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

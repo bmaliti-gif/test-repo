@@ -1,0 +1,144 @@
+/* BoardZM app CSS. Loaded after industry.css and themes.css.
+   Colours, fonts, spacing and shadows only through variables. */
+
+:root {
+  /* Small secondary text: text at 70% (contrast-safe). .text-muted (55%) is for large text only. */
+  --color-text-muted: color-mix(in srgb, var(--color-text) 70%, transparent);
+  --header-h: 60px;
+  --tabbar-h: 56px;
+}
+
+body {
+  font-size: 14px;
+  text-wrap: pretty;
+  -webkit-tap-highlight-color: transparent;
+}
+a { color: var(--color-accent-700); }
+a:hover { color: var(--color-accent-800); }
+
+.muted { color: var(--color-text-muted); }
+.kicker {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color-accent-700);
+}
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Keyboard users can jump past the header. Hidden until it gets focus. */
+.skip-link {
+  position: absolute; left: var(--space-4); top: -100px; z-index: 50;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-text); color: var(--color-bg);
+  font-size: 14px; text-decoration: none;
+}
+.skip-link:focus { top: var(--space-2); color: var(--color-bg); }
+.app-main:focus { outline: none; }
+
+/* Respect "reduce motion" in the phone or computer settings. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+  }
+}
+
+/* — app frame — */
+.app {
+  min-height: 100vh; min-height: 100dvh;
+  display: flex; flex-direction: column;
+  background: var(--color-bg); color: var(--color-text);
+}
+.app-main { flex: 1; display: flex; flex-direction: column; }
+.page {
+  width: 100%; max-width: 1200px; margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+}
+
+/* — header — */
+.app-header {
+  position: sticky; top: 0; z-index: 20;
+  gap: var(--space-3); flex-wrap: wrap;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-divider);
+}
+.brand {
+  all: unset; cursor: pointer;
+  display: flex; align-items: baseline; gap: 8px; margin-right: auto;
+  min-height: 44px; align-content: center;
+}
+.brand:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.brand .nav-brand { font-size: 24px; letter-spacing: .01em; margin: 0; align-self: center; }
+.brand-place {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--color-accent-700); align-self: center;
+}
+.header-nav { display: flex; gap: var(--space-1); flex: none; }
+.app-header .header-nav a.btn {
+  padding: 6px 10px;
+  color: var(--color-accent-700);
+  border-bottom: 2px solid transparent;
+}
+.app-header .header-nav a.btn.active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+.theme-select {
+  width: auto; min-height: 32px; font-size: 13px; background: var(--color-bg);
+}
+.app-header a.saved-pill {
+  gap: 4px; text-decoration: none; color: var(--color-accent-800);
+}
+
+/* — test-mode strip — */
+.test-banner {
+  background: var(--color-accent-100); color: var(--color-accent-800);
+  font-size: 12px; text-align: center;
+  padding: var(--space-1) var(--space-4);
+  border-bottom: 1px solid var(--color-divider);
+}
+
+/* — footer — */
+.app-footer {
+  border-top: 1px solid var(--color-divider);
+  padding: var(--space-3) var(--space-4);
+  display: flex; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap;
+  font-size: 12px; color: var(--color-text-muted);
+}
+
+/* — bottom tab bar (phones) — */
+.tabbar { display: none; }
+
+@media (max-width: 767px) {
+  .header-nav, .app-header .theme-select { display: none; }
+  .app-header { flex-wrap: nowrap; }
+  .app-header a.saved-pill { min-height: 32px; }
+
+  .app { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+  .tabbar {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    height: calc(var(--tabbar-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: var(--color-bg); border-top: 1px solid var(--color-divider);
+  }
+  .tabbar a {
+    flex: 1; min-width: 0; min-height: 44px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    font-size: 11px; text-decoration: none; color: var(--color-text-muted);
+  }
+  .tabbar a svg { color: var(--color-text-muted); }
+  .tabbar a.active { color: var(--color-text); }
+  .tabbar a.active svg { color: var(--color-accent); }
+  .tabbar a:focus-visible { outline-offset: -2px; }
+
+  /* Inputs at 16px so iOS doesn't zoom in. */
+  .input { font-size: 16px; }
+}
+
+/* — placeholder pages (Block 1) — */
+.placeholder { display: flex; flex-direction: column; gap: var(--space-4); max-width: 720px; }
+.placeholder h1 { font-size: 40px; line-height: 1; margin: 6px 0 0; }
+.placeholder .card { padding: var(--space-4); }
+.placeholder-links { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.placeholder-links a { min-height: 44px; }

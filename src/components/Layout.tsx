@@ -1,0 +1,38 @@
+import { useEffect } from 'react';
+import { Outlet, useLocation } from 'react-router';
+import { Header } from './Header';
+import { TabBar } from './TabBar';
+
+export function Layout() {
+  const { pathname } = useLocation();
+
+  // Start each new page at the top.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  // Saved count (Block 5) and landlord role (Block 3) come from Supabase later.
+  const savedCount = 0;
+  const isLandlord = false;
+
+  return (
+    <div className="app">
+      <a className="skip-link" href="#main">
+        Skip to main content
+      </a>
+      <Header savedCount={savedCount} />
+      {/* Shown while payments_mode is "simulated" (read from app_settings from Block 6). */}
+      <div className="test-banner" role="note">
+        Test mode — payments are simulated, no real money moves.
+      </div>
+      <main className="app-main" id="main" tabIndex={-1}>
+        <Outlet />
+      </main>
+      <footer className="app-footer">
+        <span>BoardZM · Direct from landlords, no agents</span>
+        <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
+      </footer>
+      <TabBar isLandlord={isLandlord} />
+    </div>
+  );
+}
