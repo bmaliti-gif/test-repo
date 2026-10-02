@@ -17,7 +17,7 @@ npm run dev                  # http://localhost:5173
 
 ## Stack
 
-React 19 + TypeScript + Vite · React Router · TanStack Query · Supabase (Postgres, Auth, Storage, row level security, SQL functions) · Leaflet + OpenStreetMap · Industry design system CSS · hosted on Cloudflare Pages.
+React 19 + TypeScript + Vite · React Router · TanStack Query · Supabase (Postgres, Auth, Storage, row level security, SQL functions) · Leaflet + OpenStreetMap · Industry design system CSS · hosted on Vercel (from GitHub `bmaliti-gif/test-repo`, branch `main`; config in `vercel.json`).
 
 ## Where things are
 
