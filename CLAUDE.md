@@ -5,12 +5,13 @@ BoardZM is a housing marketplace for Lusaka, Zambia. University students and you
 The owner is new to coding. Explain plans in plain words, keep each change small, and end every task with what changed and exactly how to check it in the browser.
 
 ## Ground rules
+- **Keep going without waiting for permission.** Work straight through the build: when a block is done (built, tested, committed and pushed), give a short summary of what changed and how to check it, then start the next block of `docs/PLAN.md` right away. Don't stop to ask for a "go" or wait for a plan to be approved; share the plan in a few lines and proceed. The only reason to stop and wait is when the work needs a more powerful model; then say so plainly and pause. (Steps listed below that need the owner's OK still need it.)
 - **Commit and push every change.** After every change to the app, commit it and `git push` to `origin` (GitHub: `bmaliti-gif/test-repo`, branch `main`). The owner has approved these pushes in advance; don't ask each time. Never force-push, and never commit secrets (see below). Run `npm run build` (and `npm run test` once tests exist) before committing; if it fails, fix it first or say so plainly.
 - **Ask before connecting to anything else.** Get the owner's explicit OK before any other command or code that signs in to, links, deploys to, or sends data to an outside service or account — Supabase CLI (`supabase login`, `link`, `db push`), `gh`, Cloudflare or Netlify, Google Cloud, payment, SMS or email providers, MCP servers, analytics. Writing local code and SQL files is fine.
 - **The owner prefers not to do setup by hand.** Where Claude can do a step itself (for example in the Supabase or Google dashboards through the Claude in Chrome extension, once it is installed), do it, after saying what you are about to do. Only hand a step to the owner when Claude has no way to do it.
 - Payments are **simulated**. Never call a real payment API until the owner says payments are going live.
 - Secrets: the browser only gets `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`. Never use the secret / service-role key in frontend code. Never commit `.env*` files except `.env.example`.
-- Work one block of `docs/PLAN.md` at a time. Don't add libraries beyond the stack below without asking.
+- Work one block of `docs/PLAN.md` at a time, in order (ignore "Show me your plan first" in the block prompts; see the first rule). Don't add libraries beyond the stack below without asking.
 - Never delete `CLAUDE.md` or `docs/`.
 - `npm run build` must pass before you call a block done.
 
