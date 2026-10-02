@@ -754,3 +754,52 @@ button.photo-cell { cursor: zoom-in; }
 .star-label { margin-left: var(--space-2); font-size: 13px; color: var(--color-text-muted); }
 .review-button { align-self: flex-start; min-height: 44px; margin-top: var(--space-1); }
 .reservation-reviewed { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; color: var(--color-accent-700); }
+
+/* ═══ Roommates ═════════════════════════════════════════════════════════════ */
+.roommates-page {
+  width: 100%; max-width: 1240px; margin: 0 auto; padding: var(--space-4);
+  display: flex; flex-direction: column; gap: var(--space-6);
+}
+.roommates-head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.roommates-head h1 { margin: 6px 0 0; font-size: 40px; line-height: 1; }
+.seg-scroll { max-width: 100%; overflow-x: auto; }
+.seg-scroll .seg-opt { white-space: nowrap; min-height: 36px; }
+.roommates-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: var(--space-6); align-items: start; }
+.my-mate-card, .requests-card { padding: var(--space-4); gap: var(--space-2); }
+.my-mate-card .card-kicker, .requests-card .card-kicker { color: var(--color-accent-700); }
+.my-mate-card .card-title, .requests-card .card-title { margin: 0; font-size: 19px; }
+.my-mate-card .btn { min-height: 44px; }
+.request-list { list-style: none; margin: 0; padding: 0; }
+.request-list li {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-2); flex-wrap: wrap;
+  padding: 10px 0; border-top: 1px solid var(--color-divider); font-size: 14px;
+}
+.request-actions { display: flex; gap: var(--space-2); }
+.request-actions .btn { min-height: 40px; }
+.mate-grid {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: var(--space-6);
+}
+.mate-card { padding: var(--space-3); gap: 10px; }
+.mate-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.mate-name { display: flex; flex-direction: column; gap: 2px; }
+.mate-name .card-title { font-size: 21px; }
+.mate-role { font-size: 13px; color: var(--color-text-muted); }
+.mate-score { display: flex; flex-direction: column; align-items: flex-end; }
+.mate-score-value { font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 28px; line-height: 1; color: var(--color-accent-700); }
+.mate-score-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--color-text-muted); }
+.mate-bar { height: 4px; background: var(--color-accent-100); }
+.mate-bar span { display: block; height: 100%; background: var(--color-accent); }
+.mate-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 13px; }
+.mate-bio { margin: 0; font-size: 13px; line-height: 1.5; }
+.mate-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.mate-action { margin-top: auto; padding-top: 4px; }
+.mate-action .btn { min-height: 44px; }
+.mate-status { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--color-accent-700); min-height: 44px; }
+.mate-dialog { width: min(560px, 100%); }
+.same-gender { align-self: end; min-height: 44px; }
+@media (max-width: 767px) {
+  .roommates-head h1 { font-size: 34px; }
+  .roommates-head .seg { width: 100%; }
+  .mate-action .btn { width: 100%; }
+}
