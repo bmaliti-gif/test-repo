@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/industry-f4fc4c40-e9be-4201-99b0-3e8150cd96b2/styles.css">
+<script src="_ds/industry-f4fc4c40-e9be-4201-99b0-3e8150cd96b2/_ds_bundle.js"></script>
+<title>BoardZM</title>
+<style>
+body{margin:0;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-size:14px}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--color-accent);outline-offset:2px}
+body:has([data-theme="night"]){background:#141c25}
+body:has([data-theme="copper"]){background:#f4f1ec}
+body:has([data-theme="emerald"]){background:#f1f3f1}
+[data-theme="night"]{--color-bg:#141c25;--color-surface:#1b2530;--color-text:#e6ebf0;--color-accent:#7fa6cc;--color-divider:color-mix(in srgb,#e6ebf0 18%,transparent);
+--color-neutral-100:#2b2b2d;--color-neutral-200:#424244;--color-neutral-300:#5d5d60;--color-neutral-400:#7a7a7d;--color-neutral-500:#98989b;--color-neutral-600:#b7b7ba;--color-neutral-700:#d4d4d7;--color-neutral-800:#e7e7ea;--color-neutral-900:#f5f5f8;
+--color-accent-100:#1d2d3d;--color-accent-200:#2c455d;--color-accent-300:#416180;--color-accent-400:#597ea3;--color-accent-500:#749dc4;--color-accent-600:#94bce3;--color-accent-700:#b5d9fd;--color-accent-800:#d6ebff;--color-accent-900:#eef6ff;
+--shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 3px 10px rgba(0,0,0,.45);--shadow-lg:0 12px 32px rgba(0,0,0,.55)}
+[data-theme="copper"]{--color-bg:#f4f1ec;--color-surface:#ebe6df;--color-text:#231d19;--color-accent:#b06a3c;--color-divider:color-mix(in srgb,#231d19 16%,transparent);
+--color-accent-100:#fff3ea;--color-accent-200:#fde1cc;--color-accent-300:#f5c6a3;--color-accent-400:#dfa277;--color-accent-500:#c38052;--color-accent-600:#a2633a;--color-accent-700:#804a29;--color-accent-800:#5e351d;--color-accent-900:#3f2414}
+[data-theme="emerald"]{--color-bg:#f1f3f1;--color-surface:#e7ebe8;--color-text:#1a201c;--color-accent:#2f7d58;--color-divider:color-mix(in srgb,#1a201c 16%,transparent);
+--color-accent-100:#e9f8ef;--color-accent-200:#cdeedb;--color-accent-300:#a6dcbd;--color-accent-400:#78c09a;--color-accent-500:#4fa178;--color-accent-600:#246a49;--color-accent-700:#266446;--color-accent-800:#1a4832;--color-accent-900:#112f21}
+@keyframes bz-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="min-height:100vh;display:flex;flex-direction:column;text-wrap:pretty;background:var(--color-bg);color:var(--color-text);color-scheme:{{ scheme }}">
+
+<header class="nav" style="border-bottom:1px solid var(--color-divider);gap:var(--space-3);flex-wrap:wrap;position:sticky;top:0;z-index:20;background:var(--color-bg)">
+  <button onClick="{{ goSearch }}" style="all:unset;cursor:pointer;display:flex;align-items:baseline;gap:8px;margin-right:auto">
+    <span class="nav-brand" style="font-size:24px;letter-spacing:.01em;margin:0">BoardZM</span>
+    <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">Lusaka</span>
+  </button>
+  <nav style="display:flex;gap:var(--space-1);flex:none">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3">
+      <button class="btn btn-ghost" onClick="{{ n.onClick }}" style="color:{{ n.fg }};border-bottom:2px solid {{ n.line }};padding:6px 10px"><sc-if value="{{ n.i1 }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></sc-if><sc-if value="{{ n.i2 }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></sc-if><sc-if value="{{ n.i3 }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"></path><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"></path><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"></path><path d="M10 6h4"></path><path d="M10 10h4"></path><path d="M10 14h4"></path><path d="M10 18h4"></path></svg></sc-if>{{ n.label }}</button>
+    </sc-for>
+  </nav>
+  <select class="input" aria-label="Theme" value="{{ theme }}" onChange="{{ setTheme }}" style="width:auto;min-height:32px;font-size:13px;background:var(--color-bg)">
+    <sc-for list="{{ themeOpts }}" as="t"><option value="{{ t.v }}">{{ t.label }}</option></sc-for>
+  </select>
+  <span class="tag tag-accent" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>Saved · {{ savedCount }}</span>
+</header>
+
+<sc-if value="{{ isSearch }}" hint-placeholder-val="{{ true }}">
+<main style="flex:1;display:flex;flex-direction:column">
+  <section style="padding:var(--space-4) var(--space-4) var(--space-3);display:flex;flex-direction:column;gap:var(--space-3);border-bottom:1px solid var(--color-divider)">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap">
+      <div>
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Off-campus rooms · verified landlords</div>
+        <h1 style="margin:6px 0 0;font-size:40px;line-height:1;font-weight:var(--font-heading-weight)">Find a room near campus</h1>
+      </div>
+      <div style="font-size:13px;color:color-mix(in srgb,var(--color-text) 65%,transparent)">{{ resultLabel }}</div>
+    </div>
+    <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;align-items:flex-end">
+      <div class="field" style="display:flex;flex-direction:column;gap:4px;min-width:170px">
+        <label style="font-size:12px">Area</label>
+        <select class="input" value="{{ area }}" onChange="{{ setArea }}">
+          <sc-for list="{{ areas }}" as="a"><option value="{{ a }}">{{ a }}</option></sc-for>
+        </select>
+      </div>
+      <div class="field" style="display:flex;flex-direction:column;gap:4px;min-width:200px">
+        <label style="font-size:12px">Max rent · <strong>{{ maxRentLabel }}</strong> / month</label>
+        <input type="range" min="1000" max="5000" step="100" value="{{ maxRent }}" onChange="{{ setMaxRent }}" style="accent-color:var(--color-accent);height:36px">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:12px;color:color-mix(in srgb,var(--color-text) 70%,transparent)">Room type</span>
+        <div class="seg">
+          <sc-for list="{{ typeOpts }}" as="o" hint-placeholder-count="4">
+            <button class="seg-opt" onClick="{{ o.onClick }}" style="border:none;background:{{ o.bg }};color:{{ o.fg }};font:inherit;font-size:13px">{{ o.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div class="field" style="display:flex;flex-direction:column;gap:4px;min-width:150px">
+        <label style="font-size:12px">Sort</label>
+        <select class="input" value="{{ sort }}" onChange="{{ setSort }}">
+          <option value="Recommended">Recommended</option><option value="Lowest rent">Lowest rent</option><option value="Nearest campus">Nearest campus</option>
+        </select>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;height:36px;cursor:pointer;font-size:14px">
+        <input type="checkbox" checked="{{ verifiedOnly }}" onChange="{{ toggleVerified }}" style="accent-color:var(--color-accent);width:16px;height:16px">
+        Verified landlords only
+      </label>
+    </div>
+  </section>
+
+  <section style="flex:1;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));align-items:start">
+    <div style="padding:var(--space-4);display:flex;flex-direction:column;gap:var(--space-3);order:{{ listOrder }}">
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+        <div class="card blueprint" style="padding:var(--space-4);gap:8px">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <div class="card-title">No rooms match</div>
+          <p class="card-body">Try a higher rent limit or a different area.</p>
+          <div><button class="btn btn-secondary" onClick="{{ resetFilters }}">Reset filters</button></div>
+        </div>
+      </sc-if>
+      <sc-for list="{{ results }}" as="l" hint-placeholder-count="4">
+        <article class="card blueprint" onClick="{{ l.open }}" onMouseEnter="{{ l.enter }}" onMouseLeave="{{ clearHover }}" style="flex-direction:row;gap:var(--space-3);padding:var(--space-2);cursor:pointer;border-color:{{ l.bc }};background:{{ l.bg }}">
+          <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+          <div class="duotone" style="flex:none;width:132px;min-height:112px;border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 8px,transparent 8px 16px);display:grid;place-items:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Photo</div>
+          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <sc-if value="{{ l.featured }}"><span class="tag tag-outline" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>Featured</span></sc-if>
+              <sc-if value="{{ l.verified }}"><span class="tag tag-accent" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>Verified landlord</span></sc-if>
+              <sc-if value="{{ l.unverified }}"><span class="tag tag-neutral">Not yet verified</span></sc-if>
+            </div>
+            <div class="card-title" style="font-size:20px">{{ l.title }}</div>
+            <div style="display:flex;align-items:center;gap:4px;font-size:13px;color:color-mix(in srgb,var(--color-text) 70%,transparent)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg><span>{{ l.area }} · {{ l.dist }} km to {{ l.campus }} · {{ l.type }}</span></div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:auto">
+              <div><span style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:22px">{{ l.priceStr }}</span><span style="font-size:12px;color:color-mix(in srgb,var(--color-text) 60%,transparent)"> / month</span></div>
+              <span style="display:flex;align-items:center;gap:4px;font-size:12px;color:var(--color-accent-700)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>{{ l.ratingStr }}</span>
+            </div>
+          </div>
+        </article>
+      </sc-for>
+      <sc-if value="{{ showAds }}" hint-placeholder-val="{{ true }}">
+        <aside class="card" style="flex-direction:row;align-items:center;gap:var(--space-3);border-style:dashed;padding:var(--space-2) var(--space-3)">
+          <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+            <span class="card-kicker" style="display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path></svg>Sponsored · Local business</span>
+            <span class="card-title">Mwamba Furniture — student bed &amp; desk bundles</span>
+            <span class="card-body">Delivered to Kalingalinga, Chudleigh and Mass Media.</span>
+          </div>
+          <button class="btn btn-secondary">View offer</button>
+        </aside>
+      </sc-if>
+    </div>
+
+    <div style="position:sticky;top:64px;padding:var(--space-4);order:2">
+      <div class="blueprint" style="position:relative;height:min(640px,calc(100vh - 110px));min-height:420px;border:1px solid var(--color-divider);background-image:repeating-linear-gradient(to right,color-mix(in srgb,var(--color-divider) 60%,transparent) 0 1px,transparent 1px 48px),repeating-linear-gradient(to bottom,color-mix(in srgb,var(--color-divider) 60%,transparent) 0 1px,transparent 1px 48px);overflow:hidden">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="position:absolute;left:-5%;right:-5%;top:44%;height:2px;background:var(--color-accent-300);transform:rotate(-14deg)"></div>
+        <div style="position:absolute;left:8%;top:39%;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700);transform:rotate(-14deg)">Great East Rd</div>
+        <div style="position:absolute;top:-5%;bottom:-5%;left:30%;width:2px;background:var(--color-accent-300);transform:rotate(8deg)"></div>
+        <div style="position:absolute;left:31.5%;top:84%;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Cairo Rd</div>
+        <div style="position:absolute;top:62%;left:-5%;right:-5%;height:2px;background:var(--color-accent-200);transform:rotate(4deg)"></div>
+        <div style="position:absolute;left:62%;top:65%;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Leopards Hill Rd</div>
+        <sc-for list="{{ campuses }}" as="c">
+          <div style="position:absolute;left:{{ c.x }}%;top:{{ c.y }}%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:3px;pointer-events:none">
+            <span style="width:14px;height:14px;border:1.5px solid var(--color-text);display:block"></span>
+            <span style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:13px;letter-spacing:.04em;background:var(--color-bg);padding:0 3px">{{ c.name }}</span>
+          </div>
+        </sc-for>
+        <sc-for list="{{ results }}" as="l">
+          <button onClick="{{ l.open }}" onMouseEnter="{{ l.enter }}" onMouseLeave="{{ clearHover }}" style="position:absolute;left:{{ l.x }}%;top:{{ l.y }}%;transform:translate(-50%,-100%);z-index:{{ l.z }};background:{{ l.pinBg }};color:{{ l.pinFg }};border:1px solid var(--color-accent);font:inherit;font-size:12px;font-weight:600;padding:3px 7px;cursor:pointer;white-space:nowrap;box-shadow:var(--shadow-sm)">{{ l.priceShort }}</button>
+        </sc-for>
+        <div style="position:absolute;left:12px;bottom:12px;display:flex;gap:12px;align-items:center;background:var(--color-bg);border:1px solid var(--color-divider);padding:6px 10px;font-size:11px">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border:1.5px solid var(--color-text)"></span>Campus</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:10px;border:1px solid var(--color-accent)"></span>Room (rent in K)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</sc-if>
+
+<sc-if value="{{ isListing }}" hint-placeholder-val="{{ false }}">
+<main style="flex:1;padding:var(--space-4);max-width:1240px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:var(--space-4)">
+  <div><button class="btn btn-ghost" onClick="{{ goSearch }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>Back to results</button></div>
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:180px 180px;gap:var(--space-2)">
+    <div class="blueprint duotone" style="grid-row:span 2;border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 10px,transparent 10px 20px);display:grid;place-items:center;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>Main photo</div>
+    <div class="duotone" style="border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 10px,transparent 10px 20px);display:grid;place-items:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Bedroom</div>
+    <div class="duotone" style="border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 10px,transparent 10px 20px);display:grid;place-items:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Kitchen</div>
+    <div class="duotone" style="border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 10px,transparent 10px 20px);display:grid;place-items:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Bathroom</div>
+    <div class="duotone" style="border:1px solid var(--color-divider);background:repeating-linear-gradient(135deg,var(--color-accent-100) 0 10px,transparent 10px 20px);display:grid;place-items:center;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-800)">Outside</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:var(--space-6);align-items:start">
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);grid-column:span 2;min-width:0">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <sc-if value="{{ sel.featured }}"><span class="tag tag-outline" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>Featured</span></sc-if>
+          <sc-if value="{{ sel.verified }}"><span class="tag tag-accent" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>Verified landlord</span></sc-if>
+          <sc-if value="{{ sel.unverified }}"><span class="tag tag-neutral">Not yet verified</span></sc-if>
+        </div>
+        <h1 style="margin:0;font-size:44px;line-height:1.02">{{ sel.title }}</h1>
+        <div style="display:flex;align-items:center;gap:5px;font-size:15px;color:color-mix(in srgb,var(--color-text) 70%,transparent)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"></path><circle cx="12" cy="10" r="3"></circle></svg>{{ sel.area }}, Lusaka · {{ sel.dist }} km to {{ sel.campus }}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--color-divider);border-left:1px solid var(--color-divider)">
+        <sc-for list="{{ sel.specs }}" as="s" hint-placeholder-count="5">
+          <div style="padding:12px 14px;border-right:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);display:flex;flex-direction:column;gap:4px">
+            <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">{{ s.k }}</span>
+            <span style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:22px">{{ s.v }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <h2 style="margin:0;font-size:24px">What’s included</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <sc-for list="{{ sel.amenities }}" as="a"><span class="tag tag-neutral" style="font-size:13px;padding:5px 12px">{{ a }}</span></sc-for>
+        </div>
+      </div>
+
+      <div class="card blueprint" style="flex-direction:row;align-items:center;gap:var(--space-3);padding:var(--space-3)">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="width:52px;height:52px;border:1px solid var(--color-divider);display:grid;place-items:center;font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:20px;color:var(--color-accent-700)">{{ sel.initials }}</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+          <span class="card-title" style="font-size:19px">{{ sel.landlord }}</span>
+          <span style="font-size:13px;color:color-mix(in srgb,var(--color-text) 70%,transparent)">{{ sel.landlordNote }}</span>
+        </div>
+        <button class="btn btn-secondary" onClick="{{ toggleSaveSel }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path></svg>{{ sel.saveLabel }}</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap">
+          <h2 style="margin:0;font-size:24px">Tenant reviews</h2>
+          <span style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--color-accent-700)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path></svg>{{ sel.ratingStr }} · only past tenants can review</span>
+        </div>
+        <sc-if value="{{ sel.noReviews }}"><p style="margin:0;font-size:14px;color:color-mix(in srgb,var(--color-text) 65%,transparent)">No reviews yet — this is a new listing.</p></sc-if>
+        <sc-for list="{{ sel.reviews }}" as="r" hint-placeholder-count="2">
+          <div style="border-top:1px solid var(--color-divider);padding:12px 0;display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;justify-content:space-between;gap:8px;font-size:13px">
+              <strong>{{ r.name }} <span style="font-weight:400;color:color-mix(in srgb,var(--color-text) 60%,transparent)">· {{ r.who }}</span></strong>
+              <span style="color:var(--color-accent-700)">{{ r.stars }}/5 · {{ r.when }}</span>
+            </div>
+            <p style="margin:0;font-size:14px;line-height:1.5;max-width:68ch">{{ r.text }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <aside class="card blueprint elev-sm" style="position:sticky;top:80px;padding:var(--space-4);gap:var(--space-3)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div><span style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:36px">{{ sel.priceStr }}</span><span style="font-size:13px"> / month</span></div>
+      <sc-if value="{{ sel.reserved }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid var(--color-accent);background:var(--color-accent-100);padding:12px;display:flex;flex-direction:column;gap:4px">
+          <strong style="display:flex;align-items:center;gap:6px;color:var(--color-accent-800)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>Reserved — deposit held</strong>
+          <span style="font-size:13px;color:var(--color-accent-800)">Ref {{ sel.ref }}. Released to the landlord when you confirm move-in, refunded if the room isn’t as listed.</span>
+        </div>
+        <button class="btn btn-secondary btn-block" onClick="{{ confirmMoveIn }}">Confirm move-in</button>
+      </sc-if>
+      <sc-if value="{{ sel.canReserve }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:14px">
+          <div style="display:flex;justify-content:space-between"><span>Reservation deposit</span><span>K 500</span></div>
+          <div style="display:flex;justify-content:space-between"><span>Booking service fee</span><span>K 25</span></div>
+          <div style="display:flex;justify-content:space-between;border-top:1px solid var(--color-divider);padding-top:6px;font-weight:600"><span>Pay now</span><span>K 525</span></div>
+        </div>
+        <button class="btn btn-primary blueprint btn-block" onClick="{{ openReserve }}" style="min-height:44px;font-size:15px"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>Reserve with mobile money</button>
+        <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;line-height:1.5;color:color-mix(in srgb,var(--color-text) 65%,transparent)"><span style="color:var(--color-accent-700);margin-top:2px;display:flex"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></span><span>Your deposit is held by BoardZM, not the landlord, until you move in. Deducted from your first month’s rent.</span></div>
+      </sc-if>
+      <sc-if value="{{ sel.movedIn }}" hint-placeholder-val="{{ false }}">
+        <div style="border:1px solid var(--color-divider);padding:12px;font-size:13px">Move-in confirmed. Deposit released to {{ sel.landlord }}.</div>
+      </sc-if>
+    </aside>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isRoommates }}" hint-placeholder-val="{{ false }}">
+<main style="flex:1;padding:var(--space-4);max-width:1240px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:var(--space-4)">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap">
+    <div>
+      <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Split the rent</div>
+      <h1 style="margin:6px 0 0;font-size:40px;line-height:1">Roommate matching</h1>
+      <p style="margin:8px 0 0;font-size:14px;max-width:60ch;color:color-mix(in srgb,var(--color-text) 70%,transparent)">Matches are scored on budget, campus, move-in date and living habits. Profiles are ID-verified.</p>
+    </div>
+    <div class="seg">
+      <sc-for list="{{ campusOpts }}" as="o" hint-placeholder-count="4">
+        <button class="seg-opt" onClick="{{ o.onClick }}" style="border:none;background:{{ o.bg }};color:{{ o.fg }};font:inherit;font-size:13px">{{ o.label }}</button>
+      </sc-for>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:var(--space-4)">
+    <sc-for list="{{ mates }}" as="m" hint-placeholder-count="6">
+      <article class="card blueprint" style="padding:var(--space-3);gap:10px">
+        <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <span class="card-title" style="font-size:21px">{{ m.name }}</span>
+            <span style="font-size:13px;color:color-mix(in srgb,var(--color-text) 70%,transparent)">{{ m.role }}</span>
+          </div>
+          <div style="text-align:right">
+            <div style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:28px;line-height:1;color:var(--color-accent-700)">{{ m.match }}%</div>
+            <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in srgb,var(--color-text) 60%,transparent)">match</div>
+          </div>
+        </div>
+        <div style="height:4px;background:var(--color-accent-100)"><div style="height:100%;width:{{ m.match }}%;background:var(--color-accent)"></div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:13px">
+          <span><span style="color:color-mix(in srgb,var(--color-text) 60%,transparent)">Budget</span><br>{{ m.budget }}</span>
+          <span><span style="color:color-mix(in srgb,var(--color-text) 60%,transparent)">Move-in</span><br>{{ m.moveIn }}</span>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <sc-for list="{{ m.tags }}" as="t"><span class="tag tag-neutral">{{ t }}</span></sc-for>
+        </div>
+        <button class="btn {{ m.btnClass }}" onClick="{{ m.request }}" style="margin-top:4px"><sc-if value="{{ m.sent }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 6 9 17l-5-5"></path></svg></sc-if><sc-if value="{{ m.notSent }}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg></sc-if>{{ m.btnLabel }}</button>
+      </article>
+    </sc-for>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isLandlord }}" hint-placeholder-val="{{ false }}">
+<main style="flex:1;padding:var(--space-4);max-width:1240px;width:100%;box-sizing:border-box;margin:0 auto;display:flex;flex-direction:column;gap:var(--space-6)">
+  <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap">
+    <div>
+      <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-accent-700)">Landlord · Mrs. Chanda Banda</div>
+      <h1 style="margin:6px 0 0;font-size:40px;line-height:1">Your properties</h1>
+    </div>
+    <button class="btn btn-primary blueprint" onClick="{{ openAdd }}" style="min-height:40px"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>List a room · K 40</button>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid var(--color-divider);border-left:1px solid var(--color-divider)">
+    <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+      <div style="padding:16px 18px;border-right:1px solid var(--color-divider);border-bottom:1px solid var(--color-divider);display:flex;flex-direction:column;gap:4px">
+        <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-accent-700)">{{ s.k }}</span>
+        <span style="font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:34px;line-height:1.1">{{ s.v }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:var(--space-6);align-items:start">
+    <section style="display:flex;flex-direction:column;gap:var(--space-2);grid-column:span 2;min-width:0">
+      <h2 style="margin:0;font-size:24px">Listings</h2>
+      <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th>Room</th><th>Rent</th><th>Status</th><th style="text-align:right">Actions</th></tr></thead>
+        <tbody>
+          <sc-for list="{{ myListings }}" as="l" hint-placeholder-count="2">
+            <tr>
+              <td><strong>{{ l.title }}</strong><br><span style="font-size:12px;color:color-mix(in srgb,var(--color-text) 60%,transparent)">{{ l.area }}</span></td>
+              <td>{{ l.priceStr }}</td>
+              <td><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="tag {{ l.statusClass }}">{{ l.status }}</span><sc-if value="{{ l.featured }}"><span class="tag tag-outline" style="gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>Featured</span></sc-if></div></td>
+              <td style="text-align:right"><div style="display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap">
+                <sc-if value="{{ l.unverified }}"><button class="btn btn-secondary" onClick="{{ l.verify }}" disabled="{{ l.checking }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>{{ l.verifyLabel }}</button></sc-if>
+                <button class="btn btn-ghost" onClick="{{ l.feature }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path></svg>{{ l.featureLabel }}</button>
+                <button class="btn btn-ghost" onClick="{{ l.open }}">View</button>
+              </div></td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+      </div>
+      <h2 style="margin:var(--space-3) 0 0;font-size:24px">Deposits &amp; payouts</h2>
+      <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th>Tenant</th><th>Room</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>
+          <sc-for list="{{ payouts }}" as="p" hint-placeholder-count="3">
+            <tr><td>{{ p.tenant }}</td><td>{{ p.room }}</td><td>{{ p.amount }}</td><td><span class="tag {{ p.cls }}">{{ p.status }}</span></td></tr>
+          </sc-for>
+        </tbody>
+      </table>
+      </div>
+      <p style="margin:0;font-size:12px;color:color-mix(in srgb,var(--color-text) 60%,transparent)">Payouts go to MTN MoMo 096 ••• 4471 automatically when the tenant confirms move-in.</p>
+    </section>
+
+    <aside class="card blueprint" style="padding:var(--space-4);gap:var(--space-2)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <span class="card-kicker">Identity verification</span>
+      <span class="card-title" style="font-size:22px">Verified landlord</span>
+      <p class="card-body" style="font-size:13px;line-height:1.5">Checked automatically — usually within minutes. No office visit.</p>
+      <sc-for list="{{ checks }}" as="c" hint-placeholder-count="3">
+        <div style="display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid var(--color-divider);font-size:14px">
+          <span>{{ c.k }}</span><span style="display:flex;align-items:center;gap:5px;color:var(--color-accent-700);font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>{{ c.v }}</span>
+        </div>
+      </sc-for>
+    </aside>
+  </div>
+</main>
+</sc-if>
+
+<footer style="border-top:1px solid var(--color-divider);padding:var(--space-3) var(--space-4);display:flex;justify-content:space-between;gap:var(--space-3);flex-wrap:wrap;font-size:12px;color:color-mix(in srgb,var(--color-text) 60%,transparent)">
+  <span>BoardZM · Direct from landlords, no agents</span>
+  <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
+</footer>
+
+<sc-if value="{{ reserveOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="dialog-backdrop" onClick="{{ closeModal }}" style="z-index:50">
+    <div class="dialog blueprint" onClick="{{ stop }}" style="background:var(--color-bg);width:min(460px,100%)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <sc-if value="{{ step1 }}" hint-placeholder-val="{{ true }}">
+        <div class="dialog-title" style="font-size:26px">Reserve {{ sel.title }}</div>
+        <div class="dialog-body" style="display:flex;flex-direction:column;gap:var(--space-3)">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span style="font-size:12px">Pay with</span>
+            <div class="seg" style="display:flex">
+              <sc-for list="{{ providerOpts }}" as="o" hint-placeholder-count="3">
+                <button class="seg-opt" onClick="{{ o.onClick }}" style="flex:1;justify-content:center;border:none;background:{{ o.bg }};color:{{ o.fg }};font:inherit;font-size:13px;min-height:40px">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div class="field" style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px">Mobile money number</label>
+            <input class="input" inputmode="numeric" placeholder="{{ phonePlaceholder }}" value="{{ phone }}" onChange="{{ setPhone }}" style="font-size:16px;min-height:44px;letter-spacing:.04em;border-color:{{ phoneBorder }}">
+            <sc-if value="{{ phoneErr }}"><span style="font-size:12px;color:var(--color-text);font-weight:600">{{ phoneErr }}</span></sc-if>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-weight:600;border-top:1px solid var(--color-divider);padding-top:10px"><span>Total</span><span>K 525</span></div>
+        </div>
+        <div class="dialog-actions">
+          <button class="btn btn-ghost" onClick="{{ closeModal }}">Cancel</button>
+          <button class="btn btn-primary blueprint" onClick="{{ submitPay }}" style="min-height:40px"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>Send payment prompt</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ step2 }}" hint-placeholder-val="{{ false }}">
+        <div class="dialog-title" style="font-size:26px;display:flex;align-items:center;gap:8px"><span style="color:var(--color-accent);display:flex"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg></span>Check your phone</div>
+        <div class="dialog-body" style="display:flex;flex-direction:column;gap:10px">
+          <p style="margin:0">A {{ providerName }} prompt for <strong>K 525</strong> was sent to <strong>{{ phone }}</strong>. Enter your PIN to approve.</p>
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--color-accent-700)"><span style="width:10px;height:10px;background:var(--color-accent);animation:bz-pulse 1s infinite"></span>Waiting for approval…</div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ step3 }}" hint-placeholder-val="{{ false }}">
+        <div class="dialog-title" style="font-size:26px;display:flex;align-items:center;gap:8px"><span style="color:var(--color-accent);display:flex"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg></span>Room reserved</div>
+        <div class="dialog-body" style="display:flex;flex-direction:column;gap:10px">
+          <p style="margin:0">K 500 is held safely by BoardZM. {{ sel.landlord }} has been notified and will share viewing and key details.</p>
+          <div style="border:1px solid var(--color-divider);padding:10px 12px;font-size:13px;display:flex;justify-content:space-between"><span>Reference</span><strong>{{ sel.ref }}</strong></div>
+        </div>
+        <div class="dialog-actions"><button class="btn btn-primary blueprint" onClick="{{ closeModal }}"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>Done</button></div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="dialog-backdrop" onClick="{{ closeModal }}" style="z-index:50">
+    <div class="dialog blueprint" onClick="{{ stop }}" style="background:var(--color-bg);width:min(480px,100%)">
+      <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
+      <div class="dialog-title" style="font-size:26px">List a room</div>
+      <div class="dialog-body" style="display:flex;flex-direction:column;gap:var(--space-3)">
+        <div class="field" style="display:flex;flex-direction:column;gap:6px"><label style="font-size:12px">Title</label><input class="input" placeholder="e.g. Self-contained room, quiet yard" value="{{ newTitle }}" onChange="{{ setNewTitle }}"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2)">
+          <div class="field" style="display:flex;flex-direction:column;gap:6px"><label style="font-size:12px">Area</label>
+            <select class="input" value="{{ newArea }}" onChange="{{ setNewArea }}"><sc-for list="{{ areaOnly }}" as="a"><option value="{{ a }}">{{ a }}</option></sc-for></select></div>
+          <div class="field" style="display:flex;flex-direction:column;gap:6px"><label style="font-size:12px">Rent per month (K)</label><input class="input" inputmode="numeric" placeholder="2000" value="{{ newRent }}" onChange="{{ setNewRent }}"></div>
+        </div>
+        <sc-if value="{{ newErr }}"><span style="font-size:12px;font-weight:600">{{ newErr }}</span></sc-if>
+        <p style="margin:0;font-size:12px;line-height:1.5">Listing fee K 40, charged to your mobile money. The listing goes live after an automatic photo and content check.</p>
+      </div>
+      <div class="dialog-actions">
+        <button class="btn btn-ghost" onClick="{{ closeModal }}">Cancel</button>
+        <button class="btn btn-primary blueprint" onClick="{{ submitAdd }}"><i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>Publish listing</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;background:var(--color-text);color:var(--color-bg);padding:10px 16px;font-size:13px;box-shadow:var(--shadow-md)">{{ toast }}</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;blueprint&quot;,&quot;night&quot;,&quot;copper&quot;,&quot;emerald&quot;],&quot;default&quot;:&quot;blueprint&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;search&quot;,&quot;listing&quot;,&quot;roommates&quot;,&quot;landlord&quot;],&quot;default&quot;:&quot;search&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;mapSide&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;right&quot;,&quot;left&quot;],&quot;default&quot;:&quot;right&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;showAds&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
+class Component extends DCLogic {
+  static seed() {
+    const R = (name, who, when, stars, text) => ({ name, who, when, stars, text });
+    return [
+      { id: 1, title: 'Self-contained room near UNZA gate', area: 'Kalingalinga', campus: 'UNZA', dist: 0.8, rent: 1800, type: 'Self-contained', cat: 'Self-contained', verified: true, featured: true, x: 60, y: 40, landlord: 'Mrs. Chanda Banda', mine: true, since: '2025', amen: ['Own bathroom', 'Wi-Fi', 'Water tank', 'Security guard', 'Walk to campus'], avail: 'Now', reviews: [R('Mutale K.', '4th-year Engineering', 'Jun 2026', 5, 'Exactly like the photos. Water is reliable even during load-shedding and the gate is always manned.'), R('Bwalya C.', 'Nursing student', 'Dec 2025', 4, 'Short walk to UNZA. Mrs. Banda fixes things fast. Wi-Fi drops in the evenings sometimes.')] },
+      { id: 2, title: 'Room in a shared two-bed flat', area: 'Chudleigh', campus: 'UNZA', dist: 2.1, rent: 1600, type: 'Shared flat', cat: 'Shared', verified: true, featured: false, x: 50, y: 50, landlord: 'Mr. Joseph Phiri', since: '2024', amen: ['Shared kitchen', 'Wi-Fi', 'Parking', 'Solar backup'], avail: '1 Nov', reviews: [R('Natasha M.', 'Graduate accountant', 'Mar 2026', 4, 'Good for a young professional. Quiet street, minibus to town is close.')] },
+      { id: 3, title: 'Student hostel bedspace', area: 'Mass Media', campus: 'Evelyn Hone', dist: 1.5, rent: 1100, type: 'Bedspace', cat: 'Shared', verified: true, featured: false, x: 38, y: 60, landlord: 'Grace Hostels Ltd', since: '2025', amen: ['Study room', 'Meals option', 'Laundry', 'Curfew 22:00'], avail: 'Jan term', reviews: [R('Chipo L.', 'Evelyn Hone, Journalism', 'Apr 2026', 4, 'Cheapest safe option I found. Rooms are shared by two, study room is useful.'), R('Daniel S.', 'Evelyn Hone, Business', 'Nov 2025', 3, 'Clean and secure. Meals are basic.')] },
+      { id: 4, title: 'Garden cottage, fully furnished', area: 'Rhodes Park', campus: 'Evelyn Hone', dist: 2.4, rent: 4200, type: 'Cottage', cat: 'Self-contained', verified: true, featured: false, x: 34, y: 34, landlord: 'Mr. Emmanuel Tembo', since: '2023', amen: ['Furnished', 'Own entrance', 'Borehole', 'Generator', 'DSTV'], avail: 'Now', reviews: [R('Lydia N.', 'Junior doctor, UTH', 'May 2026', 5, 'Perfect for a new professional. Very private, and the landlord was transparent about everything.')] },
+      { id: 5, title: 'Bedsitter with Wi-Fi', area: 'Kalingalinga', campus: 'UNZA', dist: 1.2, rent: 2000, type: 'Bedsitter', cat: 'Single', verified: false, featured: false, x: 65, y: 46, landlord: 'Mrs. Chanda Banda', mine: true, since: '2026', amen: ['Wi-Fi', 'Kitchenette', 'Shared bathroom'], avail: '15 Oct', reviews: [] },
+      { id: 6, title: 'Room in a family home', area: 'Chelston', campus: 'UNZA', dist: 5.0, rent: 1500, type: 'Single room', cat: 'Single', verified: true, featured: false, x: 84, y: 22, landlord: 'Mr. & Mrs. Mwale', since: '2024', amen: ['Meals included', 'Quiet', 'Bus to UNZA'], avail: 'Now', reviews: [R('Joseph B.', '2nd-year Law', 'Feb 2026', 5, 'Like living with relatives. Long ride but the bus stop is at the corner.')] },
+      { id: 7, title: 'Modern studio apartment', area: 'Longacres', campus: 'UNILUS', dist: 1.0, rent: 3800, type: 'Studio', cat: 'Self-contained', verified: true, featured: true, x: 44, y: 44, landlord: 'Kopa Properties', since: '2024', amen: ['Furnished', 'Fibre internet', 'Gym', 'Backup power', '24h security'], avail: 'Now', reviews: [R('Ruth K.', 'UNILUS, MBA', 'Jul 2026', 5, 'Pricey but worth it — power never goes off and the gym is a bonus.'), R('Kelvin Z.', 'Software developer', 'Jan 2026', 4, 'Great location between offices and campus.')] },
+      { id: 8, title: 'Shared house with 3 students', area: 'Bauleni', campus: 'UNZA', dist: 3.5, rent: 1300, type: 'Shared house', cat: 'Shared', verified: false, featured: false, x: 76, y: 70, landlord: 'Mr. Peter Lungu', since: '2026', amen: ['Shared kitchen', 'Yard', 'Water tank'], avail: '1 Nov', reviews: [] }
+    ];
+  }
+  static mates() {
+    return [
+      { id: 1, name: 'Mutinta H.', role: '3rd-year Law · UNZA', campus: 'UNZA', budget: 'K 900–1,200', moveIn: 'Nov 2026', tags: ['Non-smoker', 'Early riser', 'Quiet study'], match: 92 },
+      { id: 2, name: 'Grace M.', role: '2nd-year Nursing · UNZA', campus: 'UNZA', budget: 'K 800–1,000', moveIn: 'Jan 2027', tags: ['Tidy', 'Cooks often', 'Church-goer'], match: 86 },
+      { id: 3, name: 'Chileshe B.', role: 'Graduate trainee · Cairo Rd', campus: 'Working', budget: 'K 1,500–2,000', moveIn: 'Oct 2026', tags: ['Works 8–5', 'Gym', 'Non-smoker'], match: 78 },
+      { id: 4, name: 'Thandiwe N.', role: 'Journalism · Evelyn Hone', campus: 'Evelyn Hone', budget: 'K 600–900', moveIn: 'Jan 2027', tags: ['Night owl', 'Music', 'Social'], match: 71 },
+      { id: 5, name: 'Esther P.', role: 'MBA · UNILUS', campus: 'UNILUS', budget: 'K 1,800–2,400', moveIn: 'Nov 2026', tags: ['Quiet', 'Remote work', 'Non-smoker'], match: 83 },
+      { id: 6, name: 'Precious K.', role: '1st-year Education · UNZA', campus: 'UNZA', budget: 'K 700–900', moveIn: 'Jan 2027', tags: ['Tidy', 'Early riser', 'Shares cooking'], match: 88 }
+    ];
+  }
+  state = {
+    view: this.props.startView ?? 'search', listings: Component.seed(), area: 'All areas', maxRent: 5000, cat: 'Any', sort: 'Recommended', verifiedOnly: false,
+    selId: 1, hoverId: null, saved: [], modal: null, step: 1, provider: 'MTN MoMo', phone: '', phoneErr: '',
+    reservations: {}, movedIn: [], campus: 'All', requested: [], checking: null, toast: '', newTitle: '', newArea: 'Kalingalinga', newRent: '', newErr: '',
+    payouts: [{ tenant: 'Mutale K.', room: 'Self-contained room near UNZA gate', amount: 'K 500', status: 'Paid out' }, { tenant: 'Bwalya C.', room: 'Self-contained room near UNZA gate', amount: 'K 500', status: 'Paid out' }]
+  };
+  fmt(n) { return 'K ' + n.toLocaleString('en-US'); }
+  flash(msg) { clearTimeout(this._t); this.setState({ toast: msg }); this._t = setTimeout(() => this.setState({ toast: '' }), 2600); }
+  componentWillUnmount() { clearTimeout(this._t); clearTimeout(this._p); clearTimeout(this._v); }
+  go(view, extra) { this.setState({ view, ...(extra || {}) }); window.scrollTo(0, 0); }
+  open(id) { this.go('listing', { selId: id }); }
+  toggleSave(id) { this.setState(s => ({ saved: s.saved.includes(id) ? s.saved.filter(x => x !== id) : [...s.saved, id] })); }
+  seg(opts, cur, set) { return opts.map(label => ({ label, onClick: () => set(label), bg: label === cur ? 'var(--color-accent)' : 'transparent', fg: label === cur ? 'var(--color-bg)' : 'var(--color-text)' })); }
+  detect(p) { const d = p.replace(/\D/g, ''); if (/^0?(96|76)/.test(d)) return 'MTN MoMo'; if (/^0?(97|77)/.test(d)) return 'Airtel Money'; if (/^0?95/.test(d)) return 'Zamtel Kwacha'; return null; }
+  submitPay() {
+    const d = this.state.phone.replace(/\D/g, '');
+    if (!/^0\d{9}$/.test(d)) return this.setState({ phoneErr: 'Enter a 10-digit Zambian number, e.g. 0971 234 567.' });
+    const det = this.detect(d);
+    if (det && det !== this.state.provider) return this.setState({ phoneErr: `That looks like an ${det} number — switch provider or check the number.` });
+    this.setState({ step: 2, phoneErr: '' });
+    this._p = setTimeout(() => {
+      const ref = 'BZ-' + Math.floor(100000 + Math.random() * 899999);
+      const l = this.state.listings.find(x => x.id === this.state.selId);
+      this.setState(s => ({ step: 3, reservations: { ...s.reservations, [s.selId]: ref }, payouts: l.mine ? [{ tenant: 'You', room: l.title, amount: 'K 500', status: 'Held' }, ...s.payouts] : s.payouts }));
+    }, 2600);
+  }
+  submitAdd() {
+    const { newTitle, newArea, newRent } = this.state; const rent = parseInt(newRent.replace(/\D/g, ''), 10);
+    if (newTitle.trim().length < 6) return this.setState({ newErr: 'Give the room a descriptive title (6+ characters).' });
+    if (!rent || rent < 300 || rent > 20000) return this.setState({ newErr: 'Enter a monthly rent between K 300 and K 20,000.' });
+    const ref = this.state.listings.find(l => l.area === newArea) || { x: 50, y: 50, campus: 'UNZA', dist: 2 };
+    const l = { id: Date.now(), title: newTitle.trim(), area: newArea, campus: ref.campus, dist: ref.dist, rent, type: 'Single room', cat: 'Single', verified: false, featured: false, x: ref.x + 4, y: ref.y + 5, landlord: 'Mrs. Chanda Banda', mine: true, since: '2026', amen: ['Details pending'], avail: 'Now', reviews: [] };
+    this.setState(s => ({ listings: [...s.listings, l], modal: null, newTitle: '', newRent: '', newErr: '' }));
+    this.flash('Listing published — K 40 charged to MTN MoMo 096 ••• 4471');
+  }
+  verify(id) {
+    this.setState({ checking: id });
+    this._v = setTimeout(() => { this.setState(s => ({ checking: null, listings: s.listings.map(l => l.id === id ? { ...l, verified: true } : l) })); this.flash('Documents approved automatically — badge is live'); }, 2000);
+  }
+  renderVals() {
+    const s = this.state; const f = n => this.fmt(n);
+    const areasAll = [...new Set(Component.seed().map(l => l.area))].sort();
+    let res = s.listings.filter(l => (s.area === 'All areas' || l.area === s.area) && l.rent <= s.maxRent && (s.cat === 'Any' || l.cat === s.cat) && (!s.verifiedOnly || l.verified));
+    if (s.sort === 'Lowest rent') res = [...res].sort((a, b) => a.rent - b.rent);
+    else if (s.sort === 'Nearest campus') res = [...res].sort((a, b) => a.dist - b.dist);
+    else res = [...res].sort((a, b) => (b.featured - a.featured) || (b.verified - a.verified));
+    const avg = l => l.reviews.length ? (l.reviews.reduce((t, r) => t + r.stars, 0) / l.reviews.length).toFixed(1) : null;
+    const ratingStr = l => avg(l) ? `${avg(l)}/5 · ${l.reviews.length} review${l.reviews.length > 1 ? 's' : ''}` : 'New listing';
+    const results = res.map(l => {
+      const hot = s.hoverId === l.id;
+      return { ...l, unverified: !l.verified, priceStr: f(l.rent), priceShort: (l.rent / 1000).toFixed(1) + 'k', ratingStr: ratingStr(l),
+        open: () => this.open(l.id), enter: () => this.setState({ hoverId: l.id }),
+        bc: hot ? 'var(--color-accent)' : (l.featured ? 'var(--color-accent-300)' : 'var(--color-divider)'), bg: hot ? 'var(--color-accent-100)' : 'transparent',
+        pinBg: hot ? 'var(--color-accent)' : 'var(--color-bg)', pinFg: hot ? 'var(--color-bg)' : 'var(--color-accent-800)', z: hot ? 5 : 2 };
+    });
+    const L = s.listings.find(l => l.id === s.selId) || s.listings[0];
+    const ref = s.reservations[L.id]; const moved = s.movedIn.includes(L.id);
+    const sel = { ...L, unverified: !L.verified, priceStr: f(L.rent), ratingStr: ratingStr(L), noReviews: !L.reviews.length, amenities: L.amen,
+      initials: L.landlord.replace(/^(Mr\.|Mrs\.|Mr\. & Mrs\.)\s*/, '').split(' ').map(w => w[0]).join('').slice(0, 2),
+      landlordNote: L.verified ? `ID and ownership verified · on BoardZM since ${L.since}` : `Verification in progress · on BoardZM since ${L.since}`,
+      saveLabel: s.saved.includes(L.id) ? 'Saved' : 'Save', reserved: !!ref && !moved, canReserve: !ref, movedIn: moved, ref,
+      reviews: L.reviews, specs: [{ k: 'Rent', v: f(L.rent) }, { k: 'Type', v: L.type }, { k: 'To ' + L.campus, v: L.dist + ' km' }, { k: 'Available', v: L.avail }, { k: 'Deposit', v: 'K 500' }] };
+    const nav = [['search', 'Find a room'], ['roommates', 'Roommates'], ['landlord', 'For landlords']];
+    const navView = s.view === 'listing' ? 'search' : s.view;
+    const mine = s.listings.filter(l => l.mine);
+    const mates = Component.mates().filter(m => s.campus === 'All' || m.campus === s.campus).sort((a, b) => b.match - a.match).map(m => {
+      const r = s.requested.includes(m.id);
+      return { ...m, sent: r, notSent: !r, btnLabel: r ? 'Request sent' : 'Request to match', btnClass: r ? 'btn-secondary' : 'btn-primary', request: () => { if (!r) { this.setState(st => ({ requested: [...st.requested, m.id] })); this.flash(`Match request sent to ${m.name}`); } } };
+    });
+    const held = s.payouts.filter(p => p.status === 'Held').length;
+    return {
+      navItems: nav.map(([v, label], i) => ({ label, i1: i === 0, i2: i === 1, i3: i === 2, onClick: () => this.go(v), fg: navView === v ? 'var(--color-text)' : 'var(--color-accent-700)', line: navView === v ? 'var(--color-accent)' : 'transparent' })),
+      savedCount: s.saved.length, goSearch: () => this.go('search'),
+      isSearch: s.view === 'search', isListing: s.view === 'listing', isRoommates: s.view === 'roommates', isLandlord: s.view === 'landlord',
+      areas: ['All areas', ...areasAll], areaOnly: areasAll, area: s.area, setArea: e => this.setState({ area: e.target.value }),
+      maxRent: s.maxRent, maxRentLabel: f(s.maxRent), setMaxRent: e => this.setState({ maxRent: +e.target.value }),
+      typeOpts: this.seg(['Any', 'Single', 'Shared', 'Self-contained'], s.cat, v => this.setState({ cat: v })),
+      sort: s.sort, setSort: e => this.setState({ sort: e.target.value }),
+      verifiedOnly: s.verifiedOnly, toggleVerified: () => this.setState({ verifiedOnly: !s.verifiedOnly }),
+      resultLabel: `${results.length} room${results.length === 1 ? '' : 's'} · rent shown in Kwacha per month`,
+      results, noResults: !results.length, clearHover: () => this.setState({ hoverId: null }),
+      resetFilters: () => this.setState({ area: 'All areas', maxRent: 5000, cat: 'Any', verifiedOnly: false }),
+      listOrder: this.props.mapSide === 'left' ? 3 : 1, showAds: this.props.showAds ?? true,
+      campuses: [{ name: 'UNZA', x: 68, y: 30 }, { name: 'UNILUS', x: 42, y: 27 }, { name: 'Evelyn Hone', x: 26, y: 52 }, { name: 'City centre', x: 18, y: 70 }],
+      sel, toggleSaveSel: () => this.toggleSave(L.id),
+      confirmMoveIn: () => { this.setState(st => ({ movedIn: [...st.movedIn, L.id], payouts: st.payouts.map(p => p.room === L.title && p.status === 'Held' ? { ...p, status: 'Paid out' } : p) })); this.flash('Move-in confirmed — deposit released to landlord'); },
+      openReserve: () => this.setState({ modal: 'reserve', step: 1, phoneErr: '' }),
+      reserveOpen: s.modal === 'reserve', addOpen: s.modal === 'add', step1: s.step === 1, step2: s.step === 2, step3: s.step === 3,
+      closeModal: () => { if (s.step !== 2) this.setState({ modal: null }); }, stop: e => e.stopPropagation(),
+      providerOpts: this.seg(['MTN MoMo', 'Airtel Money', 'Zamtel Kwacha'], s.provider, v => this.setState({ provider: v, phoneErr: '' })),
+      providerName: s.provider, phone: s.phone, phoneErr: s.phoneErr, phoneBorder: s.phoneErr ? 'var(--color-text)' : 'var(--color-divider)',
+      phonePlaceholder: { 'MTN MoMo': '096 123 4567', 'Airtel Money': '097 123 4567', 'Zamtel Kwacha': '095 123 4567' }[s.provider],
+      setPhone: e => { const v = e.target.value; const det = this.detect(v); this.setState({ phone: v, phoneErr: '', ...(det ? { provider: det } : {}) }); },
+      submitPay: () => this.submitPay(),
+      campusOpts: this.seg(['All', 'UNZA', 'UNILUS', 'Evelyn Hone', 'Working'], s.campus, v => this.setState({ campus: v })), mates,
+      stats: [{ k: 'Live listings', v: String(mine.length) }, { k: 'Deposits held', v: held ? f(held * 500) : 'K 0' }, { k: 'Paid out this year', v: f(s.payouts.filter(p => p.status === 'Paid out').length * 500) }],
+      myListings: mine.map(l => ({ ...l, priceStr: f(l.rent), unverified: !l.verified, status: l.verified ? 'Verified' : 'Verification needed', statusClass: l.verified ? 'tag-accent' : 'tag-neutral',
+        checking: s.checking === l.id, verifyLabel: s.checking === l.id ? 'Checking documents…' : 'Verify · K 50',
+        featureLabel: l.featured ? 'Stop featuring' : 'Feature · K 30/wk', open: () => this.open(l.id),
+        verify: () => this.verify(l.id),
+        feature: () => { this.setState(st => ({ listings: st.listings.map(x => x.id === l.id ? { ...x, featured: !x.featured } : x) })); this.flash(l.featured ? 'Featured placement ended' : 'Featured for 7 days — K 30 charged'); } })),
+      payouts: s.payouts.map(p => ({ ...p, cls: p.status === 'Held' ? 'tag-outline' : 'tag-accent' })),
+      checks: [{ k: 'National Registration Card', v: 'Approved' }, { k: 'Selfie match', v: 'Approved' }, { k: 'Title deed / lease', v: 'Approved' }, { k: 'Mobile money payout', v: 'Linked' }],
+      openAdd: () => this.setState({ modal: 'add', newErr: '' }),
+      newTitle: s.newTitle, newArea: s.newArea, newRent: s.newRent, newErr: s.newErr,
+      setNewTitle: e => this.setState({ newTitle: e.target.value }), setNewArea: e => this.setState({ newArea: e.target.value }), setNewRent: e => this.setState({ newRent: e.target.value }),
+      submitAdd: () => this.submitAdd(), toast: s.toast,
+      theme: s.theme ?? this.props.theme ?? 'blueprint', scheme: (s.theme ?? this.props.theme) === 'night' ? 'dark' : 'light',
+      themeOpts: [{ v: 'blueprint', label: 'Blueprint' }, { v: 'night', label: 'Night' }, { v: 'copper', label: 'Copper' }, { v: 'emerald', label: 'Emerald' }],
+      setTheme: e => this.setState({ theme: e.target.value })
+    };
+  }
+}
+</script>
+</body>
+</html>

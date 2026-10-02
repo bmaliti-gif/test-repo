@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(gh:*)",
+      "Bash(supabase:*)",
+      "Bash(npx supabase:*)",
+      "Bash(wrangler:*)",
+      "Bash(npx wrangler:*)",
+      "Bash(netlify:*)",
+      "Bash(npx netlify:*)",
+      "Bash(vercel:*)",
+      "Bash(npx vercel:*)",
+      "Bash(curl:*)",
+      "Bash(npm publish:*)"
+    ]
+  }
+}
