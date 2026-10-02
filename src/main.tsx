@@ -15,6 +15,7 @@ import './styles/themes.css';
 import './styles/app.css';
 
 import App from './App';
+import { AuthProvider } from './lib/auth';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -25,9 +26,11 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 );

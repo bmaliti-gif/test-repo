@@ -1,11 +1,14 @@
-import { Heart } from 'lucide-react';
+import { Heart, User } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router';
+import { useAuth } from '../lib/auth';
 import { HEADER_NAV, isActive } from './nav';
 import { ThemeSelect } from './ThemeSelect';
 
 export function Header({ savedCount }: { savedCount: number }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user, loading } = useAuth();
+  const accountActive = pathname === '/account';
 
   return (
     <header className="nav app-header">
@@ -38,6 +41,22 @@ export function Header({ savedCount }: { savedCount: number }) {
         <Heart size={12} strokeWidth={1.5} aria-hidden="true" />
         Saved · {savedCount}
       </Link>
+
+      {!loading &&
+        (user ? (
+          <Link
+            to="/account"
+            className={accountActive ? 'btn btn-ghost header-account active' : 'btn btn-ghost header-account'}
+            aria-current={accountActive ? 'page' : undefined}
+          >
+            <User size={15} strokeWidth={1.5} aria-hidden="true" />
+            Account
+          </Link>
+        ) : (
+          <Link to={`/signin?next=${encodeURIComponent(pathname)}`} className="btn btn-secondary header-account">
+            Sign in
+          </Link>
+        ))}
     </header>
   );
 }

@@ -12,6 +12,7 @@ export const supabaseConfigured = Boolean(url && key);
 // doesn't contact Supabase; requests only start when the app makes one.
 export const supabase: SupabaseClient<Database> | null = supabaseConfigured
   ? createClient<Database>(url!, key!, {
-      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+      // PKCE: email and Google links come back as ?code=…, which supabase-js exchanges on load.
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
     })
   : null;

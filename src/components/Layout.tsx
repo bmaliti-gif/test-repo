@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router';
+import { useMe } from '../lib/auth';
 import { Header } from './Header';
 import { TabBar } from './TabBar';
 
@@ -11,9 +12,10 @@ export function Layout() {
     window.scrollTo(0, 0);
   }, [pathname]);
 
-  // Saved count (Block 5) and landlord role (Block 3) come from Supabase later.
+  const { me } = useMe();
+  // Saved count comes from saved_listings in Block 5.
   const savedCount = 0;
-  const isLandlord = false;
+  const isLandlord = me?.profile.role === 'landlord';
 
   return (
     <div className="app">

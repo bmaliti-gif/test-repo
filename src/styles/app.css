@@ -136,6 +136,61 @@ a:hover { color: var(--color-accent-800); }
   .input { font-size: 16px; }
 }
 
+/* — forms — */
+.form { display: flex; flex-direction: column; gap: var(--space-4); }
+.form .btn-block { margin-top: var(--space-1); min-height: 44px; }
+.form .input { min-height: 44px; }
+.form-group { border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); min-width: 0; }
+.form-group > legend {
+  padding: 0; margin-bottom: var(--space-2);
+  font-size: 12px; color: var(--color-text-muted);
+}
+.field-hint { margin: 5px 0 0; font-size: 12px; color: var(--color-text-muted); }
+.field-error { margin: 5px 0 0; font-size: 12px; color: var(--color-accent-800); font-weight: 500; }
+.field-error::before { content: "! "; font-weight: 700; }
+.input[aria-invalid="true"] { border-color: var(--color-accent-700); }
+.form-link { align-self: flex-start; font-size: 13px; padding: var(--space-2) 0; }
+.form-foot { margin: var(--space-2) 0 0; font-size: 13px; color: var(--color-text-muted); }
+.or-divider {
+  display: flex; align-items: center; gap: var(--space-3);
+  font-size: 12px; color: var(--color-text-muted); margin: var(--space-2) 0;
+}
+.or-divider::before, .or-divider::after { content: ""; flex: 1; height: 1px; background: var(--color-divider); }
+.seg-wide { display: flex; flex-wrap: wrap; }
+.seg-wide .seg-opt { flex: 1 1 auto; justify-content: center; min-height: 44px; text-align: center; }
+.seg-wide .seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.lede { margin: var(--space-2) 0 0; font-size: 14px; max-width: 60ch; }
+
+/* — notices (inline messages) — */
+.notice {
+  padding: var(--space-3) var(--space-4);
+  font-size: 13px; line-height: 1.45;
+  border: 1px solid var(--color-divider); border-left-width: 3px;
+}
+.notice-info { border-left-color: var(--color-accent); }
+.notice-success { background: var(--color-accent-100); color: var(--color-accent-800); border-left-color: var(--color-accent); }
+.notice-error { color: var(--color-text); border-color: var(--color-accent-700); border-left-width: 3px; }
+.notice-error::before { content: "Problem: "; font-weight: 700; color: var(--color-accent-800); }
+
+/* — sign-in pages and account — */
+.auth-page { display: flex; flex-direction: column; gap: var(--space-6); max-width: 480px; }
+.auth-page h1, .account-page h1 { font-size: 40px; line-height: 1; margin: 6px 0 0; }
+.auth-card { padding: var(--space-6); gap: var(--space-3); }
+.account-page { display: flex; flex-direction: column; gap: var(--space-6); }
+.account-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: var(--space-8); align-items: start; }
+.account-grid .card { padding: var(--space-6); gap: var(--space-3); }
+.account-side { display: flex; flex-direction: column; gap: var(--space-8); }
+.account-side .btn { min-height: 44px; }
+.header-account { min-height: 32px; }
+code { font-size: 13px; background: var(--color-surface); padding: 1px 4px; }
+
+@media (max-width: 767px) {
+  .app-header .header-account { display: none; }
+  .account-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
+  .auth-card, .account-grid .card { padding: var(--space-4); }
+  .auth-page h1, .account-page h1 { font-size: 34px; }
+}
+
 /* — placeholder pages (Block 1) — */
 .placeholder { display: flex; flex-direction: column; gap: var(--space-4); max-width: 720px; }
 .placeholder h1 { font-size: 40px; line-height: 1; margin: 6px 0 0; }
