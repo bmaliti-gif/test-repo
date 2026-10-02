@@ -18,8 +18,8 @@ export default defineConfig({
         scope: '/',
         display: 'standalone',
         orientation: 'portrait',
-        theme_color: '#5980a6',
-        background_color: '#f2f2f3',
+        theme_color: '#0f766e',
+        background_color: '#f7f6f3',
         categories: ['lifestyle', 'education'],
         icons: [
           { src: 'pwa-192.png', sizes: '192x192', type: 'image/png' },

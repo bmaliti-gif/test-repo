@@ -3,16 +3,15 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// Fonts ship with the app (no Google Fonts request): Barlow 400/500/700, Barlow Condensed 400/600.
+// Fonts ship with the app (no Google Fonts request): Barlow 400/500/700.
 import '@fontsource/barlow/400.css';
 import '@fontsource/barlow/500.css';
 import '@fontsource/barlow/700.css';
-import '@fontsource/barlow-condensed/400.css';
-import '@fontsource/barlow-condensed/600.css';
 
 import './styles/industry.css';
 import './styles/themes.css';
 import './styles/app.css';
+import './styles/brand.css';
 
 import App from './App';
 import { AuthProvider } from './lib/auth';

@@ -34,8 +34,9 @@ React 19 + TypeScript + Vite · React Router · TanStack Query · Supabase (Post
 src/
   main.tsx, App.tsx          routes
   styles/industry.css        design system — never edit
-  styles/themes.css          the four themes
-  styles/app.css             app CSS (Leaflet, pins, layout helpers, --color-text-muted)
+  styles/themes.css          colour themes (the only file with hex values)
+  styles/app.css             page layout CSS (Leaflet, pins, helpers, --color-text-muted)
+  styles/brand.css           brand look, loaded last (radii, cards, buttons, search cards)
   lib/                       supabase, money, phone, geo, match, images, payments
   data/                      campuses, areas, amenities, habits
   components/                shared UI (Blueprint, Header, TabBar, ListingCard, PaymentDialog…)
@@ -44,14 +45,16 @@ supabase/migrations/         numbered SQL files — the database source of truth
 supabase/seed.sql            sample data
 ```
 
-## Design rules (Industry design system)
-- Build with the classes in `industry.css`: `.btn` (`-primary/-secondary/-ghost/-icon/-block`), `.tag` (`-accent/-neutral/-outline`), `.card` (`-kicker/-title/-body/-meta`), `.field` + `.input`, `.seg` + `.seg-opt`, `.nav` + `.nav-brand`, `.table`, `.dialog-backdrop` + `.dialog` (`-title/-body/-actions`), `.blueprint`, `.duotone`.
-- Colours, fonts, spacing and shadows only through CSS variables (`--color-*`, `--font-*`, `--space-*`, `--shadow-*`). No hex values outside `themes.css`. There is no `--space-5`.
-- Square corners everywhere. Cards, figures and every primary button are blueprint objects: use `<Blueprint>` (adds `.blueprint` + four `<i className="corner tl|tr|bl|br" />` marks). Cards stay transparent line drawings — no fills.
-- Headings Barlow Condensed 600; body Barlow 14px. Icons: lucide-react with `strokeWidth={1.5}`.
-- Small muted text uses `var(--color-text-muted)` (text at 70%, defined in app.css) for contrast; `.text-muted` (55%) only for large text. Accent-coloured small text uses `--color-accent-700`; the plain accent is for icons, borders and large text.
-- Themes: `blueprint` (default), `night`, `copper`, `emerald` — `data-theme` on `<html>`, saved in localStorage.
-- Mobile first: works at 360 px wide, tap targets ≥ 44 px, bottom tab bar below 768 px (see `docs/README.md`).
+## Design rules (BoardZM brand, Oct 2026)
+The look is a modern, photo-first marketplace (like Airbnb or Zillow), not the original blueprint wireframe. `docs/design/boardzm-app.dc.html` is still the reference for copy, flows and sample data, but **not** for the visual style.
+- Colours: **Zambezi teal** `--color-accent` (trust + growth) as the main colour; **copper** `--color-accent-2` for highlights (Featured, saved hearts, counts); warm off-white `--color-bg`; white `--color-card` for cards, panels and dialogs; `--color-on-accent` for text on teal. All colour values live only in `themes.css`; everything else uses variables (`--color-*`, `--font-*`, `--space-*`, `--shadow-*`, `--radius-*`). There is no `--space-5`.
+- Shape: rounded corners (`--radius-sm` 8px controls, `--radius-md` 12px, `--radius-lg` 16px cards, pills for tags and filter chips), white cards with a hairline border and `--shadow-sm`, lifting to `--shadow-md` on hover. No corner marks: `<Blueprint>` still works but its marks are hidden by `brand.css`.
+- Photos in true colour (no duotone). Room cards: photo on top (4:3) with tags and the save heart over it, then place · distance and rating, title, type, price and the Verified badge.
+- Type: Barlow throughout — headings 700 with tight letter-spacing, body 15px. Icons: lucide-react (`strokeWidth` 1.5–2).
+- Classes from `industry.css` are still the base (`.btn`, `.tag`, `.card`, `.field` + `.input`, `.seg`, `.table`, `.dialog`); `brand.css` (loaded last) restyles them. Put new brand-level styling in `brand.css`, page layout in `app.css`.
+- Small muted text uses `var(--color-text-muted)`; small accent text uses `--color-accent-700` (WCAG AA).
+- Themes: `zambezi` (default, no attribute), `night`, `copper`, `sky` — `data-theme` on `<html>`, saved in localStorage; the picker lives on the Account page.
+- Mobile first: works at 360 px wide, tap targets ≥ 44 px, bottom tab bar below 768 px; below 1024 px the search list and map take turns.
 
 ## Product rules
 - Money is integer **ngwee** (K1 = 100 ngwee), shown as `K 1,800`. Rent is per month.

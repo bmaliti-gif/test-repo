@@ -1,28 +1,73 @@
-/* BoardZM themes. Copy to src/styles/themes.css and import after industry.css.
-   Blueprint is the default (the :root values in industry.css). Set data-theme on <html>. */
-:root { color-scheme: light; }
+/* BoardZM colour themes. The only file with colour values (hex).
+   Default: "Zambezi" — deep teal (trust + growth) with a copper highlight (Zambia's copper),
+   on a warm off-white ground with white cards. All text pairs meet WCAG AA (4.5:1). */
 
+:root {
+  color-scheme: light;
+  --color-bg: #f7f6f3;
+  --color-surface: #ffffff;   /* inputs */
+  --color-card: #ffffff;      /* cards, panels, dialogs */
+  --color-text: #1b2422;
+  --color-accent: #0f766e;
+  --color-divider: color-mix(in srgb, #1b2422 12%, transparent);
+  --color-on-accent: #ffffff;
+  --color-photo-scrim: rgba(12, 20, 18, 0.55);
+
+  --color-accent-100: #e7f4f1; --color-accent-200: #c6e7e0; --color-accent-300: #94d2c6;
+  --color-accent-400: #55b3a4; --color-accent-500: #1f9585; --color-accent-600: #0d675f;
+  --color-accent-700: #0b5a53; --color-accent-800: #094740; --color-accent-900: #07332e;
+
+  --color-accent-2: #b4581f;
+  --color-accent-2-100: #fbede3; --color-accent-2-200: #f5d3bc; --color-accent-2-300: #ebb38f;
+  --color-accent-2-400: #dc8c5a; --color-accent-2-500: #c8692f; --color-accent-2-600: #b4581f;
+  --color-accent-2-700: #9a4a1a; --color-accent-2-800: #7a3a14; --color-accent-2-900: #57290e;
+
+  --color-neutral-100: #f1f0ed; --color-neutral-200: #e6e5e1; --color-neutral-300: #d3d1cb;
+  --color-neutral-400: #adaaa2; --color-neutral-500: #8a877f; --color-neutral-600: #6b6862;
+  --color-neutral-700: #514f4a; --color-neutral-800: #3a3935; --color-neutral-900: #262523;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 22, 0.06), 0 1px 3px rgba(16, 24, 22, 0.08);
+  --shadow-md: 0 6px 18px rgba(16, 24, 22, 0.1);
+  --shadow-lg: 0 18px 44px rgba(16, 24, 22, 0.18);
+}
+
+/* Night — dark teal, easy on the eyes at night. */
 :root[data-theme="night"] {
   color-scheme: dark;
-  --color-bg: #141c25; --color-surface: #1b2530; --color-text: #e6ebf0; --color-accent: #7fa6cc;
-  --color-divider: color-mix(in srgb, #e6ebf0 18%, transparent);
-  --color-neutral-100: #2b2b2d; --color-neutral-200: #424244; --color-neutral-300: #5d5d60; --color-neutral-400: #7a7a7d; --color-neutral-500: #98989b;
-  --color-neutral-600: #b7b7ba; --color-neutral-700: #d4d4d7; --color-neutral-800: #e7e7ea; --color-neutral-900: #f5f5f8;
-  --color-accent-100: #1d2d3d; --color-accent-200: #2c455d; --color-accent-300: #416180; --color-accent-400: #597ea3; --color-accent-500: #749dc4;
-  --color-accent-600: #94bce3; --color-accent-700: #b5d9fd; --color-accent-800: #d6ebff; --color-accent-900: #eef6ff;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow-md: 0 3px 10px rgba(0,0,0,.45); --shadow-lg: 0 12px 32px rgba(0,0,0,.55);
+  --color-bg: #0f1715; --color-surface: #1a2522; --color-card: #16201e; --color-text: #e8efed;
+  --color-accent: #3cc2ae; --color-on-accent: #0b1513;
+  --color-divider: color-mix(in srgb, #e8efed 14%, transparent);
+  --color-photo-scrim: rgba(0, 0, 0, 0.6);
+  --color-accent-100: #12302b; --color-accent-200: #17463f; --color-accent-300: #1f6157;
+  --color-accent-400: #2a8577; --color-accent-500: #34a796; --color-accent-600: #5cc9b8;
+  --color-accent-700: #8eddd0; --color-accent-800: #c0eee6; --color-accent-900: #e6f8f5;
+  --color-accent-2: #f0a877;
+  --color-accent-2-100: #3a2414; --color-accent-2-200: #57351c; --color-accent-2-600: #f0a877;
+  --color-accent-2-700: #f4bb93; --color-accent-2-800: #f8d3b8;
+  --color-neutral-100: #1f2a27; --color-neutral-200: #2a3633; --color-neutral-300: #3a4744;
+  --color-neutral-400: #56625f; --color-neutral-500: #77837f; --color-neutral-600: #9aa5a2;
+  --color-neutral-700: #bdc6c3; --color-neutral-800: #dbe2e0; --color-neutral-900: #eef3f1;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4); --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.55);
 }
 
+/* Copper — warm and earthy, copper as the main colour. */
 :root[data-theme="copper"] {
-  --color-bg: #f4f1ec; --color-surface: #ebe6df; --color-text: #231d19; --color-accent: #b06a3c;
-  --color-divider: color-mix(in srgb, #231d19 16%, transparent);
-  --color-accent-100: #fff3ea; --color-accent-200: #fde1cc; --color-accent-300: #f5c6a3; --color-accent-400: #dfa277; --color-accent-500: #c38052;
-  --color-accent-600: #a2633a; --color-accent-700: #804a29; --color-accent-800: #5e351d; --color-accent-900: #3f2414;
+  --color-bg: #f8f4ef; --color-text: #2a1f18; --color-accent: #a84e1c;
+  --color-divider: color-mix(in srgb, #2a1f18 12%, transparent);
+  --color-accent-100: #fbede3; --color-accent-200: #f5d3bc; --color-accent-300: #ebb38f;
+  --color-accent-400: #dc8c5a; --color-accent-500: #c8692f; --color-accent-600: #93431a;
+  --color-accent-700: #853d16; --color-accent-800: #6a3012; --color-accent-900: #4a220d;
+  --color-accent-2: #0f766e;
+  --color-accent-2-100: #e7f4f1; --color-accent-2-200: #c6e7e0; --color-accent-2-600: #0d675f;
+  --color-accent-2-700: #0b5a53; --color-accent-2-800: #094740;
 }
 
-:root[data-theme="emerald"] {
-  --color-bg: #f1f3f1; --color-surface: #e7ebe8; --color-text: #1a201c; --color-accent: #2f7d58;
-  --color-divider: color-mix(in srgb, #1a201c 16%, transparent);
-  --color-accent-100: #e9f8ef; --color-accent-200: #cdeedb; --color-accent-300: #a6dcbd; --color-accent-400: #78c09a; --color-accent-500: #4fa178;
-  --color-accent-600: #246a49; --color-accent-700: #266446; --color-accent-800: #1a4832; --color-accent-900: #112f21;
+/* Sky — classic trustworthy blue. */
+:root[data-theme="sky"] {
+  --color-bg: #f5f7fa; --color-text: #17202b; --color-accent: #1d5fa8;
+  --color-divider: color-mix(in srgb, #17202b 12%, transparent);
+  --color-accent-100: #e8f0fa; --color-accent-200: #c8daf1; --color-accent-300: #96bae4;
+  --color-accent-400: #5b91cf; --color-accent-500: #2f73bd; --color-accent-600: #19528f;
+  --color-accent-700: #164a82; --color-accent-800: #123b68; --color-accent-900: #0d2a4a;
 }

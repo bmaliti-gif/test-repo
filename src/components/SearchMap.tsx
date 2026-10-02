@@ -51,8 +51,23 @@ function FitToResults({ results }: { results: Result[] }) {
   useEffect(() => {
     if (results.length === 0) return;
     const bounds = L.latLngBounds(results.map((r) => [r.lat, r.lng] as [number, number]));
-    map.fitBounds(bounds.pad(0.15), { maxZoom: 15, animate: false });
+    const fit = () => {
+      // The map's box can change size after it first draws (sticky layout, fonts); measure again first.
+      map.invalidateSize();
+      map.fitBounds(bounds.pad(0.15), { maxZoom: 15, animate: false });
+    };
+    fit();
+    const t = setTimeout(fit, 250);
+    return () => clearTimeout(t);
   }, [key, map]); // `key` stands in for `results`: refit only when the set of rooms changes
+
+  // Keep the map filling its box when the window or layout changes.
+  useEffect(() => {
+    const el = map.getContainer();
+    const ro = new ResizeObserver(() => map.invalidateSize());
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [map]);
   return null;
 }
 

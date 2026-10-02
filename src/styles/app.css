@@ -57,39 +57,40 @@ a:hover { color: var(--color-accent-800); }
 }
 
 /* — header — */
-.app-header {
-  position: sticky; top: 0; z-index: 20;
-  gap: var(--space-3); flex-wrap: wrap;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-divider);
+.app-header { position: sticky; top: 0; z-index: 20; }
+.header-inner {
+  max-width: 1440px; margin: 0 auto; height: 64px;
+  display: flex; align-items: center; gap: var(--space-6); padding: 0 var(--space-6);
 }
-.brand {
-  all: unset; cursor: pointer;
-  display: flex; align-items: baseline; gap: 8px; margin-right: auto;
-  min-height: 44px; align-content: center;
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-text); margin-right: auto; min-height: 44px; }
+.logo-mark { color: var(--color-accent); flex: none; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+.brand-name { font-family: var(--font-heading); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+.brand-place { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--color-accent-700); font-weight: 600; }
+.header-nav { display: flex; gap: 4px; }
+.nav-link {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px;
+  border-radius: var(--radius-pill, 999px); text-decoration: none; font-weight: 600; font-size: 14px;
+  color: var(--color-text-muted);
 }
-.brand:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-.brand .nav-brand { font-size: 24px; letter-spacing: .01em; margin: 0; align-self: center; }
-.brand-place {
-  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--color-accent-700); align-self: center;
+.nav-link:hover { background: var(--color-neutral-100); color: var(--color-text); }
+.nav-link.active { background: var(--color-accent-100); color: var(--color-accent-800); }
+.header-actions { display: flex; align-items: center; gap: var(--space-2); }
+.icon-link, .account-link {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-width: 44px; min-height: 44px; padding: 0 10px; border-radius: var(--radius-pill, 999px);
+  color: var(--color-text); text-decoration: none; font-weight: 600; font-size: 14px;
 }
-.header-nav { display: flex; gap: var(--space-1); flex: none; }
-.app-header .header-nav a.btn {
-  padding: 6px 10px;
-  color: var(--color-accent-700);
-  border-bottom: 2px solid transparent;
+.icon-link:hover, .account-link:hover { background: var(--color-neutral-100); }
+.icon-link.active, .account-link.active { color: var(--color-accent-700); }
+.account-link { border: 1px solid var(--color-neutral-300); padding: 0 14px; }
+.count-badge {
+  position: absolute; top: 4px; right: 2px; min-width: 18px; height: 18px; padding: 0 5px;
+  display: grid; place-items: center; border-radius: 999px;
+  background: var(--color-accent-2); color: var(--color-on-accent); font-size: 11px; font-weight: 700;
 }
-.app-header .header-nav a.btn.active {
-  color: var(--color-text);
-  border-bottom-color: var(--color-accent);
-}
-.theme-select {
-  width: auto; min-height: 32px; font-size: 13px; background: var(--color-bg);
-}
-.app-header a.saved-pill {
-  gap: 4px; text-decoration: none; color: var(--color-accent-800);
-}
+.header-signin { min-height: 40px; }
+.theme-select { width: auto; }
 
 /* — test-mode strip — */
 .test-banner {
@@ -111,9 +112,9 @@ a:hover { color: var(--color-accent-800); }
 .tabbar { display: none; }
 
 @media (max-width: 767px) {
-  .header-nav, .app-header .theme-select { display: none; }
-  .app-header { flex-wrap: nowrap; }
-  .app-header a.saved-pill { min-height: 32px; }
+  .header-nav, .account-label { display: none; }
+  .header-inner { padding: 0 var(--space-4); gap: var(--space-3); height: 58px; }
+  .account-link { border: 0; padding: 0; }
 
   .app { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
   .tabbar {
@@ -181,11 +182,9 @@ a:hover { color: var(--color-accent-800); }
 .account-grid .card { padding: var(--space-6); gap: var(--space-3); }
 .account-side { display: flex; flex-direction: column; gap: var(--space-8); }
 .account-side .btn { min-height: 44px; }
-.header-account { min-height: 32px; }
 code { font-size: 13px; background: var(--color-surface); padding: 1px 4px; }
 
 @media (max-width: 767px) {
-  .app-header .header-account { display: none; }
   .account-grid { grid-template-columns: minmax(0, 1fr); gap: var(--space-6); }
   .auth-card, .account-grid .card { padding: var(--space-4); }
   .auth-page h1, .account-page h1 { font-size: 34px; }

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const THEMES = [
-  { value: 'blueprint', label: 'Blueprint' },
+  { value: 'zambezi', label: 'Zambezi (teal)' },
   { value: 'night', label: 'Night' },
   { value: 'copper', label: 'Copper' },
-  { value: 'emerald', label: 'Emerald' },
+  { value: 'sky', label: 'Sky' },
 ] as const;
 
 export type Theme = (typeof THEMES)[number]['value'];
@@ -23,12 +23,13 @@ export function readTheme(): Theme {
   } catch {
     // Storage can be blocked (private mode); fall back to the default.
   }
-  return 'blueprint';
+  // Older saved themes (blueprint, emerald) fall back to the default too.
+  return 'zambezi';
 }
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
-  if (theme === 'blueprint') delete root.dataset.theme;
+  if (theme === 'zambezi') delete root.dataset.theme;
   else root.dataset.theme = theme;
 }
 
