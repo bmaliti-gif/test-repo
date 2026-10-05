@@ -164,7 +164,7 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
       if (error) throw error;
       await Promise.all([invalidate(), queryClient.invalidateQueries({ queryKey: ['landlord', 'listing', listing.id] })]);
       if (listing.status === 'live' && data.status === 'in_review') {
-        toast('Saved. Your changes go to the BoardZM team for a quick check first.');
+        toast('Saved. Your changes go to the CabinHub team for a quick check first.');
       }
       return listing.id;
     } catch {
@@ -200,7 +200,7 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
     if (!savedId) return;
     try {
       const result = await statusAction.mutateAsync({ id: savedId, action: 'relist' });
-      toast(result === 'in_review' ? 'Sent to the BoardZM team for review.' : result === 'live' ? 'Relisted. It is live again.' : 'Saved.');
+      toast(result === 'in_review' ? 'Sent to the CabinHub team for review.' : result === 'live' ? 'Relisted. It is live again.' : 'Saved.');
       navigate('/landlord');
     } catch (err) {
       setFormError(err instanceof Error ? err.message : 'Something went wrong.');
@@ -373,7 +373,7 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
                 <li key={p}>{p}</li>
               ))}
             </ul>
-            If you publish now, the BoardZM team checks it first (usually within a day).
+            If you publish now, the CabinHub team checks it first (usually within a day).
           </Notice>
         )}
 
@@ -441,7 +441,7 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
                   title: 'Paid · in review',
                   body: (
                     <>
-                      Thanks. The BoardZM team will check <strong>{listing.title}</strong> first, usually within a day:
+                      Thanks. The CabinHub team will check <strong>{listing.title}</strong> first, usually within a day:
                       <ul className="problem-list">
                         {(r.problems ?? problems ?? []).map((p) => (
                           <li key={p}>{p}</li>

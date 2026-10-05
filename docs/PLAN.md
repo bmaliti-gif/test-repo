@@ -1,5 +1,7 @@
 # BoardZM — 2-day build plan (Claude Code + VS Code)
 
+> **Note (Oct 2026):** the app has been renamed **CabinHub**. This document still uses the original name, BoardZM.
+
 **Goal:** a working, installable BoardZM web app, front end and back end, built in two working days by prompting Claude Code. The design to copy is `docs/design/boardzm-app.dc.html`; the screen-by-screen spec is `docs/README.md`.
 
 ## 0. How to use this kit

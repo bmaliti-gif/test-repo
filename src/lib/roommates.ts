@@ -37,7 +37,7 @@ export function useRoommates() {
 
       const withNames = (p: RoommateProfile): Mate => ({
         ...p,
-        full_name: byId.get(p.user_id)?.full_name || 'BoardZM member',
+        full_name: byId.get(p.user_id)?.full_name || 'CabinHub member',
         headline: byId.get(p.user_id)?.headline || '',
       });
       return {

@@ -54,7 +54,7 @@ export function RequireAuth({ role }: Props) {
   if (role === 'admin' && !me.profile.is_admin) {
     return (
       <MessagePage kicker="Admin" title="Admins only">
-        <p className="card-body">This page is for the BoardZM team.</p>
+        <p className="card-body">This page is for the CabinHub team.</p>
         <div>
           <Link to="/" className="btn btn-secondary">
             Find a room
@@ -68,7 +68,7 @@ export function RequireAuth({ role }: Props) {
 
 export function NotConnected() {
   return (
-    <MessagePage kicker="Setup" title="BoardZM isn't connected yet">
+    <MessagePage kicker="Setup" title="CabinHub isn't connected yet">
       <p className="card-body">
         Add your Supabase Project URL and publishable key to <code>.env.local</code>, then restart{' '}
         <code>npm run dev</code>.

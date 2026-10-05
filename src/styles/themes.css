@@ -1,8 +1,8 @@
-/* BoardZM colour themes. The only file with colour values (hex).
+/* CabinHub colour themes. The only file with colour values (hex).
    Default: "Zambezi" — deep teal (trust + growth) with a copper highlight (Zambia's copper),
    on a warm off-white ground with white cards. All text pairs meet WCAG AA (4.5:1). */
 
-:root {
+:root, [data-swatch="zambezi"] {
   color-scheme: light;
   --color-bg: #f7f6f3;
   --color-surface: #ffffff;   /* inputs */
@@ -17,7 +17,7 @@
   --color-accent-400: #55b3a4; --color-accent-500: #1f9585; --color-accent-600: #0d675f;
   --color-accent-700: #0b5a53; --color-accent-800: #094740; --color-accent-900: #07332e;
 
-  --color-accent-2: #b4581f;
+  --color-accent-2: #a9521c;
   --color-accent-2-100: #fbede3; --color-accent-2-200: #f5d3bc; --color-accent-2-300: #ebb38f;
   --color-accent-2-400: #dc8c5a; --color-accent-2-500: #c8692f; --color-accent-2-600: #b4581f;
   --color-accent-2-700: #9a4a1a; --color-accent-2-800: #7a3a14; --color-accent-2-900: #57290e;
@@ -32,7 +32,7 @@
 }
 
 /* Night — dark teal, easy on the eyes at night. */
-:root[data-theme="night"] {
+:root[data-theme="night"], [data-swatch="night"] {
   color-scheme: dark;
   --color-bg: #0f1715; --color-surface: #1a2522; --color-card: #16201e; --color-text: #e8efed;
   --color-accent: #3cc2ae; --color-on-accent: #0b1513;
@@ -52,7 +52,7 @@
 }
 
 /* Copper — warm and earthy, copper as the main colour. */
-:root[data-theme="copper"] {
+:root[data-theme="copper"], [data-swatch="copper"] {
   --color-bg: #f8f4ef; --color-text: #2a1f18; --color-accent: #a84e1c;
   --color-divider: color-mix(in srgb, #2a1f18 12%, transparent);
   --color-accent-100: #fbede3; --color-accent-200: #f5d3bc; --color-accent-300: #ebb38f;
@@ -64,10 +64,67 @@
 }
 
 /* Sky — classic trustworthy blue. */
-:root[data-theme="sky"] {
+:root[data-theme="sky"], [data-swatch="sky"] {
   --color-bg: #f5f7fa; --color-text: #17202b; --color-accent: #1d5fa8;
   --color-divider: color-mix(in srgb, #17202b 12%, transparent);
   --color-accent-100: #e8f0fa; --color-accent-200: #c8daf1; --color-accent-300: #96bae4;
   --color-accent-400: #5b91cf; --color-accent-500: #2f73bd; --color-accent-600: #19528f;
   --color-accent-700: #164a82; --color-accent-800: #123b68; --color-accent-900: #0d2a4a;
+  --color-accent-2: #a9521c;
+}
+
+/* Forest — deep green, calm and natural. */
+:root[data-theme="forest"], [data-swatch="forest"] {
+  --color-bg: #f4f6f1; --color-text: #1a231b; --color-accent: #2f6b3a;
+  --color-divider: color-mix(in srgb, #1a231b 12%, transparent);
+  --color-accent-100: #e9f3e9; --color-accent-200: #cbe3cd; --color-accent-300: #9dc9a2;
+  --color-accent-400: #68a872; --color-accent-500: #3f8a4b; --color-accent-600: #285c32;
+  --color-accent-700: #23512c; --color-accent-800: #1b4023; --color-accent-900: #132d18;
+  --color-accent-2: #b45309;
+  --color-accent-2-100: #fdf0e1; --color-accent-2-200: #f9d9b3; --color-accent-2-300: #f0b878;
+  --color-accent-2-600: #9c4708; --color-accent-2-700: #8a3f07; --color-accent-2-800: #6d3206;
+}
+
+/* Lavender — soft purple, friendly and modern. */
+:root[data-theme="lavender"], [data-swatch="lavender"] {
+  --color-bg: #f7f6fb; --color-text: #1f1b2b; --color-accent: #6d4fc2;
+  --color-divider: color-mix(in srgb, #1f1b2b 12%, transparent);
+  --color-accent-100: #f1edfb; --color-accent-200: #ddd3f5; --color-accent-300: #bfaeec;
+  --color-accent-400: #9b84de; --color-accent-500: #8063cf; --color-accent-600: #5d41ab;
+  --color-accent-700: #523997; --color-accent-800: #412d78; --color-accent-900: #2d1f54;
+  --color-accent-2: #be185d;
+  --color-accent-2-100: #fdeaf2; --color-accent-2-200: #f9cbdf; --color-accent-2-300: #f29bc2;
+  --color-accent-2-600: #a51551; --color-accent-2-700: #8f1247; --color-accent-2-800: #710e38;
+}
+
+/* Sunset — warm orange, energetic. */
+:root[data-theme="sunset"], [data-swatch="sunset"] {
+  --color-bg: #fbf6f2; --color-text: #2a1c16; --color-accent: #c2410c;
+  --color-divider: color-mix(in srgb, #2a1c16 12%, transparent);
+  --color-accent-100: #fdeee6; --color-accent-200: #fad4c2; --color-accent-300: #f4ae8e;
+  --color-accent-400: #ea8459; --color-accent-500: #dc5f2a; --color-accent-600: #a8380a;
+  --color-accent-700: #933109; --color-accent-800: #752707; --color-accent-900: #521b05;
+  --color-accent-2: #0f766e;
+  --color-accent-2-100: #e7f4f1; --color-accent-2-200: #c6e7e0; --color-accent-2-300: #94d2c6;
+  --color-accent-2-600: #0d675f; --color-accent-2-700: #0b5a53; --color-accent-2-800: #094740;
+}
+
+/* Midnight — dark navy, a second dark mode. */
+:root[data-theme="midnight"], [data-swatch="midnight"] {
+  color-scheme: dark;
+  --color-bg: #0d1220; --color-surface: #1b2338; --color-card: #151c2e; --color-text: #e6e9f2;
+  --color-accent: #7aa2ff; --color-on-accent: #0b1020;
+  --color-divider: color-mix(in srgb, #e6e9f2 14%, transparent);
+  --color-photo-scrim: rgba(0, 0, 0, 0.6);
+  --color-accent-100: #18223f; --color-accent-200: #1f2f5c; --color-accent-300: #2b4280;
+  --color-accent-400: #3d5ba8; --color-accent-500: #5577cc; --color-accent-600: #93b3ff;
+  --color-accent-700: #aec6ff; --color-accent-800: #cddcff; --color-accent-900: #eaf0ff;
+  --color-accent-2: #f5b56a;
+  --color-accent-2-100: #3a2a14; --color-accent-2-200: #56401f; --color-accent-2-300: #7a5a2b;
+  --color-accent-2-600: #f5b56a; --color-accent-2-700: #f8c88f; --color-accent-2-800: #fbdcb6;
+  --color-neutral-100: #1c2438; --color-neutral-200: #263049; --color-neutral-300: #36415e;
+  --color-neutral-400: #525d7c; --color-neutral-500: #737e9c; --color-neutral-600: #98a1bb;
+  --color-neutral-700: #bcc3d6; --color-neutral-800: #dbe0ec; --color-neutral-900: #eff2f8;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45); --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.6);
 }

@@ -131,7 +131,7 @@ export function ReservePanel({ listing, settings }: Props) {
           <div className="reserve-safety">
             <Lock size={14} strokeWidth={1.5} aria-hidden="true" />
             <span>
-              Your deposit is held by BoardZM, not the landlord, until you move in. Deducted from your first month's rent.
+              Your deposit is held by CabinHub, not the landlord, until you move in. Deducted from your first month's rent.
             </span>
           </div>
         )}
@@ -175,7 +175,7 @@ export function ReservePanel({ listing, settings }: Props) {
           title: 'Room reserved',
           body: (
             <>
-              <strong>{formatKwacha(deposit)}</strong> is held safely by BoardZM. {listing.landlord_name || 'The landlord'}{' '}
+              <strong>{formatKwacha(deposit)}</strong> is held safely by CabinHub. {listing.landlord_name || 'The landlord'}{' '}
               has been notified and will share viewing and key details. You can message them on WhatsApp now.
             </>
           ),

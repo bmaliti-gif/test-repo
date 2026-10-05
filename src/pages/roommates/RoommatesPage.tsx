@@ -196,7 +196,7 @@ function MateCard({ mate, score, request, myId, myName, canRequest, onNeedProfil
     action = contact.data ? (
       <a
         className="btn btn-secondary"
-        href={whatsappLink(contact.data, `Hi ${firstName(mate.full_name)}, it's ${myName || 'your BoardZM match'}. Shall we look for a room together?`)}
+        href={whatsappLink(contact.data, `Hi ${firstName(mate.full_name)}, it's ${myName || 'your CabinHub match'}. Shall we look for a room together?`)}
         target="_blank"
         rel="noopener noreferrer"
       >

@@ -1,6 +1,8 @@
-# BoardZM — Claude Code instructions
+# CabinHub — Claude Code instructions
 
-BoardZM is a housing marketplace for Lusaka, Zambia. University students and young professionals find rooms from verified landlords, read tenant reviews, find roommates and reserve rooms with a mobile-money deposit; landlords list rooms for less than agents charge. It is one installable web app (PWA) for phones and desktops.
+> The app was first called **BoardZM**; it was renamed **CabinHub** in October 2026. Older docs, the design reference and already-applied migrations still say BoardZM, and old reservation references start with BZ- (new ones with CH-). Keep using CabinHub in all new work.
+
+CabinHub is a housing marketplace for Lusaka, Zambia. University students and young professionals find rooms from verified landlords, read tenant reviews, find roommates and reserve rooms with a mobile-money deposit; landlords list rooms for less than agents charge. It is one installable web app (PWA) for phones and desktops.
 
 The owner is new to coding. Explain plans in plain words, keep each change small, and end every task with what changed and exactly how to check it in the browser.
 
@@ -8,7 +10,7 @@ The owner is new to coding. Explain plans in plain words, keep each change small
 - **Keep going without waiting for permission.** Work straight through the build: when a block is done (built, tested, committed and pushed), give a short summary of what changed and how to check it, then start the next block of `docs/PLAN.md` right away. Don't stop to ask for a "go" or wait for a plan to be approved; share the plan in a few lines and proceed. The only reason to stop and wait is when the work needs a more powerful model; then say so plainly and pause. (Steps listed below that need the owner's OK still need it.)
 - **Commit and push every change.** After every change to the app, commit it and `git push` to `origin` (GitHub: `bmaliti-gif/test-repo`, branch `main`). The owner has approved these pushes in advance; don't ask each time. Never force-push, and never commit secrets (see below). Run `npm run build` (and `npm run test` once tests exist) before committing; if it fails, fix it first or say so plainly.
 - **Nothing is left uncommitted.** Before ending any task or reply that changed files, run `git status` and `git fetch` and make sure the working tree is clean and `main` is level with `origin/main` (GitHub). This covers every file in the repo (code, SQL, docs, `CLAUDE.md`, icons), not just app code. `.env.local` and other secrets stay out of git (they are git-ignored). If a push fails, say so and retry; never report work as done while it exists only on this computer.
-- **Connected services the owner has approved:** Supabase (database, sign-in, storage) and Vercel (hosting). Claude may work in their dashboards (e.g. through the Claude in Chrome extension) and configure them for BoardZM. Never paste the Supabase secret / service_role key anywhere, and never change billing or delete projects without asking.
+- **Connected services the owner has approved:** Supabase (database, sign-in, storage) and Vercel (hosting). Claude may work in their dashboards (e.g. through the Claude in Chrome extension) and configure them for CabinHub. Never paste the Supabase secret / service_role key anywhere, and never change billing or delete projects without asking.
 - **Ask before connecting to anything else.** Get the owner's explicit OK before any other command or code that signs in to, links, deploys to, or sends data to an outside service or account — Supabase CLI (`supabase login`, `link`, `db push`), `gh`, other hosting providers, Google Cloud, payment, SMS or email providers, MCP servers, analytics. Writing local code and SQL files is fine.
 - **The owner prefers not to do setup by hand.** Where Claude can do a step itself (for example in the Supabase or Google dashboards through the Claude in Chrome extension, once it is installed), do it, after saying what you are about to do. Only hand a step to the owner when Claude has no way to do it.
 - Payments are **simulated**. Never call a real payment API until the owner says payments are going live.
@@ -46,7 +48,7 @@ supabase/migrations/         numbered SQL files — the database source of truth
 supabase/seed.sql            sample data
 ```
 
-## Design rules (BoardZM brand, Oct 2026)
+## Design rules (CabinHub brand, Oct 2026)
 The look is a modern, photo-first marketplace (like Airbnb or Zillow), not the original blueprint wireframe. `docs/design/boardzm-app.dc.html` is still the reference for copy, flows and sample data, but **not** for the visual style.
 - Colours: **Zambezi teal** `--color-accent` (trust + growth) as the main colour; **copper** `--color-accent-2` for highlights (Featured, saved hearts, counts); warm off-white `--color-bg`; white `--color-card` for cards, panels and dialogs; `--color-on-accent` for text on teal. All colour values live only in `themes.css`; everything else uses variables (`--color-*`, `--font-*`, `--space-*`, `--shadow-*`, `--radius-*`). There is no `--space-5`.
 - Shape: rounded corners (`--radius-sm` 8px controls, `--radius-md` 12px, `--radius-lg` 16px cards, pills for tags and filter chips), white cards with a hairline border and `--shadow-sm`, lifting to `--shadow-md` on hover. No corner marks: `<Blueprint>` still works but its marks are hidden by `brand.css`.
@@ -54,7 +56,7 @@ The look is a modern, photo-first marketplace (like Airbnb or Zillow), not the o
 - Type: Barlow throughout — headings 700 with tight letter-spacing, body 15px. Icons: lucide-react (`strokeWidth` 1.5–2).
 - Classes from `industry.css` are still the base (`.btn`, `.tag`, `.card`, `.field` + `.input`, `.seg`, `.table`, `.dialog`); `brand.css` (loaded last) restyles them. Put new brand-level styling in `brand.css`, page layout in `app.css`.
 - Small muted text uses `var(--color-text-muted)`; small accent text uses `--color-accent-700` (WCAG AA).
-- Themes: `zambezi` (default, no attribute), `night`, `copper`, `sky` — `data-theme` on `<html>`, saved in localStorage; the picker lives on the Account page.
+- Themes: `zambezi` (default, no attribute), `forest`, `sky`, `lavender`, `copper`, `sunset`, `night` and `midnight` (both dark) — `data-theme` on `<html>`, saved in localStorage as `cabinhub-theme`; the swatch picker lives on the Account page. Each theme block in `themes.css` also matches `[data-swatch="…"]` so swatches preview their own colours; a new theme must pass WCAG AA (4.5:1) for button text, small accent text and body text.
 - Mobile first: works at 360 px wide, tap targets ≥ 44 px, bottom tab bar below 768 px; below 1024 px the search list and map take turns.
 
 ## Product rules

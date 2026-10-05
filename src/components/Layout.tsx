@@ -38,7 +38,7 @@ export function Layout() {
         </Suspense>
       </main>
       <footer className="app-footer">
-        <span>BoardZM · Direct from landlords, no agents</span>
+        <span>CabinHub · Direct from landlords, no agents</span>
         <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
         <nav className="footer-links" aria-label="Policies">
           <Link to="/privacy">Privacy</Link>

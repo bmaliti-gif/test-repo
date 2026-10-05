@@ -25,7 +25,7 @@ export default function AdminPage() {
     <div className="admin-page">
       <div>
         <div className="kicker">Admin</div>
-        <h1>Run BoardZM</h1>
+        <h1>Run CabinHub</h1>
       </div>
 
       <nav className="seg seg-scroll admin-tabs" aria-label="Admin sections">

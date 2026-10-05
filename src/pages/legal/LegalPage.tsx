@@ -21,7 +21,7 @@ function Money({ ngwee, fallback }: { ngwee: number | undefined; fallback: strin
 
 const PAGES: Record<string, { kicker: string; title: string; body: () => ReactNode }> = {
   '/privacy': { kicker: 'Your data', title: 'Privacy policy', body: Privacy },
-  '/terms': { kicker: 'Using BoardZM', title: 'Terms of use', body: Terms },
+  '/terms': { kicker: 'Using CabinHub', title: 'Terms of use', body: Terms },
   '/refunds': { kicker: 'Your money', title: 'Deposits and refunds', body: Refunds },
 };
 
@@ -52,7 +52,7 @@ function Privacy() {
   return (
     <>
       <p>
-        BoardZM helps students and young professionals in Lusaka find rooms from landlords. This page explains what we
+        CabinHub helps students and young professionals in Lusaka find rooms from landlords. This page explains what we
         collect, why, who can see it and how long we keep it. We follow Zambia's Data Protection Act, 2021.
       </p>
       <h2>What we collect</h2>
@@ -69,8 +69,8 @@ function Privacy() {
         <li>A landlord's <strong>WhatsApp number</strong> is shown only to a tenant who has paid a deposit for that landlord's room.</li>
         <li>A tenant's WhatsApp number is shown to a roommate only after <strong>both of you agree</strong> to match.</li>
         <li><strong>Roommate profiles</strong> are visible only to signed-in members, and you can hide yours at any time.</li>
-        <li><strong>ID documents are private</strong>: only you and the BoardZM team can open them, through links that expire after 5 minutes.</li>
-        <li>Mobile-money numbers are seen only by you and the BoardZM team.</li>
+        <li><strong>ID documents are private</strong>: only you and the CabinHub team can open them, through links that expire after 5 minutes.</li>
+        <li>Mobile-money numbers are seen only by you and the CabinHub team.</li>
       </ul>
       <h2>How long we keep it</h2>
       <ul>
@@ -97,7 +97,7 @@ function Terms() {
   return (
     <>
       <p>
-        These terms apply when you use BoardZM. By creating an account you agree to them. <strong>BoardZM is in test mode:</strong>{' '}
+        These terms apply when you use CabinHub. By creating an account you agree to them. <strong>CabinHub is in test mode:</strong>{' '}
         payments are simulated and no real money moves until we announce that payments are live.
       </p>
       <h2>Accounts</h2>
@@ -109,7 +109,7 @@ function Terms() {
       <ul>
         <li>List only rooms you own or are allowed to let, with true photos, price and details.</li>
         <li>Publishing a listing costs <Money ngwee={settings?.listing_fee_ngwee} fallback="the listing fee" />. Featuring it costs <Money ngwee={settings?.feature_fee_ngwee} fallback="the featuring fee" /> for {settings?.feature_days ?? 7} days. Verification costs <Money ngwee={settings?.verification_fee_ngwee} fallback="the verification fee" />. Current amounts are always shown before you pay.</li>
-        <li>Don't put phone numbers in listings or ask tenants to pay outside BoardZM. Listings that break these rules are checked by the BoardZM team and may be removed.</li>
+        <li>Don't put phone numbers in listings or ask tenants to pay outside CabinHub. Listings that break these rules are checked by the CabinHub team and may be removed.</li>
         <li>If a reserved room becomes unavailable, cancel the reservation from your dashboard. The tenant gets everything back.</li>
       </ul>
       <h2>For tenants</h2>
@@ -118,7 +118,7 @@ function Terms() {
         <li>Only confirm move-in once you have the keys and the room is as listed.</li>
         <li>Reviews must be honest and about your own stay. Reviews with abuse or personal information are removed.</li>
       </ul>
-      <h2>What BoardZM does and doesn't do</h2>
+      <h2>What CabinHub does and doesn't do</h2>
       <ul>
         <li>We check landlords' documents and hold deposits, but the rental agreement is between you and the landlord.</li>
         <li>We may hide or remove listings, reviews or accounts that break these terms or are reported, while we look into it.</li>
@@ -135,7 +135,7 @@ function Refunds() {
     <>
       <p>
         When you reserve a room you pay a deposit of <Money ngwee={settings?.deposit_ngwee} fallback="the deposit" /> and a booking
-        fee of <Money ngwee={settings?.booking_fee_ngwee} fallback="the booking fee" />. <strong>BoardZM holds the deposit, not the
+        fee of <Money ngwee={settings?.booking_fee_ngwee} fallback="the booking fee" />. <strong>CabinHub holds the deposit, not the
         landlord,</strong> until you move in.
       </p>
       <h2>When the landlord gets the deposit</h2>
@@ -146,7 +146,7 @@ function Refunds() {
       <h2>When you get money back</h2>
       <ul>
         <li><strong>The landlord cancels</strong> (for example, the room is no longer available): you get the deposit and the booking fee back in full.</li>
-        <li><strong>The room isn't as listed</strong>, or the landlord asks for more money or payment outside BoardZM: don't confirm move-in. Use “Report a problem” on My reservations. While we look into it the deposit stays held, and if we agree, you get the deposit and booking fee back in full.</li>
+        <li><strong>The room isn't as listed</strong>, or the landlord asks for more money or payment outside CabinHub: don't confirm move-in. Use “Report a problem” on My reservations. While we look into it the deposit stays held, and if we agree, you get the deposit and booking fee back in full.</li>
         <li><strong>A payment didn't go through</strong> or a reservation ran out before payment: no money is taken. If money was taken by mistake, it is returned.</li>
       </ul>
       <h2>When there is no refund</h2>

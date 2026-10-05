@@ -1,4 +1,4 @@
-# BoardZM
+# CabinHub
 
 Rooms near campus in Lusaka, straight from verified landlords. Students and young professionals find a room on a map, read reviews from past tenants, find a roommate and reserve with a mobile-money deposit. Landlords list rooms for less than an agent charges.
 

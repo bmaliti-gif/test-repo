@@ -5,7 +5,8 @@ import { Button } from '../../components/Button';
 import { TextField } from '../../components/Field';
 import { NotConnected } from '../../components/RequireAuth';
 import { Notice } from '../../components/Status';
-import { friendlyAuthError, pathAfterSignIn, safeNext, useAuth } from '../../lib/auth';
+import { friendlyAuthError, afterSignIn, safeNext, useAuth } from '../../lib/auth';
+import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
 import { AuthCard, GoogleButton, OrDivider } from './AuthCard';
 
@@ -19,6 +20,7 @@ export default function SignInPage() {
   const next = safeNext(params.get('next'));
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const toast = useToast();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,13 +48,15 @@ export default function SignInPage() {
       setFormError(friendlyAuthError(error));
       return;
     }
-    navigate(await pathAfterSignIn(data.user.id, next), { replace: true });
+    const done = await afterSignIn(data.user.id, next);
+    toast(done.welcome);
+    navigate(done.path, { replace: true });
   }
 
   const nextQuery = next === '/' ? '' : `?next=${encodeURIComponent(next)}`;
 
   return (
-    <AuthCard kicker="Welcome back" title="Sign in">
+    <AuthCard kicker="Sign in" title="Good to see you" welcome="signin">
       <form className="form" onSubmit={submit} noValidate>
         {formError && <Notice tone="error">{formError}</Notice>}
         <TextField
@@ -82,7 +86,7 @@ export default function SignInPage() {
       <OrDivider />
       <GoogleButton next={next} onError={setFormError} />
       <p className="form-foot">
-        New to BoardZM? <Link to={`/signup${nextQuery}`}>Create an account</Link>
+        New to CabinHub? <Link to={`/signup${nextQuery}`}>Create an account</Link>
       </p>
     </AuthCard>
   );

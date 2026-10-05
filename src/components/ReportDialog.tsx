@@ -12,7 +12,7 @@ const REASONS: Record<'listing' | 'review' | 'reservation', string[]> = {
     'Looks like a scam',
     'Already let',
     'Wrong price or location',
-    'Asked to pay outside BoardZM',
+    'Asked to pay outside CabinHub',
     'Offensive content',
     'Something else',
   ],
@@ -20,7 +20,7 @@ const REASONS: Record<'listing' | 'review' | 'reservation', string[]> = {
   reservation: [
     'Room not as listed',
     'Landlord not responding',
-    'Asked to pay more or outside BoardZM',
+    'Asked to pay more or outside CabinHub',
     "Can't move in on the agreed date",
     'Something else',
   ],
@@ -59,7 +59,7 @@ export function ReportDialog({ open, onClose, targetType, targetId }: Props) {
     try {
       await report.mutateAsync({ targetType, targetId, reason, note: note.trim().slice(0, 1000) });
       onClose();
-      toast('Report sent. Thank you, the BoardZM team will look at it.');
+      toast('Report sent. Thank you, the CabinHub team will look at it.');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong.');
     }
@@ -70,8 +70,8 @@ export function ReportDialog({ open, onClose, targetType, targetId }: Props) {
       <form className="form" onSubmit={submit} noValidate>
         <p className="dialog-body">
           {targetType === 'reservation'
-            ? "Tell us what's wrong. The BoardZM team will contact you, and your deposit stays held until it's sorted."
-            : 'Reports are private. The BoardZM team checks every one, and an item with several reports is hidden until we decide.'}
+            ? "Tell us what's wrong. The CabinHub team will contact you, and your deposit stays held until it's sorted."
+            : 'Reports are private. The CabinHub team checks every one, and an item with several reports is hidden until we decide.'}
         </p>
         {error && <Notice tone="error">{error}</Notice>}
         <div className="field">

@@ -204,7 +204,7 @@ export function useSettleReservation() {
       const { error } =
         action === 'release'
           ? await supabase!.rpc('confirm_move_in', { p_reservation_id: id })
-          : await supabase!.rpc('cancel_reservation', { p_reservation_id: id, p_reason: reason ?? 'Refunded by BoardZM' });
+          : await supabase!.rpc('cancel_reservation', { p_reservation_id: id, p_reason: reason ?? 'Refunded by CabinHub' });
       if (error) throw new Error(error.message);
     },
     onSuccess: refresh,

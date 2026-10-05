@@ -206,7 +206,7 @@ export function PaymentDialog({ open, onClose, title, amountNgwee, lines, defaul
             <div className="sim-prompt" role="group" aria-label="Simulated phone prompt">
               <span className="sim-label">Simulated phone prompt · test mode, no real money</span>
               <span>
-                Pay <strong>{formatKwacha(amount)}</strong> to BoardZM?
+                Pay <strong>{formatKwacha(amount)}</strong> to CabinHub?
               </span>
               <div className="sim-actions">
                 <Button variant="secondary" onClick={() => answer(false)} disabled={busy}>

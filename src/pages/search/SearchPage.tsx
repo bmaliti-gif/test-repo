@@ -118,14 +118,14 @@ function Search() {
               <BadgeCheck size={16} strokeWidth={2} aria-hidden="true" /> ID-checked landlords
             </li>
             <li>
-              <Lock size={16} strokeWidth={2} aria-hidden="true" /> Deposit held by BoardZM
+              <Lock size={16} strokeWidth={2} aria-hidden="true" /> Deposit held by CabinHub
             </li>
             <li>
               <MessageSquareQuote size={16} strokeWidth={2} aria-hidden="true" /> Reviews from real tenants
             </li>
           </ul>
         </div>
-        <ol className="how-card" aria-label="How BoardZM works">
+        <ol className="how-card" aria-label="How CabinHub works">
           <li>
             <span className="how-num">1</span>
             <span>
@@ -135,7 +135,7 @@ function Search() {
           <li>
             <span className="how-num">2</span>
             <span>
-              <strong>Reserve with mobile money.</strong> BoardZM holds your deposit, not the landlord.
+              <strong>Reserve with mobile money.</strong> CabinHub holds your deposit, not the landlord.
             </span>
           </li>
           <li>

@@ -10,8 +10,8 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'BoardZM — rooms in Lusaka',
-        short_name: 'BoardZM',
+        name: 'CabinHub — rooms in Lusaka',
+        short_name: 'CabinHub',
         description: 'Find a room near campus in Lusaka from verified landlords. Reserve with mobile money.',
         lang: 'en',
         start_url: '/',

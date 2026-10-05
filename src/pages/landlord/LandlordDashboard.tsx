@@ -67,7 +67,7 @@ export default function LandlordDashboard() {
       const messages: Record<string, string> = {
         archived: 'Archived. Tenants no longer see it.',
         live: 'Relisted. It is live again.',
-        in_review: 'Sent to the BoardZM team for review.',
+        in_review: 'Sent to the CabinHub team for review.',
         draft: 'Moved back to drafts. Publish it to go live.',
       };
       toast(messages[result] ?? 'Updated.');
@@ -112,7 +112,7 @@ export default function LandlordDashboard() {
             <Blueprint className="card empty-card">
               <h3 className="card-title">No rooms yet</h3>
               <p className="card-body">
-                List your first room: add a few photos, drop a pin and publish. Tenants reserve with a deposit that BoardZM
+                List your first room: add a few photos, drop a pin and publish. Tenants reserve with a deposit that CabinHub
                 holds until they move in.
               </p>
               <div>
@@ -319,7 +319,7 @@ function VerificationCard({
       <p className="card-body verify-copy">
         {verified
           ? 'Tenants see the Verified landlord tag on all your rooms.'
-          : 'Reviewed by the BoardZM team, usually within a day. No office visit.'}
+          : 'Reviewed by the CabinHub team, usually within a day. No office visit.'}
       </p>
       {status === 'rejected' && verification?.rejection_reason && (
         <Notice tone="error">{verification.rejection_reason}</Notice>

@@ -37,7 +37,7 @@ const initials = (name: string) =>
     .filter(Boolean)
     .slice(0, 2)
     .map((w) => w[0]!.toUpperCase())
-    .join('') || 'BZ';
+    .join('') || 'CH';
 
 export default function ListingPage() {
   if (!supabase) return <NotConnected />;
@@ -210,9 +210,9 @@ function Listing() {
               {initials(l.landlord_name)}
             </div>
             <div className="landlord-info">
-              <span className="card-title">{l.landlord_name || 'BoardZM landlord'}</span>
+              <span className="card-title">{l.landlord_name || 'CabinHub landlord'}</span>
               <span className="landlord-note">
-                {l.landlord_verified ? 'ID and ownership verified' : 'Verification in progress'} · on BoardZM since {sinceYear}
+                {l.landlord_verified ? 'ID and ownership verified' : 'Verification in progress'} · on CabinHub since {sinceYear}
               </span>
             </div>
             <SaveButton listingId={l.id} />
@@ -236,7 +236,7 @@ function Listing() {
               </ul>
             )}
             {published.length < reviews.length && (
-              <Notice tone="info">Your review is under review and will appear once the BoardZM team approves it.</Notice>
+              <Notice tone="info">Your review is under review and will appear once the CabinHub team approves it.</Notice>
             )}
           </section>
 
@@ -265,7 +265,7 @@ function Listing() {
 }
 
 function ReviewItem({ review: r, onReport }: { review: ReviewWithAuthor; onReport: () => void }) {
-  const name = r.author?.full_name?.trim() || 'BoardZM tenant';
+  const name = r.author?.full_name?.trim() || 'CabinHub tenant';
   // "Mutale Kabwe" → "Mutale K." like the design.
   const parts = name.split(/\s+/);
   const short = parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1][0]}.` : name;

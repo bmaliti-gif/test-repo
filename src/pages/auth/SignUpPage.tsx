@@ -5,7 +5,8 @@ import { Button } from '../../components/Button';
 import { TextField } from '../../components/Field';
 import { NotConnected } from '../../components/RequireAuth';
 import { Notice } from '../../components/Status';
-import { callbackUrl, friendlyAuthError, pathAfterSignIn, safeNext, useAuth } from '../../lib/auth';
+import { callbackUrl, friendlyAuthError, afterSignIn, safeNext, useAuth } from '../../lib/auth';
+import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
 import { AuthCard, GoogleButton, OrDivider } from './AuthCard';
 
@@ -22,6 +23,7 @@ export default function SignUpPage() {
   const next = safeNext(params.get('next'));
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const toast = useToast();
 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -57,7 +59,9 @@ export default function SignUpPage() {
     }
     if (data.session && data.user) {
       // "Confirm email" is off: signed in straight away.
-      navigate(await pathAfterSignIn(data.user.id, next), { replace: true });
+      const done = await afterSignIn(data.user.id, next);
+      toast(done.welcome);
+      navigate(done.path, { replace: true });
       return;
     }
     setBusy(false);
@@ -86,7 +90,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <AuthCard kicker="Join BoardZM" title="Create an account">
+    <AuthCard kicker="Join CabinHub" title="Create an account" welcome="signup">
       <form className="form" onSubmit={submit} noValidate>
         {formError && <Notice tone="error">{formError}</Notice>}
         <TextField
@@ -124,7 +128,7 @@ export default function SignUpPage() {
       <OrDivider />
       <GoogleButton next={next} onError={setFormError} />
       <p className="form-foot">
-        Already on BoardZM? <Link to={`/signin${nextQuery}`}>Sign in</Link>
+        Already on CabinHub? <Link to={`/signin${nextQuery}`}>Sign in</Link>
       </p>
     </AuthCard>
   );

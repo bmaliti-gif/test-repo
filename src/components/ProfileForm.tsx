@@ -114,8 +114,8 @@ export function ProfileForm({ me, submitLabel, completeOnboarding, onSaved }: Pr
       {formError && <Notice tone="error">{formError}</Notice>}
 
       <fieldset className="form-group">
-        <legend>What brings you to BoardZM?</legend>
-        <div className="seg seg-wide" role="radiogroup" aria-label="What brings you to BoardZM?">
+        <legend>What brings you to CabinHub?</legend>
+        <div className="seg seg-wide" role="radiogroup" aria-label="What brings you to CabinHub?">
           <label className="seg-opt">
             <input type="radio" name="role" checked={!landlord} onChange={() => set('role', 'tenant')} />
             I'm looking for a room

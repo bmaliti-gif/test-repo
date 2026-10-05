@@ -1,4 +1,4 @@
-// Types for the BoardZM database, matching supabase/migrations/0001–0004.
+// Types for the CabinHub database, matching supabase/migrations/0001–0004.
 // Same shape as `supabase gen types typescript` output; keep it in sync when a migration changes.
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];

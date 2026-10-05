@@ -6,7 +6,7 @@ import { Button } from '../../components/Button';
 import { InstallApp } from '../../components/InstallApp';
 import { ProfileForm } from '../../components/ProfileForm';
 import { Loading, Notice } from '../../components/Status';
-import { ThemeSelect } from '../../components/ThemeSelect';
+import { ThemePicker } from '../../components/ThemeSelect';
 import { signOut, useAuth, useMe } from '../../lib/auth';
 
 export default function AccountPage() {
@@ -42,8 +42,10 @@ export default function AccountPage() {
               Look
             </h2>
             <div className="field">
-              <label htmlFor="account-theme">Theme</label>
-              <ThemeSelect id="account-theme" className="input" />
+              <span id="account-theme" className="field-label">
+                Theme
+              </span>
+              <ThemePicker labelledBy="account-theme" />
             </div>
             <InstallApp />
           </Blueprint>

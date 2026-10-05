@@ -14,7 +14,7 @@ const STATUS: Record<MyReservation['status'], { label: string; tag: string; note
   held: {
     label: 'Deposit held',
     tag: 'tag-accent',
-    note: 'BoardZM is holding your deposit. Confirm move-in once you have the keys and the room is as listed.',
+    note: 'CabinHub is holding your deposit. Confirm move-in once you have the keys and the room is as listed.',
   },
   released: { label: 'Moved in', tag: 'tag-neutral', note: 'Move-in confirmed. Your deposit was released to the landlord.' },
   refunded: { label: 'Refunded', tag: 'tag-outline', note: 'Your deposit and booking fee were paid back to your mobile money.' },
@@ -52,7 +52,7 @@ export default function ReservationsPage() {
         <Blueprint className="card empty-card">
           <h2 className="card-title">No reservations yet</h2>
           <p className="card-body">
-            When you reserve a room, your deposit is held here by BoardZM until you move in, and the landlord's WhatsApp
+            When you reserve a room, your deposit is held here by CabinHub until you move in, and the landlord's WhatsApp
             unlocks.
           </p>
           <div>

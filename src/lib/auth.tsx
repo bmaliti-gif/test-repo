@@ -79,11 +79,22 @@ export function callbackUrl(next: string): string {
 
 /** Where to go right after signing in: first-timers set up their profile on /welcome. */
 export async function pathAfterSignIn(userId: string, next: string): Promise<string> {
+  return (await afterSignIn(userId, next)).path;
+}
+
+/**
+ * Where to go after signing in, plus a friendly welcome to show there:
+ * "Welcome back, Mutale!" for returning members, "Welcome to CabinHub!" for new ones.
+ */
+export async function afterSignIn(userId: string, next: string): Promise<{ path: string; welcome: string }> {
   const target = safeNext(next);
-  if (!supabase) return target;
-  const { data } = await supabase.from('profiles').select('onboarded').eq('id', userId).maybeSingle();
-  if (data && !data.onboarded) return `/welcome?next=${encodeURIComponent(target)}`;
-  return target;
+  if (!supabase) return { path: target, welcome: 'Welcome to CabinHub!' };
+  const { data } = await supabase.from('profiles').select('onboarded, full_name').eq('id', userId).maybeSingle();
+  const first = data?.full_name?.trim().split(/\s+/)[0];
+  if (data && !data.onboarded) {
+    return { path: `/welcome?next=${encodeURIComponent(target)}`, welcome: first ? `Welcome to CabinHub, ${first}!` : 'Welcome to CabinHub!' };
+  }
+  return { path: target, welcome: first ? `Welcome back, ${first}!` : 'Welcome back!' };
 }
 
 /** Supabase's English error messages, rewritten in plain, friendly words. */
@@ -101,6 +112,6 @@ export function friendlyAuthError(error: unknown): string {
   if (m.includes('provider is not enabled') || m.includes('unsupported provider'))
     return "Google sign-in isn't switched on yet. Use email and password for now.";
   if (m.includes('failed to fetch') || m.includes('network'))
-    return "We couldn't reach BoardZM. Check your internet connection and try again.";
+    return "We couldn't reach CabinHub. Check your internet connection and try again.";
   return message || 'Something went wrong. Please try again.';
 }

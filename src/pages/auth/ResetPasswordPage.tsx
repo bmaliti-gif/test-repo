@@ -49,7 +49,7 @@ function RequestLinkForm() {
     return (
       <AuthCard kicker="Account" title="Check your email">
         <Notice tone="success">
-          If there's a BoardZM account for <strong>{email.trim()}</strong>, we've sent a link to set a new password. Open it
+          If there's a CabinHub account for <strong>{email.trim()}</strong>, we've sent a link to set a new password. Open it
           on this phone or computer.
         </Notice>
         <p className="form-foot">

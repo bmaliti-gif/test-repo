@@ -26,7 +26,7 @@ export type PaymentResult = {
 
 function friendly(error: { message?: string } | null): Error {
   const m = error?.message ?? '';
-  if (/failed to fetch|network/i.test(m)) return new Error("We couldn't reach BoardZM. Check your connection and try again.");
+  if (/failed to fetch|network/i.test(m)) return new Error("We couldn't reach CabinHub. Check your connection and try again.");
   // Our SQL functions already raise plain-words messages.
   return new Error(m || 'Something went wrong. Please try again.');
 }

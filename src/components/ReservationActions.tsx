@@ -22,7 +22,7 @@ export function WhatsAppButton({ listingId, title, reference, block }: { listing
   if (!contact.data) {
     return <p className="reserve-note">The landlord hasn't added a WhatsApp number yet. We've let them know.</p>;
   }
-  const message = `Hi, I've reserved "${title}" on BoardZM (ref ${reference}). When can I view the room and collect the keys?`;
+  const message = `Hi, I've reserved "${title}" on CabinHub (ref ${reference}). When can I view the room and collect the keys?`;
   return (
     <a
       className={block ? 'btn btn-secondary btn-block whatsapp-button' : 'btn btn-secondary whatsapp-button'}

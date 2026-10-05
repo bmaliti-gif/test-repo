@@ -33,7 +33,7 @@ const SLOTS: { slot: DocSlot; label: string; hint: string; pdf: boolean }[] = [
 
 const STATUS = {
   awaiting_payment: { label: 'Awaiting payment', note: 'Upload all four documents, then pay to send them for review.' },
-  pending: { label: 'Pending review', note: 'The BoardZM team is checking your documents, usually within a day. No office visit.' },
+  pending: { label: 'Pending review', note: 'The CabinHub team is checking your documents, usually within a day. No office visit.' },
   approved: { label: 'Approved', note: 'You are a verified landlord. Tenants see the Verified landlord tag on all your rooms.' },
   rejected: { label: 'Rejected', note: 'Something needs fixing. Upload new documents and resubmit.' },
 } as const;
@@ -102,7 +102,7 @@ export default function VerificationPage() {
         <div className="kicker">Identity verification</div>
         <h1>Get the Verified badge</h1>
         <p className="lede muted">
-          Verified landlords get more reservations: tenants filter for them. Reviewed by the BoardZM team, usually within a day.
+          Verified landlords get more reservations: tenants filter for them. Reviewed by the CabinHub team, usually within a day.
         </p>
       </div>
 
@@ -141,7 +141,7 @@ export default function VerificationPage() {
               <label className="check consent">
                 <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
                 <span>
-                  I agree that BoardZM may check these documents to verify me. They stay private (only the BoardZM team can
+                  I agree that CabinHub may check these documents to verify me. They stay private (only the CabinHub team can
                   see them) and are deleted 30 days after review.
                 </span>
               </label>
@@ -168,7 +168,7 @@ export default function VerificationPage() {
           }}
           success={() => ({
             title: 'Sent for review',
-            body: <>Thanks. The BoardZM team will check your documents, usually within a day. We'll show the result here.</>,
+            body: <>Thanks. The CabinHub team will check your documents, usually within a day. We'll show the result here.</>,
           })}
         />
       )}

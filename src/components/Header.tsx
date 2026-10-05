@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router';
 import { useAuth } from '../lib/auth';
 import { HEADER_NAV, isActive } from './nav';
 
-/** The BoardZM mark: a roof over a door, in the brand colour. */
+/** The CabinHub mark: a roof over a door, in the brand colour. */
 export function LogoMark({ size = 30 }: { size?: number }) {
   return (
     <svg className="logo-mark" width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
@@ -22,10 +22,10 @@ export function Header({ savedCount }: { savedCount: number }) {
   return (
     <header className="app-header">
       <div className="header-inner">
-        <Link to="/" className="brand" aria-label="BoardZM home: find a room in Lusaka">
+        <Link to="/" className="brand" aria-label="CabinHub home: find a room in Lusaka">
           <LogoMark />
           <span className="brand-text">
-            <span className="brand-name">BoardZM</span>
+            <span className="brand-name">CabinHub</span>
             <span className="brand-place">Lusaka</span>
           </span>
         </Link>

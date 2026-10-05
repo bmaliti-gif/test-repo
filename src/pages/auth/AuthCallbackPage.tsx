@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router';
 import { NotConnected } from '../../components/RequireAuth';
 import { Loading, Notice } from '../../components/Status';
-import { pathAfterSignIn, safeNext } from '../../lib/auth';
+import { afterSignIn, safeNext } from '../../lib/auth';
+import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
 import { AuthCard } from './AuthCard';
 
@@ -15,6 +16,7 @@ export default function AuthCallbackPage() {
   const navigate = useNavigate();
   const [problem, setProblem] = useState<string | null>(null);
   const started = useRef(false);
+  const toast = useToast();
 
   useEffect(() => {
     if (!supabase || started.current) return;
@@ -32,9 +34,11 @@ export default function AuthCallbackPage() {
         );
         return;
       }
-      navigate(await pathAfterSignIn(data.session.user.id, next), { replace: true });
+      const done = await afterSignIn(data.session.user.id, next);
+      toast(done.welcome);
+      navigate(done.path, { replace: true });
     });
-  }, [params, navigate]);
+  }, [params, navigate, toast]);
 
   if (!supabase) return <NotConnected />;
   if (!problem) return <Loading label="Signing you in…" />;

@@ -1,5 +1,7 @@
 # Handoff: BoardZM web app
 
+> **Note (Oct 2026):** the app has been renamed **CabinHub**. This document still uses the original name, BoardZM.
+
 ## Overview
 BoardZM is a housing marketplace for Lusaka. Students and young professionals find rooms near campus from verified landlords, read reviews from past tenants, find roommates and reserve with a mobile-money deposit; landlords list rooms and track deposits and payouts. This document describes the screens to build. Scope, stack, data model and build order are in `PLAN.md`.
 

@@ -1,16 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 
 export const THEMES = [
-  { value: 'zambezi', label: 'Zambezi (teal)' },
-  { value: 'night', label: 'Night' },
-  { value: 'copper', label: 'Copper' },
-  { value: 'sky', label: 'Sky' },
+  { value: 'zambezi', label: 'Zambezi', note: 'Teal · default' },
+  { value: 'forest', label: 'Forest', note: 'Deep green' },
+  { value: 'sky', label: 'Sky', note: 'Classic blue' },
+  { value: 'lavender', label: 'Lavender', note: 'Soft purple' },
+  { value: 'copper', label: 'Copper', note: 'Warm earth' },
+  { value: 'sunset', label: 'Sunset', note: 'Bright orange' },
+  { value: 'night', label: 'Night', note: 'Dark teal' },
+  { value: 'midnight', label: 'Midnight', note: 'Dark navy' },
 ] as const;
 
 export type Theme = (typeof THEMES)[number]['value'];
 
-const STORAGE_KEY = 'boardzm-theme';
-const EVENT = 'boardzm-theme-change';
+const STORAGE_KEY = 'cabinhub-theme';
+// The app used to be called BoardZM; a theme saved under the old name still counts.
+const OLD_STORAGE_KEY = 'boardzm-theme';
+const EVENT = 'cabinhub-theme-change';
 
 function isTheme(v: unknown): v is Theme {
   return THEMES.some((t) => t.value === v);
@@ -18,7 +24,7 @@ function isTheme(v: unknown): v is Theme {
 
 export function readTheme(): Theme {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(OLD_STORAGE_KEY);
     if (isTheme(saved)) return saved;
   } catch {
     // Storage can be blocked (private mode); fall back to the default.
