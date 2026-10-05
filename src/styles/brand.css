@@ -3,7 +3,8 @@
    true-colour photos. Colours come from themes.css; no hex values here. */
 
 :root {
-  --font-heading: "Barlow", system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-heading-weight: 700;
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -376,3 +377,38 @@ h1, h2, h3, h4 { letter-spacing: -0.02em; }
   .welcome-body { font-size: 14px; }
   .welcome-points { display: none; }
 }
+
+/* ═══ Type: Plus Jakarta Sans headings, Inter text ══════════════════════════ */
+body { font-family: var(--font-body); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, h2, h3, h4, .card-title, .dialog-title, .brand-name, .listing-title, .listing-price, .reserve-amount, .welcome-title, .stat-cell dd, .mate-score-value {
+  font-family: var(--font-heading);
+}
+h1, .search-hero h1, .welcome-title { font-weight: 800; letter-spacing: -0.035em; }
+h2, h3, .card-title, .listing-title { font-weight: 700; letter-spacing: -0.02em; }
+.listing-price, .reserve-amount { font-weight: 800; }
+.btn, .nav-link, .campus-pill, .tag, .field > label, .kicker { font-family: var(--font-body); }
+.btn { font-weight: 600; letter-spacing: -0.005em; }
+.kicker, .card-kicker { font-size: 11px; letter-spacing: .1em; }
+.input, select.input, textarea.input { font-family: var(--font-body); }
+
+/* Welcome panel: a warm room photo under the brand colour. */
+.welcome-panel {
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--color-accent) 92%, transparent), color-mix(in srgb, var(--color-accent-800) 88%, transparent)),
+    url('/images/welcome-room.webp') center / cover no-repeat,
+    var(--color-accent);
+}
+
+/* Room photo grid adapts to how many photos there are (no empty boxes). */
+.photo-grid.photos-1 { grid-template-columns: 1fr; grid-template-rows: 380px; }
+.photo-grid.photos-1 .photo-main { grid-row: auto; }
+.photo-grid.photos-2 { grid-template-columns: 2fr 1fr; grid-template-rows: 360px; }
+.photo-grid.photos-2 .photo-main { grid-row: auto; }
+.photo-grid.photos-3 { grid-template-columns: 2fr 1fr; grid-template-rows: 180px 180px; }
+.photo-grid.photos-4 { grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 180px 180px; }
+.photo-grid.photos-4 > :nth-child(4) { grid-column: 2 / span 2; }
+.photo-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 14px; color: var(--color-accent-700); }
+.photo-empty svg { color: var(--color-accent-500); }
+@media (max-width: 767px) { .photo-grid.photos-1 .photo-cell { flex-basis: 100%; } }
+/* Slightly looser heading spacing for Plus Jakarta Sans. */
+h1, .search-hero h1, .welcome-title { letter-spacing: -0.025em; }

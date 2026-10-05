@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ArrowLeft, Flag, MapPin, ShieldCheck, Star, Zap } from 'lucide-react';
+import { ArrowLeft, Flag, Home, MapPin, ShieldCheck, Star, Zap } from 'lucide-react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { Blueprint, Corners } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
@@ -118,14 +118,17 @@ function Listing() {
         </Button>
       </div>
 
-      <div className="photo-grid" aria-label="Photos">
-        {PLACEHOLDERS.map((label, i) => {
+      <div className={`photo-grid photos-${Math.min(Math.max(photos.length, 1), 5)}`} aria-label="Photos">
+        {(photos.length ? PLACEHOLDERS.slice(0, Math.min(photos.length, 5)) : PLACEHOLDERS.slice(0, 1)).map((label, i) => {
           const src = photos[i];
           const main = i === 0;
           const content = src ? (
             <img src={src} alt="" loading={main ? 'eager' : 'lazy'} decoding="async" />
           ) : (
-            <span aria-hidden="true">{label}</span>
+            <span className="photo-empty" aria-hidden="true">
+              <Home size={32} strokeWidth={1.5} />
+              The landlord hasn't added photos yet
+            </span>
           );
           const cls = `photo-cell duotone${main ? ' photo-main blueprint' : ''}${src ? ' has-photo' : ''}`;
           return src ? (
