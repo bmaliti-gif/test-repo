@@ -41,6 +41,7 @@ export function Layout() {
         <span>CabinHub · Direct from landlords, no agents</span>
         <span>Deposits held via MTN MoMo · Airtel Money · Zamtel Kwacha</span>
         <nav className="footer-links" aria-label="Policies">
+          <Link to="/about">About</Link>
           <Link to="/privacy">Privacy</Link>
           <Link to="/terms">Terms</Link>
           <Link to="/refunds">Deposits &amp; refunds</Link>

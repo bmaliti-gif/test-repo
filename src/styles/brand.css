@@ -412,3 +412,27 @@ h2, h3, .card-title, .listing-title { font-weight: 700; letter-spacing: -0.02em;
 @media (max-width: 767px) { .photo-grid.photos-1 .photo-cell { flex-basis: 100%; } }
 /* Slightly looser heading spacing for Plus Jakarta Sans. */
 h1, .search-hero h1, .welcome-title { letter-spacing: -0.025em; }
+
+/* ═══ Search: catchphrase only ══════════════════════════════════════════════ */
+.search-hero { display: block; }
+.search-hero .hero-inner { padding: 22px var(--space-6) 18px; }
+.search-hero h1 { max-width: none; margin: 0; font-size: clamp(26px, 3.2vw, 38px); }
+@media (min-width: 1440px) { .search-hero { padding-inline: calc((100vw - 1440px) / 2); } }
+@media (max-width: 767px) { .search-hero .hero-inner { padding: 16px var(--space-4) 12px; } .search-hero h1 { font-size: 26px; } }
+
+/* ═══ About ═════════════════════════════════════════════════════════════════ */
+.about-page { max-width: 820px; display: flex; flex-direction: column; gap: var(--space-8); }
+.about-page h1 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.1; margin: 6px 0 0; max-width: 22ch; }
+.about-page .lede { font-size: 16px; line-height: 1.6; }
+.about-section { display: flex; flex-direction: column; gap: var(--space-4); }
+.about-section h2 { margin: 0; font-size: 24px; }
+.about-steps { width: auto; margin: 0; padding: 22px 24px; gap: 18px; }
+.about-steps li { font-size: 15px; }
+.about-trust { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.about-trust li {
+  display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; font-size: 15px; line-height: 1.5;
+  background: var(--color-card); border: 1px solid var(--color-divider); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);
+}
+.about-trust svg { flex: none; color: var(--color-accent); margin-top: 1px; }
+.about-page .btn-primary { min-height: 46px; padding: 0 22px; }
+.about-link { align-self: flex-start; padding-inline: 0; min-height: 44px; }

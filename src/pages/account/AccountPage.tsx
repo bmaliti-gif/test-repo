@@ -48,6 +48,9 @@ export default function AccountPage() {
               <ThemePicker labelledBy="account-theme" />
             </div>
             <InstallApp />
+            <Link to="/about" className="btn btn-ghost about-link">
+              About CabinHub and how it works
+            </Link>
           </Blueprint>
 
           <Blueprint as="section" className="card" aria-labelledby="security-heading">

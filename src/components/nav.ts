@@ -1,4 +1,4 @@
-import { Building2, CalendarCheck, Heart, LayoutDashboard, Search, User, Users, type LucideIcon } from 'lucide-react';
+import { Building2, CalendarCheck, Heart, Info, LayoutDashboard, Search, User, Users, type LucideIcon } from 'lucide-react';
 
 export type NavItem = {
   to: string;
@@ -13,6 +13,7 @@ export const HEADER_NAV: NavItem[] = [
   { to: '/', label: 'Find a room', icon: Search, match: ['/listing'] },
   { to: '/roommates', label: 'Roommates', icon: Users, match: [] },
   { to: '/landlord', label: 'For landlords', icon: Building2, match: [] },
+  { to: '/about', label: 'About', icon: Info, match: [] },
 ];
 
 // Phone tab bar (PLAN.md §6). Landlords get Dashboard in place of Reservations;

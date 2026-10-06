@@ -1,5 +1,5 @@
 import { lazy, Suspense, useCallback, useMemo, useState, type ReactNode } from 'react';
-import { BadgeCheck, List, Lock, Map as MapIcon, MessageSquareQuote, SlidersHorizontal } from 'lucide-react';
+import { List, Map as MapIcon, SlidersHorizontal } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
@@ -93,58 +93,8 @@ function Search() {
     <div className="search-page">
       <section className="search-hero" aria-labelledby="search-title">
         <div className="hero-inner">
-          <div className="kicker">Off-campus rooms in Lusaka</div>
-          <h1 id="search-title">Find a room near campus, straight from verified landlords</h1>
-          <p className="hero-sub">No agent fees. Your deposit is held safely until you move in.</p>
-          <div className="campus-pills" role="group" aria-label="Show rooms nearest to">
-            <span className="campus-pills-label">Nearest to</span>
-            {CAMPUSES.map((c) => {
-              const on = filters.near === c.id && filters.sort === 'near';
-              return (
-                <button
-                  key={c.id}
-                  type="button"
-                  className={on ? 'campus-pill is-on' : 'campus-pill'}
-                  aria-pressed={on}
-                  onClick={() => update(on ? { sort: 'recommended' } : { near: c.id, sort: 'near' })}
-                >
-                  {c.short}
-                </button>
-              );
-            })}
-          </div>
-          <ul className="trust-strip">
-            <li>
-              <BadgeCheck size={16} strokeWidth={2} aria-hidden="true" /> ID-checked landlords
-            </li>
-            <li>
-              <Lock size={16} strokeWidth={2} aria-hidden="true" /> Deposit held by CabinHub
-            </li>
-            <li>
-              <MessageSquareQuote size={16} strokeWidth={2} aria-hidden="true" /> Reviews from real tenants
-            </li>
-          </ul>
+          <h1 id="search-title">Find it. Book it. Move in.</h1>
         </div>
-        <ol className="how-card" aria-label="How CabinHub works">
-          <li>
-            <span className="how-num">1</span>
-            <span>
-              <strong>Find and compare</strong> rooms near your campus, with real reviews.
-            </span>
-          </li>
-          <li>
-            <span className="how-num">2</span>
-            <span>
-              <strong>Reserve with mobile money.</strong> CabinHub holds your deposit, not the landlord.
-            </span>
-          </li>
-          <li>
-            <span className="how-num">3</span>
-            <span>
-              <strong>Move in,</strong> then confirm. Only then is the deposit released.
-            </span>
-          </li>
-        </ol>
       </section>
 
       <section className="filter-row" aria-label="Filters">

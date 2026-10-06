@@ -22,6 +22,7 @@ const AuthCallbackPage = lazy(() => import('./pages/auth/AuthCallbackPage'));
 const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const LegalPage = lazy(() => import('./pages/legal/LegalPage'));
+const AboutPage = lazy(() => import('./pages/about/AboutPage'));
 
 // Routes from docs/PLAN.md §6.
 export default function App() {
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="signup" element={<SignUpPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
         <Route path="auth/callback" element={<AuthCallbackPage />} />
+        <Route path="about" element={<AboutPage />} />
         <Route path="privacy" element={<LegalPage />} />
         <Route path="terms" element={<LegalPage />} />
         <Route path="refunds" element={<LegalPage />} />
