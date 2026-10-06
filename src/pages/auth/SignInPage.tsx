@@ -8,14 +8,13 @@ import { Notice } from '../../components/Status';
 import { useToast } from '../../components/Toast';
 import { friendlyAuthError, safeNext, useAuth } from '../../lib/auth';
 import { supabase } from '../../lib/supabase';
-import { AuthCard, RoleChoice, type SignInAs } from './AuthCard';
+import { AuthCard, GoogleButton, OrDivider, RoleChoice, type SignInAs } from './AuthCard';
+import { finishSignIn, SIGN_IN_LABEL as LABEL } from './finishSignIn';
 
 const schema = z.object({
   email: z.email('Enter your email address, e.g. name@gmail.com.'),
   password: z.string().min(1, 'Enter your password.'),
 });
-
-const LABEL: Record<SignInAs, string> = { tenant: 'Student', landlord: 'Landlord', owner: 'Owner' };
 
 /** ?as=student|landlord|owner preselects the choice. */
 function initialChoice(as: string | null): SignInAs {
@@ -66,33 +65,10 @@ export default function SignInPage() {
       return;
     }
 
-    // Each account has one fixed type; make sure it matches the choice.
-    const { data: p } = await supabase!
-      .from('profiles')
-      .select('role, onboarded, is_admin, full_name')
-      .eq('id', data.user.id)
-      .maybeSingle();
-    if (!p) return refuse("We couldn't load your account. Please try again.");
-
-    if (as === 'owner' && !p.is_admin) {
-      return refuse('The Owner sign-in is only for the CabinHub owner. Choose Student or Landlord.');
-    }
-    if (as !== 'owner' && p.onboarded && p.role !== as) {
-      const actual = p.role === 'landlord' ? 'landlord' : 'student';
-      return refuse(`This email is registered as a ${actual}. Choose ${LABEL[p.role]} to sign in.`);
-    }
-    if (as !== 'owner' && !p.onboarded && p.role !== as) {
-      // Not set up yet: the choice made here becomes the account type.
-      await supabase!.from('profiles').update({ role: as }).eq('id', data.user.id);
-    }
-
-    const first = p.full_name?.trim().split(/\s+/)[0];
-    toast(first ? `Welcome, ${first}!` : 'Welcome!');
-    let path = next;
-    if (!p.onboarded) path = `/welcome?next=${encodeURIComponent(next)}`;
-    else if (as === 'owner' && next === '/') path = '/admin';
-    else if (as === 'landlord' && next === '/') path = '/landlord';
-    navigate(path, { replace: true });
+    const done = await finishSignIn(data.user.id, as, next);
+    if (!done.ok) return refuse(done.message);
+    toast(done.welcome);
+    navigate(done.path, { replace: true });
   }
 
   return (
@@ -100,6 +76,8 @@ export default function SignInPage() {
       <form className="form" onSubmit={submit} noValidate>
         <RoleChoice label="Sign in as" value={as} onChange={setAs} withOwner />
         {formError && <Notice tone="error">{formError}</Notice>}
+        <GoogleButton as={as} next={next} onError={setFormError} />
+        <OrDivider />
         <TextField
           label="Email"
           type="email"

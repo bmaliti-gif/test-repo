@@ -33,18 +33,20 @@ export function Header({ savedCount }: { savedCount: number }) {
           </span>
         </Link>
 
-        <nav className="header-nav" aria-label="Main">
-          {headerNav(me?.profile.role ?? null).map((item) => {
-            const active = isActive(item, pathname);
-            const Icon = item.icon;
-            return (
-              <Link key={item.to} to={item.to} className={active ? 'nav-link active' : 'nav-link'} aria-current={active ? 'page' : undefined}>
-                <Icon size={16} strokeWidth={1.75} aria-hidden="true" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
+        {user && (
+          <nav className="header-nav" aria-label="Main">
+            {headerNav(me?.profile.role ?? null).map((item) => {
+              const active = isActive(item, pathname);
+              const Icon = item.icon;
+              return (
+                <Link key={item.to} to={item.to} className={active ? 'nav-link active' : 'nav-link'} aria-current={active ? 'page' : undefined}>
+                  <Icon size={16} strokeWidth={1.75} aria-hidden="true" />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+        )}
 
         <div className="header-actions">
           {user && (

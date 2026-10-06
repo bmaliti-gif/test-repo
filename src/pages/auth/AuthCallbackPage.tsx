@@ -6,6 +6,7 @@ import { afterSignIn, safeNext } from '../../lib/auth';
 import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
 import { AuthCard } from './AuthCard';
+import { finishSignIn, takeChoice } from './finishSignIn';
 
 /**
  * Email confirmation, password-reset and Google links land here.
@@ -34,6 +35,19 @@ export default function AuthCallbackPage() {
         );
         return;
       }
+      // Back from Google: check the Student / Landlord / Owner choice made before leaving.
+      const choice = takeChoice();
+      if (choice) {
+        const checked = await finishSignIn(data.session.user.id, choice, next);
+        if (!checked.ok) {
+          await supabase!.auth.signOut();
+          setProblem(checked.message);
+          return;
+        }
+        toast(checked.welcome);
+        navigate(checked.path, { replace: true });
+        return;
+      }
       const done = await afterSignIn(data.session.user.id, next);
       toast(done.welcome);
       navigate(done.path, { replace: true });
@@ -44,7 +58,7 @@ export default function AuthCallbackPage() {
   if (!problem) return <Loading label="Signing you in…" />;
 
   return (
-    <AuthCard kicker="Account" title="That link didn't work">
+    <AuthCard kicker="Account" title="We couldn't sign you in">
       <Notice tone="error">{problem}</Notice>
       <p className="form-foot">
         <Link to="/signin">Sign in</Link> · <Link to="/reset-password">Send a new reset link</Link>

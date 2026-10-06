@@ -30,9 +30,7 @@ export default function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        {/* Everyone */}
-        <Route index element={<SearchPage />} />
-        <Route path="listing/:id" element={<ListingPage />} />
+        {/* Everyone: signing in, and what you may read before joining */}
         <Route path="signin" element={<SignInPage />} />
         <Route path="signup" element={<SignUpPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
@@ -42,8 +40,10 @@ export default function App() {
         <Route path="terms" element={<LegalPage />} />
         <Route path="refunds" element={<LegalPage />} />
 
-        {/* Signed in */}
+        {/* Signed in: every feature of the app */}
         <Route element={<RequireAuth />}>
+          <Route index element={<SearchPage />} />
+          <Route path="listing/:id" element={<ListingPage />} />
           <Route path="welcome" element={<WelcomePage />} />
           <Route path="account" element={<AccountPage />} />
           <Route path="wallet" element={<WalletPage />} />

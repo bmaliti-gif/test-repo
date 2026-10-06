@@ -8,7 +8,7 @@ import { Notice } from '../../components/Status';
 import { callbackUrl, friendlyAuthError, afterSignIn, safeNext, useAuth } from '../../lib/auth';
 import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
-import { AuthCard, RoleChoice } from './AuthCard';
+import { AuthCard, GoogleButton, OrDivider, RoleChoice } from './AuthCard';
 
 const schema = z.object({
   fullName: z.string().trim().min(2, 'Enter your name as landlords and roommates will see it.').max(80, 'Keep your name under 80 characters.'),
@@ -103,6 +103,8 @@ export default function SignUpPage() {
           this later.
         </p>
         {formError && <Notice tone="error">{formError}</Notice>}
+        <GoogleButton as={role} next={next} onError={setFormError} />
+        <OrDivider />
         <TextField
           label="Full name"
           autoComplete="name"

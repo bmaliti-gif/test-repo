@@ -1,6 +1,6 @@
 import { Suspense, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router';
-import { useMe } from '../lib/auth';
+import { useAuth, useMe } from '../lib/auth';
 import { useSavedIds, useSettings } from '../lib/queries';
 import { Header } from './Header';
 import { InstallApp } from './InstallApp';
@@ -16,6 +16,7 @@ export function Layout() {
   }, [pathname]);
 
   const { me } = useMe();
+  const { user } = useAuth();
   const saved = useSavedIds();
   const settings = useSettings();
   const savedCount = saved.data?.length ?? 0;
@@ -48,7 +49,7 @@ export function Layout() {
           <InstallApp variant="link" />
         </nav>
       </footer>
-      <TabBar isLandlord={isLandlord} />
+      {user && <TabBar isLandlord={isLandlord} />}
     </div>
   );
 }
