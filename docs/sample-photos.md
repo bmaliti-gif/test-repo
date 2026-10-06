@@ -1,6 +1,6 @@
 # Sample photos
 
-The 8 sample rooms in the database and the sign-in welcome panel use **stand-in photos from Unsplash** (free under the [Unsplash License](https://unsplash.com/license): free for commercial use, no permission or credit required). They are placeholders for the building phase; real landlords' photos replace them.
+The 12 sample rooms in the database (8 from `seed.sql`, 4 from `seed_landlords.sql`) and the sign-in welcome panel use **stand-in photos from Unsplash** (free under the [Unsplash License](https://unsplash.com/license): free for commercial use, no permission or credit required). They are placeholders for the building phase; real landlords' photos replace them.
 
 They are not photos of the actual rooms. Before a public launch, remove or replace them (Admin, or delete the `sample-*.webp` files in the `listing-photos` bucket and their `listing_photos` rows).
 

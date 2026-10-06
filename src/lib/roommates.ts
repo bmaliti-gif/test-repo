@@ -11,6 +11,8 @@ export type Request = Tables<'roommate_requests'>;
 export const MATE_CAMPUSES = [
   { id: 'unza', label: 'UNZA' },
   { id: 'unilus', label: 'UNILUS' },
+  { id: 'unilus-silverest', label: 'UNILUS Silverest' },
+  { id: 'lmmu', label: 'LMMU' },
   { id: 'evelyn-hone', label: 'Evelyn Hone' },
   { id: 'city-centre', label: 'Working' },
 ];

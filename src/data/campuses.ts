@@ -12,6 +12,8 @@ export type Campus = {
 export const CAMPUSES: Campus[] = [
   { id: 'unza', name: 'UNZA (Great East Road)', short: 'UNZA', lat: -15.3949, lng: 28.3315 },
   { id: 'unilus', name: 'UNILUS (Leopards Hill)', short: 'UNILUS', lat: -15.4536, lng: 28.3795 },
+  { id: 'unilus-silverest', name: 'UNILUS (Silverest campus)', short: 'UNILUS Silverest', lat: -15.3555, lng: 28.4692 },
+  { id: 'lmmu', name: 'Levy Mwanawasa Medical University', short: 'LMMU', lat: -15.3936, lng: 28.3524 },
   { id: 'evelyn-hone', name: 'Evelyn Hone College', short: 'Evelyn Hone', lat: -15.4171, lng: 28.2892 },
   { id: 'city-centre', name: 'City centre (for workers)', short: 'City centre', lat: -15.4167, lng: 28.282 },
 ];
