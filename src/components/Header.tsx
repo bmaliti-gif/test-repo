@@ -1,6 +1,7 @@
-import { Heart, User } from 'lucide-react';
+import { Coins, Heart, User } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router';
 import { useAuth } from '../lib/auth';
+import { useWallet } from '../lib/points';
 import { HEADER_NAV, isActive } from './nav';
 
 /** The CabinHub mark: a roof over a door, in the brand colour. */
@@ -18,6 +19,7 @@ export function LogoMark({ size = 30 }: { size?: number }) {
 export function Header({ savedCount }: { savedCount: number }) {
   const { pathname } = useLocation();
   const { user, loading } = useAuth();
+  const wallet = useWallet();
 
   return (
     <header className="app-header">
@@ -44,6 +46,13 @@ export function Header({ savedCount }: { savedCount: number }) {
         </nav>
 
         <div className="header-actions">
+          {user && (
+            <NavLink to="/wallet" className="points-pill" aria-label={`Your points: ${wallet.data?.points ?? 0}. Top up or see history`}>
+              <Coins size={16} strokeWidth={2} aria-hidden="true" />
+              {(wallet.data?.points ?? 0).toLocaleString('en-US')}
+              <span className="points-pill-unit"> pts</span>
+            </NavLink>
+          )}
           <NavLink to="/saved" className="icon-link" aria-label={`Saved rooms: ${savedCount}`}>
             <Heart size={20} strokeWidth={1.75} aria-hidden="true" />
             {savedCount > 0 && <span className="count-badge">{savedCount}</span>}

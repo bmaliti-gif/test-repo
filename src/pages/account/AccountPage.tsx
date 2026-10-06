@@ -48,6 +48,9 @@ export default function AccountPage() {
               <ThemePicker labelledBy="account-theme" />
             </div>
             <InstallApp />
+            <Link to="/wallet" className="btn btn-secondary">
+              Points: top up and history
+            </Link>
             <Link to="/about" className="btn btn-ghost about-link">
               About CabinHub and how it works
             </Link>

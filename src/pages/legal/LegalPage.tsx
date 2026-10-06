@@ -108,7 +108,7 @@ function Terms() {
       <h2>For landlords</h2>
       <ul>
         <li>List only rooms you own or are allowed to let, with true photos, price and details.</li>
-        <li>Publishing a listing costs <Money ngwee={settings?.listing_fee_ngwee} fallback="the listing fee" />. Featuring it costs <Money ngwee={settings?.feature_fee_ngwee} fallback="the featuring fee" /> for {settings?.feature_days ?? 7} days. Verification costs <Money ngwee={settings?.verification_fee_ngwee} fallback="the verification fee" />. Current amounts are always shown before you pay.</li>
+        <li>Your first {settings?.free_listing_limit ?? 4} listings are free to publish. Each listing after that costs {settings?.extra_listing_points ?? 80} points, verification costs {settings?.verification_points ?? 100} points, and featuring costs {settings?.feature_points ?? 60} points for {settings?.feature_days ?? 7} days. The price is always shown before you spend.</li>
         <li>Don't put phone numbers in listings or ask tenants to pay outside CabinHub. Listings that break these rules are checked by the CabinHub team and may be removed.</li>
         <li>If a reserved room becomes unavailable, cancel the reservation from your dashboard. The tenant gets everything back.</li>
       </ul>
@@ -117,6 +117,12 @@ function Terms() {
         <li>Reserving costs a deposit of <Money ngwee={settings?.deposit_ngwee} fallback="the deposit" /> plus a booking fee of <Money ngwee={settings?.booking_fee_ngwee} fallback="the booking fee" />. See <Link to="/refunds">Deposits and refunds</Link>.</li>
         <li>Only confirm move-in once you have the keys and the room is as listed.</li>
         <li>Reviews must be honest and about your own stay. Reviews with abuse or personal information are removed.</li>
+      </ul>
+      <h2>Points</h2>
+      <ul>
+        <li>You buy points with mobile money at a fixed rate: K1 gives {settings?.points_per_kwacha ?? 2} points. Points pay for extras such as seeing a landlord's WhatsApp number, searching more than {settings?.free_area_limit ?? 5} areas at once, extra listings, verification and featuring.</li>
+        <li>Points don't expire. They can't be swapped back for cash or moved to another account, except where CabinHub made a mistake, in which case we refund the points.</li>
+        <li>Prices in points are shown before you spend and can change; a change never affects something you have already paid for.</li>
       </ul>
       <h2>What CabinHub does and doesn't do</h2>
       <ul>

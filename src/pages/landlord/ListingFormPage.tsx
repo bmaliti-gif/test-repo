@@ -1,23 +1,23 @@
 import { lazy, Suspense, useCallback, useEffect, useState, type FormEvent } from 'react';
-import { ArrowLeft, Check, Smartphone } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
 import { Field, TextField } from '../../components/Field';
-import { PaymentDialog } from '../../components/PaymentDialog';
+import { SpendPointsDialog } from '../../components/PointsDialogs';
 import { Loading, MessagePage, Notice } from '../../components/Status';
 import { useToast } from '../../components/Toast';
 import { AMENITIES, ROOM_TYPES } from '../../data/amenities';
 import { AREAS, areaByName } from '../../data/areas';
-import { useAuth, useMe } from '../../lib/auth';
+import { useAuth } from '../../lib/auth';
 import type { Tables, TypeLabel } from '../../lib/database.types';
 import type { LatLng } from '../../lib/geo';
 import { useInvalidateLandlord, useListingStatusAction, useMyListing } from '../../lib/landlord';
 import { LISTING_STATUS } from '../../lib/listingStatus';
 import { formatKwacha } from '../../lib/money';
-import { startFeePayment } from '../../lib/payments';
+import { pts, useActiveListingCount, usePublishListing } from '../../lib/points';
 import { useSettings } from '../../lib/queries';
 import { supabase } from '../../lib/supabase';
 import { MIN_PHOTOS, PhotoManager } from './PhotoManager';
@@ -91,13 +91,14 @@ export default function ListingFormPage() {
 
 function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; photos: { id: string; path: string; position: number }[] }) {
   const { user } = useAuth();
-  const { me } = useMe();
   const navigate = useNavigate();
   const toast = useToast();
   const settings = useSettings();
   const queryClient = useQueryClient();
   const invalidate = useInvalidateLandlord();
   const statusAction = useListingStatusAction();
+  const publish = usePublishListing();
+  const activeListings = useActiveListingCount();
 
   const [values, setValues] = useState<Values>(() => fromListing(listing));
   const [pinMoved, setPinMoved] = useState(Boolean(listing));
@@ -106,7 +107,6 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
   const [saving, setSaving] = useState(false);
   const [problems, setProblems] = useState<string[] | null>(null);
   const [paying, setPaying] = useState(false);
-  const [published, setPublished] = useState(false);
 
   const status = listing?.status ?? 'draft';
   const set = <K extends keyof Values>(k: K, v: Values[K]) => setValues((s) => ({ ...s, [k]: v }));
@@ -190,9 +190,28 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
   async function onPublish() {
     const savedId = await save();
     if (!savedId || !listing) return;
-    const { data } = await supabase!.rpc('check_listing', { p_listing_id: savedId });
-    setProblems(data ?? []);
-    setPaying(true);
+    if (isFree) {
+      try {
+        await doPublish(savedId);
+      } catch (err) {
+        setFormError(err instanceof Error ? err.message : 'Something went wrong.');
+      }
+    } else {
+      setPaying(true);
+    }
+  }
+
+  /** Publish (free or with points). Goes live, or to review with the reasons shown. */
+  async function doPublish(listingId: string) {
+    const r = await publish.mutateAsync(listingId);
+    await queryClient.invalidateQueries({ queryKey: ['landlord', 'listing', listingId] });
+    if (r.listing_status === 'live') {
+      toast(r.points_spent ? `Published for ${pts(r.points_spent)}. Tenants can now find it.` : 'Published free. Tenants can now find it.');
+      navigate('/landlord');
+    } else {
+      setProblems(r.problems);
+      toast('Sent to the CabinHub team for a quick check (usually within a day).');
+    }
   }
 
   async function onResubmit() {
@@ -208,7 +227,10 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
   }
 
   const s = LISTING_STATUS[status];
-  const fee = settings.data?.listing_fee_ngwee;
+  const freeLimit = settings.data?.free_listing_limit ?? 4;
+  const extraCost = settings.data?.extra_listing_points ?? 80;
+  const activeCount = activeListings.data ?? 0;
+  const isFree = activeCount < freeLimit;
   const tooFewPhotos = photos.length < MIN_PHOTOS;
 
   return (
@@ -384,9 +406,8 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
                 {saving ? 'Saving…' : listing ? 'Save draft' : 'Save draft and add photos'}
               </Button>
               {listing && (
-                <Button variant="primary" onClick={onPublish} disabled={saving || tooFewPhotos || !fee}>
-                  <Smartphone size={16} strokeWidth={1.5} aria-hidden="true" />
-                  Publish{fee ? ` · ${formatKwacha(fee)}` : ''}
+                <Button variant="primary" onClick={onPublish} disabled={saving || tooFewPhotos || !settings.data || activeListings.isPending || publish.isPending}>
+                  {publish.isPending ? 'Publishing…' : isFree ? `Publish · free (${activeCount + 1} of ${freeLimit})` : `Publish · ${pts(extraCost)}`}
                 </Button>
               )}
             </>
@@ -410,47 +431,20 @@ function ListingForm({ listing, photos }: { listing: Tables<'listings'> | null; 
         </div>
       </form>
 
-      {listing && fee !== undefined && (
-        <PaymentDialog
+      {listing && (
+        <SpendPointsDialog
           open={paying}
-          onClose={() => {
-            setPaying(false);
-            if (published) navigate('/landlord');
-          }}
-          title="Publish listing"
-          amountNgwee={fee}
-          defaultPhone={me?.contacts?.payout_number ?? me?.contacts?.whatsapp}
-          start={(provider, phone) => startFeePayment('listing_fee', listing.id, provider, phone)}
-          onFinished={(r) => {
-            if (r.status === 'succeeded') setPublished(true);
-            void invalidate();
-            void queryClient.invalidateQueries({ queryKey: ['landlord', 'listing', listing.id] });
-          }}
-          success={(r) =>
-            r.listing_status === 'live'
-              ? {
-                  title: 'Listing published',
-                  body: (
-                    <>
-                      <strong>{listing.title}</strong> is live. Tenants can find it on the map and reserve it with a deposit.{' '}
-                      <Link to={`/listing/${listing.id}`}>See it as tenants do</Link>
-                    </>
-                  ),
-                }
-              : {
-                  title: 'Paid · in review',
-                  body: (
-                    <>
-                      Thanks. The CabinHub team will check <strong>{listing.title}</strong> first, usually within a day:
-                      <ul className="problem-list">
-                        {(r.problems ?? problems ?? []).map((p) => (
-                          <li key={p}>{p}</li>
-                        ))}
-                      </ul>
-                    </>
-                  ),
-                }
+          onClose={() => setPaying(false)}
+          title="Publish this listing"
+          description={
+            <>
+              Your first {freeLimit} listings are free. This one is number {activeCount + 1}, so publishing{' '}
+              <strong>{listing.title}</strong> costs points.
+            </>
           }
+          cost={extraCost}
+          confirmLabel={`Publish for ${pts(extraCost)}`}
+          onConfirm={() => doPublish(listing.id)}
         />
       )}
     </div>

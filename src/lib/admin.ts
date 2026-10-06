@@ -1,6 +1,6 @@
 // Data for /admin. Admin-only reads work because RLS lets is_admin() see every row.
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { ListingCard, ReportAction, Tables } from './database.types';
+import type { ListingCard, PointsSettings, ReportAction, Tables } from './database.types';
 import { supabase } from './supabase';
 
 type Names = Map<string, { full_name: string; headline: string }>;
@@ -251,8 +251,8 @@ export async function uploadAdImage(file: File): Promise<string> {
 
 export type SettingsInput = Pick<
   Tables<'app_settings'>,
-  'deposit_ngwee' | 'booking_fee_ngwee' | 'listing_fee_ngwee' | 'feature_fee_ngwee' | 'feature_days' | 'verification_fee_ngwee' | 'banned_words'
->;
+  'deposit_ngwee' | 'booking_fee_ngwee' | 'feature_days' | 'banned_words'
+> & Partial<PointsSettings>;
 
 export function useSaveSettings() {
   const refresh = useAdminRefresh();

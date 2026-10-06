@@ -436,3 +436,71 @@ h1, .search-hero h1, .welcome-title { letter-spacing: -0.025em; }
 .about-trust svg { flex: none; color: var(--color-accent); margin-top: 1px; }
 .about-page .btn-primary { min-height: 46px; padding: 0 22px; }
 .about-link { align-self: flex-start; padding-inline: 0; min-height: 44px; }
+.landlord-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.landlord-actions .btn { min-height: 40px; }
+
+/* ═══ Points ════════════════════════════════════════════════════════════════ */
+.points-pill {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 0 12px;
+  border-radius: 999px; text-decoration: none; font-weight: 700; font-size: 14px;
+  background: var(--color-accent-2-100); color: var(--color-accent-2-800);
+}
+.points-pill svg { color: var(--color-accent-2); }
+.points-pill:hover { box-shadow: 0 0 0 2px var(--color-accent-2-200); }
+.points-pill-unit { font-weight: 500; font-size: 12px; }
+
+.points-dialog { width: min(480px, 100%); }
+.topup-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.topup-option {
+  position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 0; cursor: pointer;
+  padding: 12px 14px; border: 1px solid var(--color-neutral-300); border-radius: var(--radius-md); background: var(--color-card);
+}
+.topup-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+.topup-option.is-on { border-color: var(--color-accent); box-shadow: var(--ring); }
+.topup-option:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.topup-points { font-family: var(--font-heading); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; line-height: 1.1; }
+.topup-label { font-size: 12px; color: var(--color-text-muted); }
+.topup-price { margin-top: 6px; font-weight: 600; font-size: 14px; color: var(--color-accent-700); }
+
+.wallet-page { max-width: 980px; display: flex; flex-direction: column; gap: var(--space-6); }
+.wallet-page h1 { font-size: clamp(28px, 3.4vw, 38px); margin: 6px 0 0; }
+.wallet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-6); align-items: start; }
+.balance-card, .wallet-grid .card { padding: var(--space-6); gap: var(--space-3); }
+.balance-value {
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 800;
+  font-size: 48px; line-height: 1; letter-spacing: -0.03em;
+}
+.balance-value svg { color: var(--color-accent-2); }
+.balance-unit { font-family: var(--font-body); font-size: 16px; font-weight: 500; color: var(--color-text-muted); letter-spacing: 0; }
+.balance-card .btn-primary { align-self: flex-start; min-height: 44px; }
+.topup-hints { display: flex; gap: 6px; flex-wrap: wrap; }
+.price-list { list-style: none; margin: 0; padding: 0; }
+.price-list li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--color-divider); font-size: 14px; }
+.price-list strong { white-space: nowrap; color: var(--color-accent-700); }
+.history { display: flex; flex-direction: column; gap: var(--space-3); }
+.history h2 { margin: 0; font-size: 22px; }
+.delta-plus { color: var(--color-accent-700); font-weight: 700; }
+.delta-minus { color: var(--color-accent-2-700); font-weight: 700; }
+
+/* — multi-area picker — */
+.field-label-sm { display: block; font-size: 12px; font-weight: 600; color: var(--color-text-muted); margin-bottom: 4px; }
+.area-picker { position: relative; }
+.area-toggle { text-align: left; cursor: pointer; padding-right: 32px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%; background-size: 5px 5px; background-repeat: no-repeat; }
+.area-menu {
+  position: absolute; z-index: 40; top: calc(100% + 6px); left: 0; width: max(260px, 100%);
+  max-height: 360px; overflow: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px;
+  background: var(--color-card); border: 1px solid var(--color-divider); border-radius: var(--radius-md); box-shadow: var(--shadow-lg);
+}
+.area-hint { margin: 0 0 6px; font-size: 12px; color: var(--color-text-muted); }
+.area-option { min-height: 40px; font-size: 14px; }
+.area-menu-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--color-divider); }
+.area-menu-foot .btn { min-height: 36px; }
+.sheet .area-menu { position: static; width: 100%; max-height: none; box-shadow: none; margin-top: 6px; }
+@media (max-width: 767px) {
+  .points-pill { min-height: 34px; padding: 0 10px; font-size: 13px; }
+  .points-pill-unit { display: none; }
+  .topup-points { font-size: 20px; }
+  .balance-value { font-size: 40px; }
+}

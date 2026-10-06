@@ -176,7 +176,7 @@ export function ReservePanel({ listing, settings }: Props) {
           body: (
             <>
               <strong>{formatKwacha(deposit)}</strong> is held safely by CabinHub. {listing.landlord_name || 'The landlord'}{' '}
-              has been notified and will share viewing and key details. You can message them on WhatsApp now.
+              has been notified and will share viewing and key details. To message them directly, unlock their WhatsApp with points.
             </>
           ),
         })}

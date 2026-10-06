@@ -1,6 +1,6 @@
 import { lazy, Suspense, useCallback, useMemo, useState, type ReactNode } from 'react';
 import { List, Map as MapIcon, SlidersHorizontal } from 'lucide-react';
-import { useSearchParams } from 'react-router';
+import { useLocation, useNavigate, useSearchParams } from 'react-router';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
 import { ListingCard, ListingCardSkeleton } from '../../components/ListingCard';
@@ -9,12 +9,15 @@ import { Sheet } from '../../components/Sheet';
 import { SponsoredCard } from '../../components/SponsoredCard';
 import { Notice } from '../../components/Status';
 import { CAMPUSES } from '../../data/campuses';
-import { useMe } from '../../lib/auth';
-import { useAds, useSearchCards } from '../../lib/queries';
+import { useAuth, useMe } from '../../lib/auth';
+import { useBuyAreaPass, useWallet } from '../../lib/points';
+import { SpendPointsDialog } from '../../components/PointsDialogs';
+import { useToast } from '../../components/Toast';
+import { useAds, useSearchCards, useSettings } from '../../lib/queries';
 import { supabase } from '../../lib/supabase';
 import { PHONE_QUERY, useMediaQuery } from '../../lib/useMediaQuery';
 import { FilterBar } from './FilterBar';
-import { activeFilterCount, applyFilters, filtersToParams, parseFilters, pickAd, type Filters } from './filters';
+import { activeFilterCount, applyFilters, areaLabel, filtersToParams, parseFilters, pickAd, type Filters } from './filters';
 
 // Leaflet is only downloaded when the map is shown (on phones: after tapping "Map").
 const SearchMap = lazy(() => import('../../components/SearchMap'));
@@ -40,7 +43,26 @@ function Search() {
   const ads = useAds();
   const campus = CAMPUSES.find((c) => c.id === filters.near) ?? CAMPUSES[0];
   const results = useMemo(() => applyFilters(cards.data ?? [], filters, campus), [cards.data, filters, campus]);
-  const ad = useMemo(() => pickAd(ads.data ?? [], filters.area), [ads.data, filters.area]);
+  const ad = useMemo(() => pickAd(ads.data ?? [], filters.areas), [ads.data, filters.areas]);
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const settings = useSettings();
+  const wallet = useWallet();
+  const buyPass = useBuyAreaPass();
+  const toast = useToast();
+  const areaLimit = settings.data?.free_area_limit ?? 5;
+  const hasAreaPass = Boolean(wallet.data?.areaPassUntil);
+  // The area someone tried to add beyond the free limit (waiting for an area pass).
+  const [pendingArea, setPendingArea] = useState<string | null>(null);
+  const needAreaPass = useCallback(
+    (area: string) => {
+      if (!user) navigate(`/signin?next=${encodeURIComponent(location.pathname + location.search)}`);
+      else setPendingArea(area);
+    },
+    [user, navigate, location],
+  );
 
   const [hoverId, setHoverId] = useState<string | null>(null);
   const isPhone = useMediaQuery(PHONE_QUERY);
@@ -54,7 +76,7 @@ function Search() {
   const count = results.length;
   const resultLabel = cards.isPending
     ? 'Loading rooms…'
-    : `${count} room${count === 1 ? '' : 's'} ${filters.area ? `in ${filters.area}` : 'in Lusaka'}`;
+    : `${count} room${count === 1 ? '' : 's'} ${areaLabel(filters.areas)}`;
   const activeCount = activeFilterCount(filters);
 
   let list: ReactNode;
@@ -104,7 +126,7 @@ function Search() {
             Filters{activeCount > 0 && ` · ${activeCount}`}
           </Button>
         ) : (
-          <FilterBar filters={filters} onChange={update} />
+          <FilterBar filters={filters} onChange={update} areaLimit={areaLimit} hasAreaPass={hasAreaPass} onNeedAreaPass={needAreaPass} />
         )}
       </section>
 
@@ -153,6 +175,25 @@ function Search() {
         </Button>
       )}
 
+      <SpendPointsDialog
+        open={pendingArea !== null}
+        onClose={() => setPendingArea(null)}
+        title="Search more areas at once"
+        description={
+          <>
+            You can search up to {areaLimit} areas at once for free. An area pass lets you choose as many as you like for{' '}
+            <strong>{settings.data?.area_pass_days ?? 7} days</strong>.
+          </>
+        }
+        cost={settings.data?.area_pass_points ?? 10}
+        confirmLabel={`Get the area pass`}
+        onConfirm={async () => {
+          await buyPass.mutateAsync();
+          if (pendingArea) update({ areas: [...filters.areas, pendingArea] });
+          toast('Area pass active. Choose as many areas as you like.');
+        }}
+      />
+
       <Sheet
         open={filtersOpen}
         title="Filters"
@@ -168,7 +209,7 @@ function Search() {
           </div>
         }
       >
-        <FilterBar filters={filters} onChange={update} />
+        <FilterBar filters={filters} onChange={update} areaLimit={areaLimit} hasAreaPass={hasAreaPass} onNeedAreaPass={needAreaPass} />
       </Sheet>
     </div>
   );

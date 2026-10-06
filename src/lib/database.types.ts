@@ -18,7 +18,21 @@ export type TypeLabel =
   | 'Shared house';
 export type ListingStatus = 'draft' | 'in_review' | 'live' | 'reserved' | 'let' | 'rejected' | 'archived';
 export type ReservationStatus = 'pending_payment' | 'held' | 'released' | 'refunded' | 'cancelled';
-export type PaymentKind = 'reservation' | 'listing_fee' | 'feature_fee' | 'verification_fee';
+export type PaymentKind = 'reservation' | 'listing_fee' | 'feature_fee' | 'verification_fee' | 'points_topup';
+export type PointsReason = 'topup' | 'contact_unlock' | 'area_pass' | 'extra_listing' | 'verification' | 'feature' | 'refund' | 'admin';
+/** Points prices and rules in app_settings (migration 0009). */
+export type PointsSettings = {
+  points_per_kwacha: number;
+  topup_amounts_ngwee: number[];
+  contact_unlock_points: number;
+  free_area_limit: number;
+  area_pass_points: number;
+  area_pass_days: number;
+  free_listing_limit: number;
+  extra_listing_points: number;
+  verification_points: number;
+  feature_points: number;
+};
 export type PaymentStatus = 'pending' | 'succeeded' | 'failed';
 export type PayoutReason = 'release' | 'refund';
 export type PayoutStatus = 'queued' | 'paid' | 'failed';
@@ -350,7 +364,7 @@ export type Database = {
           payments_mode: PaymentsMode;
           banned_words: string[];
           updated_at: string;
-        };
+        } & PointsSettings;
         Insert: { [_ in never]: never };
         Update: {
           deposit_ngwee?: number;
@@ -360,7 +374,41 @@ export type Database = {
           feature_days?: number;
           verification_fee_ngwee?: number;
           banned_words?: string[];
+        } & Partial<PointsSettings>;
+        Relationships: [];
+      };
+      wallets: {
+        Row: { user_id: string; points: number; updated_at: string };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
+      point_transactions: {
+        Row: {
+          id: string;
+          user_id: string;
+          delta: number;
+          balance_after: number;
+          reason: PointsReason;
+          listing_id: string | null;
+          payment_id: string | null;
+          note: string | null;
+          created_at: string;
         };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
+      contact_unlocks: {
+        Row: { tenant_id: string; landlord_id: string; created_at: string };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
+        Relationships: [];
+      };
+      area_passes: {
+        Row: { user_id: string; expires_at: string };
+        Insert: { [_ in never]: never };
+        Update: { [_ in never]: never };
         Relationships: [];
       };
     };
@@ -434,6 +482,17 @@ export type Database = {
       clear_verification_docs: { Args: { p_verification_id: string }; Returns: undefined };
       archive_listing: { Args: { p_listing_id: string }; Returns: 'archived' };
       relist_listing: { Args: { p_listing_id: string }; Returns: Extract<ListingStatus, 'draft' | 'in_review' | 'live'> };
+      start_topup: {
+        Args: { p_amount_ngwee: number; p_provider: Provider; p_phone: string };
+        Returns: Json; // { payment_id, amount_ngwee, points }
+      };
+      unlock_landlord_contact: { Args: { p_listing_id: string }; Returns: Json }; // { whatsapp, points_spent, points_balance }
+      buy_area_pass: { Args: Record<string, never>; Returns: Json }; // { expires_at, points_balance }
+      active_listing_count: { Args: { p_landlord: string }; Returns: number };
+      publish_listing: { Args: { p_listing_id: string }; Returns: Json }; // { listing_status, problems, points_spent, points_balance }
+      feature_listing: { Args: { p_listing_id: string }; Returns: Json }; // { featured_until, points_spent, points_balance }
+      submit_verification: { Args: { p_verification_id: string }; Returns: Json };
+      admin_adjust_points: { Args: { p_user: string; p_delta: number; p_note: string }; Returns: number };
       my_reservations: {
         Args: Record<string, never>;
         Returns: {

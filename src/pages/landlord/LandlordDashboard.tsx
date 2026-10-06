@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 import { Blueprint, Corners } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
 import { Dialog } from '../../components/Dialog';
-import { PaymentDialog } from '../../components/PaymentDialog';
+import { SpendPointsDialog } from '../../components/PointsDialogs';
 import { Loading, MessagePage, Notice } from '../../components/Status';
 import { useToast } from '../../components/Toast';
 import { useMe } from '../../lib/auth';
@@ -12,7 +12,7 @@ import type { ListingCard } from '../../lib/database.types';
 import { useCancelReservation, useInvalidateLandlord, useLandlordDashboard, useListingStatusAction, type DepositRow } from '../../lib/landlord';
 import { LISTING_STATUS } from '../../lib/listingStatus';
 import { formatKwacha } from '../../lib/money';
-import { startFeePayment } from '../../lib/payments';
+import { pts, useFeatureListing } from '../../lib/points';
 import { formatPhone, providerLabel } from '../../lib/phone';
 import { useSettings } from '../../lib/queries';
 
@@ -37,6 +37,7 @@ export default function LandlordDashboard() {
   const toast = useToast();
   const invalidate = useInvalidateLandlord();
   const statusAction = useListingStatusAction();
+  const feature = useFeatureListing();
   const [featuring, setFeaturing] = useState<ListingCard | null>(null);
   const [cancelling, setCancelling] = useState<DepositRow | null>(null);
 
@@ -59,7 +60,9 @@ export default function LandlordDashboard() {
   const heldTotal = deposits.filter((d) => d.status === 'held').reduce((s, d) => s + d.deposit_ngwee, 0);
   const verified = Boolean(me?.profile.verified_at);
   const contacts = me?.contacts;
-  const listingFee = settings.data ? ` · ${formatKwacha(settings.data.listing_fee_ngwee)}` : '';
+  const activeCount = listings.filter((l) => ['in_review', 'live', 'reserved', 'let'].includes(l.status)).length;
+  const freeLeft = settings.data ? Math.max(0, settings.data.free_listing_limit - activeCount) : 0;
+  const listingFee = settings.data ? (freeLeft > 0 ? ` · ${freeLeft} free left` : ` · ${pts(settings.data.extra_listing_points)}`) : '';
 
   async function changeStatus(l: ListingCard, action: 'archive' | 'relist') {
     try {
@@ -259,27 +262,27 @@ export default function LandlordDashboard() {
           </p>
         </section>
 
-        <VerificationCard verified={verified} verification={verification} payoutLinked={Boolean(contacts?.payout_number)} fee={settings.data?.verification_fee_ngwee} />
+        <VerificationCard verified={verified} verification={verification} payoutLinked={Boolean(contacts?.payout_number)} cost={settings.data?.verification_points} />
       </div>
 
       {featuring && settings.data && (
-        <PaymentDialog
+        <SpendPointsDialog
           open
           onClose={() => setFeaturing(null)}
           title={`Feature for ${settings.data.feature_days} days`}
-          amountNgwee={settings.data.feature_fee_ngwee}
-          defaultPhone={contacts?.payout_number ?? contacts?.whatsapp}
-          start={(provider, phone) => startFeePayment('feature_fee', featuring.id, provider, phone)}
-          onFinished={() => invalidate()}
-          success={(r) => ({
-            title: 'Listing featured',
-            body: (
-              <>
-                <strong>{featuring.title}</strong> now shows first in Recommended with a Featured tag
-                {r.featured_until ? ` until ${dateShort(r.featured_until)}` : ''}.
-              </>
-            ),
-          })}
+          description={
+            <>
+              <strong>{featuring.title}</strong> shows first in Recommended, with a Featured tag, for{' '}
+              {settings.data.feature_days} days. Featuring again adds more days.
+            </>
+          }
+          cost={settings.data.feature_points}
+          confirmLabel={`Feature for ${pts(settings.data.feature_points)}`}
+          onConfirm={async () => {
+            const r = await feature.mutateAsync(featuring.id);
+            await invalidate();
+            toast(`Featured until ${dateShort(r.featured_until)}.`);
+          }}
         />
       )}
 
@@ -292,12 +295,12 @@ function VerificationCard({
   verified,
   verification,
   payoutLinked,
-  fee,
+  cost,
 }: {
   verified: boolean;
   verification: { status: string; nrc_front_path: string | null; selfie_path: string | null; ownership_path: string | null; rejection_reason: string | null } | null;
   payoutLinked: boolean;
-  fee: number | undefined;
+  cost: number | undefined;
 }) {
   const status = verified ? 'approved' : verification?.status;
   const doc = (path: string | null | undefined) =>
@@ -338,7 +341,7 @@ function VerificationCard({
       {!verified && status !== 'pending' && (
         <Link to="/landlord/verification" className="btn btn-primary blueprint btn-block verify-button">
           <Corners />
-          Verify{fee ? ` · ${formatKwacha(fee)}` : ''}
+          Verify{cost ? ` · ${pts(cost)}` : ''}
         </Link>
       )}
     </Blueprint>

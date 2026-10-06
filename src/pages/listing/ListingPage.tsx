@@ -7,6 +7,7 @@ import { Gallery } from '../../components/Gallery';
 import { ReportDialog } from '../../components/ReportDialog';
 import { NotConnected } from '../../components/RequireAuth';
 import { SaveButton } from '../../components/SaveButton';
+import { WhatsAppButton } from '../../components/ReservationActions';
 import { Loading, MessagePage, Notice } from '../../components/Status';
 import { CAMPUSES } from '../../data/campuses';
 import { useAuth, useMe } from '../../lib/auth';
@@ -218,7 +219,12 @@ function Listing() {
                 {l.landlord_verified ? 'ID and ownership verified' : 'Verification in progress'} · on CabinHub since {sinceYear}
               </span>
             </div>
-            <SaveButton listingId={l.id} />
+            <div className="landlord-actions">
+              {user?.id !== l.landlord_id && (
+                <WhatsAppButton listingId={l.id} title={l.title} landlordName={l.landlord_name} />
+              )}
+              <SaveButton listingId={l.id} />
+            </div>
           </Blueprint>
 
           <section className="listing-section" aria-labelledby="reviews-heading">

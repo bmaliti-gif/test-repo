@@ -64,7 +64,9 @@ The look is a modern, photo-first marketplace (like Airbnb or Zillow), not the o
 - Money is integer **ngwee** (K1 = 100 ngwee), shown as `K 1,800`. Rent is per month.
 - Fees and the deposit come from the `app_settings` table — never hard-code amounts.
 - Phones are stored as E.164 (`+260971234567`); accept `0971234567`. Guess the provider from the prefix (096/076 MTN, 097/077 Airtel, 095 Zamtel) — warn on a mismatch, never block.
-- A landlord's WhatsApp number is revealed only through `get_landlord_contact` (tenant has a held or released reservation); a roommate's only after an accepted request.
+- **Points ("float")**, migration 0009: members top up a wallet with mobile money at `points_per_kwacha` (default K1 = 2 points, K50 = 100) in fixed `topup_amounts_ngwee`. Points are spent only through SQL functions (`change_points` logs every change in `point_transactions`; balances never go below 0). Prices live in `app_settings` (Admin → Settings → Points), never in code.
+- Students: a landlord's WhatsApp number costs points **every time — reserving does not unlock it** (`unlock_landlord_contact`, once per landlord, covering all their rooms; `get_landlord_contact` only returns it after an unlock). Up to `free_area_limit` (5) areas at once are free; more needs an area pass (`buy_area_pass`). A roommate's number shows only after an accepted request (no points).
+- Landlords: the first `free_listing_limit` (4) active listings publish free, then `publish_listing` charges `extra_listing_points`; verification (`submit_verification`) and featuring (`feature_listing`) cost points. The old Kwacha listing/feature/verification fees are no longer used; only the reservation deposit and booking fee are paid in Kwacha.
 - Every table has RLS on. Business rules live in SQL functions (`security definer`, `set search_path = ''`), never only in the browser.
 - Users are on low-end Android phones with expensive data: compress photos before upload (≤ 1600 px, WebP), lazy-load images and routes, keep the bundle small.
 - Copy: plain, friendly and trustworthy; Kwacha prices; real Lusaka place names.

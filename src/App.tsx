@@ -23,6 +23,7 @@ const AdminPage = lazy(() => import('./pages/admin/AdminPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const LegalPage = lazy(() => import('./pages/legal/LegalPage'));
 const AboutPage = lazy(() => import('./pages/about/AboutPage'));
+const WalletPage = lazy(() => import('./pages/account/WalletPage'));
 
 // Routes from docs/PLAN.md §6.
 export default function App() {
@@ -45,6 +46,7 @@ export default function App() {
         <Route element={<RequireAuth />}>
           <Route path="welcome" element={<WelcomePage />} />
           <Route path="account" element={<AccountPage />} />
+          <Route path="wallet" element={<WalletPage />} />
           <Route path="saved" element={<SavedPage />} />
           <Route path="reservations" element={<ReservationsPage />} />
           <Route path="roommates" element={<RoommatesPage />} />

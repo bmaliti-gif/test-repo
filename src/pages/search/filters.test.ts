@@ -8,6 +8,7 @@ import {
   parseFilters,
   pickAd,
   ratingLabel,
+  areaLabel,
   type SearchCard,
 } from './filters';
 
@@ -36,7 +37,7 @@ function card(over: Partial<SearchCard>): SearchCard {
 
 describe('URL filters', () => {
   it('round-trips through the URL', () => {
-    const f = { ...defaultFilters(), area: 'Chudleigh', maxRent: 2000, type: 'shared' as const, sort: 'rent' as const, verifiedOnly: true, near: 'unilus' };
+    const f = { ...defaultFilters(), areas: ['Chudleigh', 'Silverest'], maxRent: 2000, type: 'shared' as const, sort: 'rent' as const, verifiedOnly: true, near: 'unilus' };
     expect(parseFilters(filtersToParams(f))).toEqual(f);
   });
 
@@ -51,7 +52,7 @@ describe('URL filters', () => {
 
   it('counts the filters that are set', () => {
     expect(activeFilterCount(defaultFilters())).toBe(0);
-    expect(activeFilterCount({ ...defaultFilters(), area: 'Bauleni', verifiedOnly: true })).toBe(2);
+    expect(activeFilterCount({ ...defaultFilters(), areas: ['Bauleni'], verifiedOnly: true })).toBe(2);
   });
 });
 
@@ -77,7 +78,8 @@ describe('applyFilters', () => {
   });
 
   it('filters by area, type and verified landlords', () => {
-    expect(applyFilters(cards, { ...defaultFilters(), area: 'Mass Media' }, unza).map((r) => r.id)).toEqual(['cheap']);
+    expect(applyFilters(cards, { ...defaultFilters(), areas: ['Mass Media'] }, unza).map((r) => r.id)).toEqual(['cheap']);
+    expect(applyFilters(cards, { ...defaultFilters(), areas: ['Mass Media', 'Longacres'] }, unza).map((r) => r.id).sort()).toEqual(['cheap', 'featured']);
     expect(applyFilters(cards, { ...defaultFilters(), type: 'shared' }, unza).map((r) => r.id)).toEqual(['cheap']);
     expect(applyFilters(cards, { ...defaultFilters(), verifiedOnly: true }, unza).map((r) => r.id)).toEqual(['verified']);
   });
@@ -93,14 +95,15 @@ describe('pickAd', () => {
   const local = { id: 'local', areas: ['Kalingalinga', 'Chudleigh'] };
 
   it('prefers an ad aimed at the chosen area', () => {
-    expect(pickAd([everywhere, local], 'Chudleigh')?.id).toBe('local');
-    expect(pickAd([everywhere, local], 'Bauleni')?.id).toBe('all');
-    expect(pickAd([local], 'Bauleni')).toBeNull();
+    expect(pickAd([everywhere, local], ['Chudleigh'])?.id).toBe('local');
+    expect(pickAd([everywhere, local], ['Bauleni', 'Kalingalinga'])?.id).toBe('local');
+    expect(pickAd([everywhere, local], ['Bauleni'])?.id).toBe('all');
+    expect(pickAd([local], ['Bauleni'])).toBeNull();
   });
 
   it('shows something when no area is chosen', () => {
-    expect(pickAd([local], null)?.id).toBe('local');
-    expect(pickAd([], null)).toBeNull();
+    expect(pickAd([local], [])?.id).toBe('local');
+    expect(pickAd([], [])).toBeNull();
   });
 });
 
@@ -109,5 +112,20 @@ describe('ratingLabel', () => {
     expect(ratingLabel(4.5, 2)).toBe('4.5/5 · 2 reviews');
     expect(ratingLabel(5, 1)).toBe('5/5 · 1 review');
     expect(ratingLabel(null, 0)).toBe('New listing');
+  });
+});
+
+describe('several areas in the URL', () => {
+  it('reads a comma-separated list without repeats', () => {
+    expect(parseFilters(new URLSearchParams('area=Chudleigh,Silverest,Chudleigh')).areas).toEqual(['Chudleigh', 'Silverest']);
+  });
+});
+
+describe('areaLabel', () => {
+  it('names the chosen areas', () => {
+    expect(areaLabel([])).toBe('in Lusaka');
+    expect(areaLabel(['Silverest'])).toBe('in Silverest');
+    expect(areaLabel(['Chudleigh', 'Silverest'])).toBe('in Chudleigh and Silverest');
+    expect(areaLabel(['A', 'B', 'C'])).toBe('in 3 areas');
   });
 });

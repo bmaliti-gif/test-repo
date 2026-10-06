@@ -4,7 +4,8 @@ import { Link } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
-import { PaymentDialog } from '../../components/PaymentDialog';
+import { SpendPointsDialog } from '../../components/PointsDialogs';
+import { useToast } from '../../components/Toast';
 import { Loading, MessagePage, Notice } from '../../components/Status';
 import { useAuth, useMe } from '../../lib/auth';
 import {
@@ -15,8 +16,7 @@ import {
   type DocSlot,
   type Verification,
 } from '../../lib/landlord';
-import { formatKwacha } from '../../lib/money';
-import { startFeePayment } from '../../lib/payments';
+import { pts, useSubmitVerification } from '../../lib/points';
 import { useSettings } from '../../lib/queries';
 
 const SLOTS: { slot: DocSlot; label: string; hint: string; pdf: boolean }[] = [
@@ -44,6 +44,8 @@ export default function VerificationPage() {
   const verification = useVerification();
   const settings = useSettings();
   const queryClient = useQueryClient();
+  const submitVerification = useSubmitVerification();
+  const toast = useToast();
 
   const [draft, setDraft] = useState<Verification | null>(null);
   const [busySlot, setBusySlot] = useState<DocSlot | null>(null);
@@ -72,7 +74,7 @@ export default function VerificationPage() {
   const status = verified ? 'approved' : current?.status ?? (latest?.status === 'rejected' ? 'rejected' : 'awaiting_payment');
   const editable = !verified && (!current || current.status === 'awaiting_payment');
   const complete = Boolean(current && SLOTS.every((s) => current[s.slot]));
-  const fee = settings.data?.verification_fee_ngwee;
+  const cost = settings.data?.verification_points;
 
   const refresh = () => queryClient.invalidateQueries({ queryKey: ['landlord'] });
 
@@ -145,8 +147,8 @@ export default function VerificationPage() {
                   see them) and are deleted 30 days after review.
                 </span>
               </label>
-              <Button variant="primary" onClick={() => setPaying(true)} disabled={!complete || !consent || !fee}>
-                Verify{fee ? ` · ${formatKwacha(fee)}` : ''}
+              <Button variant="primary" onClick={() => setPaying(true)} disabled={!complete || !consent || cost === undefined}>
+                Verify{cost !== undefined ? ` · ${pts(cost)}` : ''}
               </Button>
               {!complete && <span className="field-hint">Upload all four documents first.</span>}
             </Blueprint>
@@ -154,22 +156,20 @@ export default function VerificationPage() {
         </>
       )}
 
-      {current && fee !== undefined && (
-        <PaymentDialog
+      {current && cost !== undefined && (
+        <SpendPointsDialog
           open={paying}
           onClose={() => setPaying(false)}
-          title="Verify your account"
-          amountNgwee={fee}
-          defaultPhone={me?.contacts?.payout_number ?? me?.contacts?.whatsapp}
-          start={(provider, phone) => startFeePayment('verification_fee', current.id, provider, phone)}
-          onFinished={() => {
+          title="Send for verification"
+          description={<>The CabinHub team checks your documents, usually within a day. No office visit.</>}
+          cost={cost}
+          confirmLabel={`Verify for ${pts(cost)}`}
+          onConfirm={async () => {
+            await submitVerification.mutateAsync(current.id);
             setDraft(null);
-            void refresh();
+            await refresh();
+            toast("Sent for review. We'll show the result here.");
           }}
-          success={() => ({
-            title: 'Sent for review',
-            body: <>Thanks. The CabinHub team will check your documents, usually within a day. We'll show the result here.</>,
-          })}
         />
       )}
     </div>

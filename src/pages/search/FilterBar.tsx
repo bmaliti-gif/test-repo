@@ -7,12 +7,18 @@ import { RENT_MAX, RENT_MIN, RENT_STEP, SORTS, type Filters, type SortKey } from
 type Props = {
   filters: Filters;
   onChange: (patch: Partial<Filters>) => void;
+  /** How many areas can be chosen at once for free. */
+  areaLimit: number;
+  /** An active area pass lifts the limit. */
+  hasAreaPass: boolean;
+  /** Asked to choose one more area than the free limit allows. */
+  onNeedAreaPass: (area: string) => void;
 };
 
 const rentLabel = (k: number) => (k >= RENT_MAX ? `K ${RENT_MAX.toLocaleString('en-US')}+` : `K ${k.toLocaleString('en-US')}`);
 
 /** The search filters. Inline on desktop; inside the Filters sheet on phones. */
-export function FilterBar({ filters, onChange }: Props) {
+export function FilterBar({ filters, onChange, areaLimit, hasAreaPass, onNeedAreaPass }: Props) {
   const ids = useId();
   // The slider moves instantly; the URL and results follow 200 ms after it stops.
   const [rent, setRent] = useState(filters.maxRent);
@@ -25,22 +31,13 @@ export function FilterBar({ filters, onChange }: Props) {
 
   return (
     <div className="filter-bar">
-      <div className="field filter-area">
-        <label htmlFor={`${ids}-area`}>Area</label>
-        <select
-          id={`${ids}-area`}
-          className="input"
-          value={filters.area ?? ''}
-          onChange={(e) => onChange({ area: e.target.value || null })}
-        >
-          <option value="">All areas</option>
-          {AREAS.map((a) => (
-            <option key={a.name} value={a.name}>
-              {a.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      <AreaPicker
+        selected={filters.areas}
+        freeLimit={areaLimit}
+        unlimited={hasAreaPass}
+        onChange={(areas) => onChange({ areas })}
+        onNeedPass={onNeedAreaPass}
+      />
 
       <div className="field filter-rent">
         <label htmlFor={`${ids}-rent`}>
@@ -116,6 +113,75 @@ export function FilterBar({ filters, onChange }: Props) {
         />
         Verified landlords only
       </label>
+    </div>
+  );
+}
+
+type AreaPickerProps = {
+  selected: string[];
+  freeLimit: number;
+  unlimited: boolean;
+  onChange: (areas: string[]) => void;
+  onNeedPass: (area: string) => void;
+};
+
+/** Tick several areas. Up to `freeLimit` at once is free; one more asks for an area pass. */
+function AreaPicker({ selected, freeLimit, unlimited, onChange, onNeedPass }: AreaPickerProps) {
+  const ids = useId();
+  const [open, setOpen] = useState(false);
+  const summary =
+    selected.length === 0 ? 'All areas' : selected.length <= 2 ? selected.join(', ') : `${selected.length} areas`;
+
+  function toggle(name: string, on: boolean) {
+    if (!on) return onChange(selected.filter((a) => a !== name));
+    if (!unlimited && selected.length >= freeLimit) return onNeedPass(name);
+    onChange([...selected, name]);
+  }
+
+  return (
+    <div className="field filter-area">
+      <span className="field-label-sm" id={`${ids}-label`}>
+        Area
+      </span>
+      <div className="area-picker" onBlur={(e) => !e.currentTarget.contains(e.relatedTarget as Node) && setOpen(false)}>
+        <button
+          type="button"
+          className="input area-toggle"
+          aria-expanded={open}
+          aria-controls={`${ids}-list`}
+          aria-labelledby={`${ids}-label ${ids}-value`}
+          onClick={() => setOpen((o) => !o)}
+          onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}
+        >
+          <span id={`${ids}-value`}>{summary}</span>
+        </button>
+        {open && (
+          <div className="area-menu" id={`${ids}-list`} role="group" aria-labelledby={`${ids}-label`} onKeyDown={(e) => e.key === 'Escape' && setOpen(false)}>
+            <p className="area-hint">
+              {unlimited
+                ? 'Area pass active: choose as many as you like.'
+                : `Choose up to ${freeLimit} at once for free.`}
+            </p>
+            {AREAS.map((a) => {
+              const on = selected.includes(a.name);
+              return (
+                <label key={a.name} className="check area-option">
+                  <input type="checkbox" checked={on} onChange={(e) => toggle(a.name, e.target.checked)} />
+                  {a.name}
+                </label>
+              );
+            })}
+            <div className="area-menu-foot">
+              <button type="button" className="link-button" onClick={() => onChange([])} disabled={!selected.length}>
+                All areas
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={() => setOpen(false)}>
+                Done
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

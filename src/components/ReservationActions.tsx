@@ -1,38 +1,91 @@
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { useAuth } from '../lib/auth';
+import { pts, useUnlockContact } from '../lib/points';
 import { MessageCircle } from 'lucide-react';
 import { formatKwacha } from '../lib/money';
 import { whatsappLink } from '../lib/payments';
-import { useConfirmMoveIn, useLandlordContact } from '../lib/queries';
+import { useConfirmMoveIn, useLandlordContact, useSettings } from '../lib/queries';
+import { SpendPointsDialog } from './PointsDialogs';
 import { Button } from './Button';
 import { Dialog } from './Dialog';
 import { Notice } from './Status';
 import { useToast } from './Toast';
 
-/** "Message landlord on WhatsApp", unlocked by a held or released reservation. */
-export function WhatsAppButton({ listingId, title, reference, block }: { listingId: string; title: string; reference: string; block?: boolean }) {
-  const contact = useLandlordContact(listingId, true);
-  if (contact.isPending) {
+type WhatsAppProps = {
+  listingId: string;
+  title: string;
+  /** With a reservation, the first message quotes its reference. */
+  reference?: string;
+  landlordName?: string;
+  block?: boolean;
+};
+
+/**
+ * "WhatsApp the landlord". The number costs points (once per landlord, covering all their
+ * rooms); after unlocking, the button opens a WhatsApp chat with a friendly first message.
+ */
+export function WhatsAppButton({ listingId, title, reference, landlordName, block }: WhatsAppProps) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const settings = useSettings();
+  const contact = useLandlordContact(listingId, Boolean(user));
+  const unlock = useUnlockContact();
+  const toast = useToast();
+  const [asking, setAsking] = useState(false);
+  const cls = block ? 'btn btn-secondary btn-block whatsapp-button' : 'btn btn-secondary whatsapp-button';
+  const cost = settings.data?.contact_unlock_points ?? 20;
+
+  if (user && contact.isPending) {
     return (
       <Button variant="secondary" block={block} disabled>
         <MessageCircle size={15} strokeWidth={1.5} aria-hidden="true" />
-        Getting the landlord's number…
+        Checking…
       </Button>
     );
   }
-  if (!contact.data) {
-    return <p className="reserve-note">The landlord hasn't added a WhatsApp number yet. We've let them know.</p>;
+
+  if (contact.data) {
+    const message = reference
+      ? `Hi, I've reserved "${title}" on CabinHub (ref ${reference}). When can I view the room and collect the keys?`
+      : `Hi, I saw "${title}" on CabinHub. Is it still available, and when could I come to view it?`;
+    return (
+      <a className={cls} href={whatsappLink(contact.data, message)} target="_blank" rel="noopener noreferrer">
+        <MessageCircle size={15} strokeWidth={1.5} aria-hidden="true" />
+        WhatsApp {landlordName ? landlordName.split(' ')[0] : 'the landlord'}
+      </a>
+    );
   }
-  const message = `Hi, I've reserved "${title}" on CabinHub (ref ${reference}). When can I view the room and collect the keys?`;
+
   return (
-    <a
-      className={block ? 'btn btn-secondary btn-block whatsapp-button' : 'btn btn-secondary whatsapp-button'}
-      href={whatsappLink(contact.data, message)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <MessageCircle size={15} strokeWidth={1.5} aria-hidden="true" />
-      Message landlord on WhatsApp
-    </a>
+    <>
+      <button
+        type="button"
+        className={cls}
+        onClick={() => (user ? setAsking(true) : navigate(`/signin?next=${encodeURIComponent(location.pathname)}`))}
+      >
+        <MessageCircle size={15} strokeWidth={1.5} aria-hidden="true" />
+        WhatsApp the landlord · {pts(cost)}
+      </button>
+      <SpendPointsDialog
+        open={asking}
+        onClose={() => setAsking(false)}
+        title="See the landlord's WhatsApp"
+        description={
+          <>
+            Unlock {landlordName || 'this landlord'}'s WhatsApp number to ask questions or arrange a viewing. It stays
+            unlocked for <strong>all their rooms</strong>.
+          </>
+        }
+        cost={cost}
+        confirmLabel={`Unlock for ${pts(cost)}`}
+        onConfirm={async () => {
+          const r = await unlock.mutateAsync(listingId);
+          toast(r.whatsapp ? 'Unlocked. Tap the WhatsApp button to message the landlord.' : "Unlocked. The landlord hasn't added a WhatsApp number yet.");
+        }}
+      />
+    </>
   );
 }
 

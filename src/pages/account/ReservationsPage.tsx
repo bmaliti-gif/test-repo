@@ -52,8 +52,8 @@ export default function ReservationsPage() {
         <Blueprint className="card empty-card">
           <h2 className="card-title">No reservations yet</h2>
           <p className="card-body">
-            When you reserve a room, your deposit is held here by CabinHub until you move in, and the landlord's WhatsApp
-            unlocks.
+            When you reserve a room, your deposit is held here by CabinHub until you move in. You can message the landlord
+            on WhatsApp by unlocking their number with points.
           </p>
           <div>
             <Link to="/" className="btn btn-secondary">
