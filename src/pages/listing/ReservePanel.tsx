@@ -35,7 +35,8 @@ export function ReservePanel({ listing, settings }: Props) {
   const ownRoom = user?.id === listing.landlord_id;
   const mine = reservations.data?.find((r) => r.listing_id === listing.id && r.status !== 'refunded');
   const reservedByOther = !mine && listing.status === 'reserved';
-  const canReserve = !mine && !reservedByOther && !ownRoom && listing.status === 'live';
+  const isLandlordAccount = me?.profile.role === 'landlord';
+  const canReserve = !mine && !reservedByOther && !ownRoom && !isLandlordAccount && listing.status === 'live';
 
   function reserve() {
     if (!user) {
@@ -90,6 +91,13 @@ export function ReservePanel({ listing, settings }: Props) {
     status = (
       <p className="reserve-note">
         <span className="tag tag-neutral">Reserved</span> This room is currently reserved.
+      </p>
+    );
+  } else if (isLandlordAccount && !ownRoom) {
+    status = (
+      <p className="reserve-note">
+        Landlord accounts can't reserve rooms. To rent a room, sign up as someone looking for a room with a different
+        email.
       </p>
     );
   } else if (ownRoom) {

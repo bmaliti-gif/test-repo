@@ -48,6 +48,10 @@ export default function App() {
           <Route path="account" element={<AccountPage />} />
           <Route path="wallet" element={<WalletPage />} />
           <Route path="saved" element={<SavedPage />} />
+        </Route>
+
+        {/* Tenants (looking for a room) */}
+        <Route element={<RequireAuth role="tenant" />}>
           <Route path="reservations" element={<ReservationsPage />} />
           <Route path="roommates" element={<RoommatesPage />} />
         </Route>

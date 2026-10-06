@@ -21,6 +21,9 @@ type Errors = Partial<Record<keyof z.infer<typeof schema>, string>>;
 export default function SignUpPage() {
   const [params] = useSearchParams();
   const next = safeNext(params.get('next'));
+  // Shareable links: /signup?as=landlord or /signup?as=student (also ?as=tenant).
+  const as = params.get('as');
+  const intendedRole = as === 'landlord' ? 'landlord' : as === 'student' || as === 'tenant' ? 'tenant' : null;
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const toast = useToast();
@@ -50,7 +53,10 @@ export default function SignUpPage() {
     const { data, error } = await supabase!.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
-      options: { data: { full_name: parsed.data.fullName }, emailRedirectTo: callbackUrl(next) },
+      options: {
+        data: { full_name: parsed.data.fullName, ...(intendedRole ? { intended_role: intendedRole } : {}) },
+        emailRedirectTo: callbackUrl(next),
+      },
     });
     if (error) {
       setBusy(false);
@@ -90,7 +96,11 @@ export default function SignUpPage() {
   }
 
   return (
-    <AuthCard kicker="Join CabinHub" title="Create an account" welcome="signup">
+    <AuthCard
+      kicker={intendedRole === 'landlord' ? 'Join as a landlord' : intendedRole === 'tenant' ? 'Join to find a room' : 'Join CabinHub'}
+      title={intendedRole === 'landlord' ? 'List your rooms' : intendedRole === 'tenant' ? 'Find your room' : 'Create an account'}
+      welcome={intendedRole === 'landlord' ? 'landlord' : 'signup'}
+    >
       <form className="form" onSubmit={submit} noValidate>
         {formError && <Notice tone="error">{formError}</Notice>}
         <TextField

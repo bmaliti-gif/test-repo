@@ -504,3 +504,5 @@ h1, .search-hero h1, .welcome-title { letter-spacing: -0.025em; }
   .topup-points { font-size: 20px; }
   .balance-value { font-size: 40px; }
 }
+.account-type { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.account-type .field-label { margin: 0; }

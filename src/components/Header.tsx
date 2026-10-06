@@ -1,8 +1,8 @@
 import { Coins, Heart, User } from 'lucide-react';
 import { Link, NavLink, useLocation } from 'react-router';
-import { useAuth } from '../lib/auth';
+import { useAuth, useMe } from '../lib/auth';
 import { useWallet } from '../lib/points';
-import { HEADER_NAV, isActive } from './nav';
+import { headerNav, isActive } from './nav';
 
 /** The CabinHub mark: a roof over a door, in the brand colour. */
 export function LogoMark({ size = 30 }: { size?: number }) {
@@ -20,6 +20,7 @@ export function Header({ savedCount }: { savedCount: number }) {
   const { pathname } = useLocation();
   const { user, loading } = useAuth();
   const wallet = useWallet();
+  const { me } = useMe();
 
   return (
     <header className="app-header">
@@ -33,7 +34,7 @@ export function Header({ savedCount }: { savedCount: number }) {
         </Link>
 
         <nav className="header-nav" aria-label="Main">
-          {HEADER_NAV.map((item) => {
+          {headerNav(me?.profile.role ?? null).map((item) => {
             const active = isActive(item, pathname);
             const Icon = item.icon;
             return (

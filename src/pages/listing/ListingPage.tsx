@@ -220,7 +220,7 @@ function Listing() {
               </span>
             </div>
             <div className="landlord-actions">
-              {user?.id !== l.landlord_id && (
+              {user?.id !== l.landlord_id && me?.profile.role !== 'landlord' && (
                 <WhatsAppButton listingId={l.id} title={l.title} landlordName={l.landlord_name} />
               )}
               <SaveButton listingId={l.id} />

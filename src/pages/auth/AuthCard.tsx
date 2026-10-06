@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { BadgeCheck, Lock, MessageSquareQuote } from 'lucide-react';
+import { BadgeCheck, Home, Lock, MessageSquareQuote } from 'lucide-react';
 import { Blueprint } from '../../components/Blueprint';
 import { Button } from '../../components/Button';
 import { LogoMark } from '../../components/Header';
@@ -23,7 +23,24 @@ const WELCOME = {
     title: 'Welcome to CabinHub',
     body: 'Rooms near campus in Lusaka, straight from landlords. Create a free account in a minute.',
   },
+  landlord: {
+    title: 'Welcome, landlord',
+    body: 'Reach students and young professionals across Lusaka for far less than an agent charges.',
+  },
 } as const;
+
+const POINTS = {
+  tenant: [
+    { icon: BadgeCheck, text: "Landlords' IDs are checked by our team" },
+    { icon: Lock, text: 'Your deposit is held safely until you move in' },
+    { icon: MessageSquareQuote, text: 'Reviews come only from real tenants' },
+  ],
+  landlord: [
+    { icon: Home, text: 'Your first 4 listings are free' },
+    { icon: BadgeCheck, text: 'Get a Verified badge tenants trust' },
+    { icon: Lock, text: 'Deposits are held for you until move-in' },
+  ],
+};
 
 /** The friendly panel beside the sign-in and sign-up forms. */
 export function WelcomePanel({ kind }: { kind: keyof typeof WELCOME }) {
@@ -37,15 +54,11 @@ export function WelcomePanel({ kind }: { kind: keyof typeof WELCOME }) {
       <h2 className="welcome-title">{w.title}</h2>
       <p className="welcome-body">{w.body}</p>
       <ul className="welcome-points">
-        <li>
-          <BadgeCheck size={18} strokeWidth={2} aria-hidden="true" /> Landlords' IDs are checked by our team
-        </li>
-        <li>
-          <Lock size={18} strokeWidth={2} aria-hidden="true" /> Your deposit is held safely until you move in
-        </li>
-        <li>
-          <MessageSquareQuote size={18} strokeWidth={2} aria-hidden="true" /> Reviews come only from real tenants
-        </li>
+        {POINTS[kind === 'landlord' ? 'landlord' : 'tenant'].map(({ icon: Icon, text }) => (
+          <li key={text}>
+            <Icon size={18} strokeWidth={2} aria-hidden="true" /> {text}
+          </li>
+        ))}
       </ul>
     </aside>
   );

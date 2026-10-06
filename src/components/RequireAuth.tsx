@@ -6,7 +6,7 @@ import { Loading, MessagePage } from './Status';
 
 type Props = {
   /** Who may open these pages. Default: anyone signed in. */
-  role?: 'landlord' | 'admin';
+  role?: 'landlord' | 'tenant' | 'admin';
 };
 
 /**
@@ -41,11 +41,27 @@ export function RequireAuth({ role }: Props) {
     return (
       <MessagePage kicker="For landlords" title="This area is for landlords">
         <p className="card-body">
-          List rooms for less than an agent charges. If you have a room to let, switch your account to landlord.
+          Your account is for finding a room. Accounts can't switch type, so to list rooms, sign up again as a landlord
+          with a different email address.
         </p>
         <div>
-          <Link to="/account" className="btn btn-secondary">
-            Go to Account
+          <Link to="/" className="btn btn-secondary">
+            Find a room
+          </Link>
+        </div>
+      </MessagePage>
+    );
+  }
+  if (role === 'tenant' && me.profile.role !== 'tenant') {
+    return (
+      <MessagePage kicker="For students and tenants" title="This area is for people looking for a room">
+        <p className="card-body">
+          Your account is a landlord account. Accounts can't switch type, so to look for a room or a roommate, sign up
+          again with a different email address.
+        </p>
+        <div>
+          <Link to="/landlord" className="btn btn-secondary">
+            Your properties
           </Link>
         </div>
       </MessagePage>
