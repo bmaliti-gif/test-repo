@@ -84,7 +84,7 @@ export async function pathAfterSignIn(userId: string, next: string): Promise<str
 
 /**
  * Where to go after signing in, plus a friendly welcome to show there:
- * "Welcome back, Mutale!" for returning members, "Welcome to CabinHub!" for new ones.
+ * "Welcome, Mutale!" (or just "Welcome!").
  */
 export async function afterSignIn(userId: string, next: string): Promise<{ path: string; welcome: string }> {
   const target = safeNext(next);
@@ -92,9 +92,9 @@ export async function afterSignIn(userId: string, next: string): Promise<{ path:
   const { data } = await supabase.from('profiles').select('onboarded, full_name').eq('id', userId).maybeSingle();
   const first = data?.full_name?.trim().split(/\s+/)[0];
   if (data && !data.onboarded) {
-    return { path: `/welcome?next=${encodeURIComponent(target)}`, welcome: first ? `Welcome to CabinHub, ${first}!` : 'Welcome to CabinHub!' };
+    return { path: `/welcome?next=${encodeURIComponent(target)}`, welcome: first ? `Welcome, ${first}!` : 'Welcome!' };
   }
-  return { path: target, welcome: first ? `Welcome back, ${first}!` : 'Welcome back!' };
+  return { path: target, welcome: first ? `Welcome, ${first}!` : 'Welcome!' };
 }
 
 /** Supabase's English error messages, rewritten in plain, friendly words. */

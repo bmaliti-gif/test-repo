@@ -8,7 +8,7 @@ import { Notice } from '../../components/Status';
 import { callbackUrl, friendlyAuthError, afterSignIn, safeNext, useAuth } from '../../lib/auth';
 import { useToast } from '../../components/Toast';
 import { supabase } from '../../lib/supabase';
-import { AuthCard, GoogleButton, OrDivider } from './AuthCard';
+import { AuthCard, RoleChoice } from './AuthCard';
 
 const schema = z.object({
   fullName: z.string().trim().min(2, 'Enter your name as landlords and roommates will see it.').max(80, 'Keep your name under 80 characters.'),
@@ -22,8 +22,7 @@ export default function SignUpPage() {
   const [params] = useSearchParams();
   const next = safeNext(params.get('next'));
   // Shareable links: /signup?as=landlord or /signup?as=student (also ?as=tenant).
-  const as = params.get('as');
-  const intendedRole = as === 'landlord' ? 'landlord' : as === 'student' || as === 'tenant' ? 'tenant' : null;
+  const [role, setRole] = useState<'tenant' | 'landlord'>(params.get('as') === 'landlord' ? 'landlord' : 'tenant');
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const toast = useToast();
@@ -54,7 +53,7 @@ export default function SignUpPage() {
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
-        data: { full_name: parsed.data.fullName, ...(intendedRole ? { intended_role: intendedRole } : {}) },
+        data: { full_name: parsed.data.fullName, intended_role: role },
         emailRedirectTo: callbackUrl(next),
       },
     });
@@ -96,12 +95,13 @@ export default function SignUpPage() {
   }
 
   return (
-    <AuthCard
-      kicker={intendedRole === 'landlord' ? 'Join as a landlord' : intendedRole === 'tenant' ? 'Join to find a room' : 'Join CabinHub'}
-      title={intendedRole === 'landlord' ? 'List your rooms' : intendedRole === 'tenant' ? 'Find your room' : 'Create an account'}
-      welcome={intendedRole === 'landlord' ? 'landlord' : 'signup'}
-    >
+    <AuthCard title="Create an account" welcome>
       <form className="form" onSubmit={submit} noValidate>
+        <RoleChoice label="I am a" value={role} onChange={setRole} />
+        <p className="field-hint role-note">
+          {role === 'landlord' ? 'You will list rooms.' : 'You are looking for a room or a roommate.'} You can't change
+          this later.
+        </p>
         {formError && <Notice tone="error">{formError}</Notice>}
         <TextField
           label="Full name"
@@ -135,10 +135,8 @@ export default function SignUpPage() {
           {busy ? 'Creating your account…' : 'Create account'}
         </Button>
       </form>
-      <OrDivider />
-      <GoogleButton next={next} onError={setFormError} />
       <p className="form-foot">
-        Already on CabinHub? <Link to={`/signin${nextQuery}`}>Sign in</Link>
+        Already on CabinHub? <Link to={`/signin?as=${role === 'landlord' ? 'landlord' : 'student'}`}>Sign in</Link>
       </p>
     </AuthCard>
   );

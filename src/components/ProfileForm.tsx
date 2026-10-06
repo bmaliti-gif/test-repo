@@ -113,30 +113,14 @@ export function ProfileForm({ me, submitLabel, completeOnboarding, onSaved }: Pr
     <form className="form" onSubmit={submit} noValidate>
       {formError && <Notice tone="error">{formError}</Notice>}
 
-      {completeOnboarding ? (
-        <fieldset className="form-group">
-          <legend>What brings you to CabinHub?</legend>
-          <div className="seg seg-wide" role="radiogroup" aria-label="What brings you to CabinHub?">
-            <label className="seg-opt">
-              <input type="radio" name="role" checked={!landlord} onChange={() => set('role', 'tenant')} />
-              I'm looking for a room
-            </label>
-            <label className="seg-opt">
-              <input type="radio" name="role" checked={landlord} onChange={() => set('role', 'landlord')} />
-              I'm a landlord
-            </label>
-          </div>
-          <p className="field-hint">
-            Choose carefully: you can't change this later. To do both, use a different email address for each.
-          </p>
-        </fieldset>
-      ) : (
-        <div className="account-type">
-          <span className="field-label">Account type</span>
-          <span className="tag tag-accent">{landlord ? 'Landlord' : 'Looking for a room'}</span>
-          <span className="field-hint">Fixed. To {landlord ? 'look for a room' : 'list rooms'}, sign up again with a different email.</span>
-        </div>
-      )}
+      <div className="account-type">
+        <span className="field-label">Account type</span>
+        <span className="tag tag-accent">{landlord ? 'Landlord' : 'Student · looking for a room'}</span>
+        <span className="field-hint">
+          Chosen when you joined and fixed. To {landlord ? 'look for a room' : 'list rooms'}, sign up again with a different
+          email.
+        </span>
+      </div>
 
       <TextField
         label="Full name"

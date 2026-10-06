@@ -17,7 +17,7 @@ export default function WelcomePage() {
     <div className="page auth-page">
       <div>
         <div className="kicker">First-time setup</div>
-        <h1>Welcome to CabinHub</h1>
+        <h1>Welcome</h1>
         <p className="muted lede">A few details so landlords and roommates know who they're talking to.</p>
       </div>
       <Blueprint className="card auth-card">

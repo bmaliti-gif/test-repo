@@ -506,3 +506,18 @@ h1, .search-hero h1, .welcome-title { letter-spacing: -0.025em; }
 }
 .account-type { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
 .account-type .field-label { margin: 0; }
+
+/* ═══ Sign-in: role choice and a simple welcome ════════════════════════════ */
+.role-choice .seg-wide { width: 100%; }
+.role-choice .seg-opt { flex: 1 1 0; min-height: 44px; font-weight: 600; }
+.role-note { margin: -6px 0 0; }
+.welcome-simple {
+  min-height: 360px; align-items: center; justify-content: center; text-align: center; gap: 18px;
+}
+.welcome-simple .logo-mark { color: color-mix(in srgb, var(--color-on-accent) 20%, transparent); }
+.welcome-simple .welcome-title { font-size: clamp(40px, 5vw, 56px); margin: 0; }
+@media (max-width: 860px) {
+  .welcome-simple { min-height: 0; flex-direction: row; padding: 18px 20px; gap: 14px; justify-content: flex-start; }
+  .welcome-simple .logo-mark { display: block; width: 40px; height: 40px; }
+  .welcome-simple .welcome-title { font-size: 30px; }
+}
